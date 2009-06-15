@@ -9,6 +9,7 @@ coverage/
 
 db/schema.rb
 
+log/*/*.log
 test/
 tmp/
 
