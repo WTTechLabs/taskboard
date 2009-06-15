@@ -41,7 +41,7 @@ describe TaskboardController, "while showing taskboards list page" do
   it "should not allow adding new taskboards with empty name" do
     post 'add_taskboard', { :name => '' }, {:user_id => 1, :editor => true}
     flash[:error].should eql("Taskboard name cannot be empty!")
-    response.should redirect_to({ :action => 'ble' })
+    response.should redirect_to({ :action => 'index' })
   end
   
   it "should allow adding new taskboards" do
