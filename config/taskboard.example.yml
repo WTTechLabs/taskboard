@@ -1,0 +1,9 @@
+--- !ruby/object:TaskboardConfig 
+jira_auth_data: 
+  jira.example.com: 
+    os_username: your_jira_username
+    os_password: your_jira_password
+  jira.other.example.com: 
+    os_username: your_other_jira_username
+    os_password: your_other_jira_password
+

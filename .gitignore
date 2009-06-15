@@ -1,0 +1,15 @@
+Capfile
+
+# ignore config files but leave examples
+config/deploy.rb
+config/*.yml
+!config/*.example.yml
+
+coverage/
+
+db/schema.rb
+
+log/
+test/
+tmp/
+

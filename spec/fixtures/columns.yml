@@ -1,0 +1,45 @@
+todo:
+  name: 'TODO'
+  position: 1
+  taskboard: first_iteration
+in_progress:
+  name: 'In progress'
+  position: 2
+  taskboard: first_iteration
+test_needed:
+  name: 'Test needed'
+  position: 3
+  taskboard: first_iteration 
+done: 
+  name: 'Done'
+  position: 4
+  taskboard: first_iteration
+
+big_todo:
+  name: 'TODO'
+  position: 1
+  taskboard: big_iteration
+big_in_progress:
+  name: 'In progress'
+  position: 2
+  taskboard: big_iteration
+big_test_needed:
+  name: 'Test needed'
+  position: 3
+  taskboard: big_iteration 
+big_done: 
+  name: 'Done'
+  position: 4
+  taskboard: big_iteration 
+big_empty:
+  name: 'Empty'
+  position: 5
+  taskboard: big_iteration
+first_position:
+  name: 'First'
+  position: 1
+  taskboard: with_two_columns
+second_position:
+  name: 'Second'
+  position: 2
+  taskboard: with_two_columns

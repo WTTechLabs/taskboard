@@ -1,0 +1,24 @@
+todo:
+  date: <%= 11.days.ago.to_s :db %>
+  left: 30
+  card: coffee
+started:
+  date: <%= 10.days.ago.to_s :db %>
+  left: 25
+  card: coffee
+blocked:
+  date: <%= 9.days.ago.to_s :db %>
+  left: 28
+  card: coffee
+code_complete:
+  date: <%= 8.days.ago.to_s :db %>
+  left: 19
+  card: coffee
+tested:
+  date: <%= 7.days.ago.to_s :db %>
+  left: 9
+  card: coffee
+done:
+  date: <%= 6.days.ago.to_s :db %>
+  left: 0
+  card: coffee

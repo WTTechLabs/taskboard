@@ -1,0 +1,653 @@
+/*
+ * Copyright (C) 2009 Cognifide
+ * 
+ * This file is part of Taskboard.
+ * 
+ * Taskboard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Taskboard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@import url(generic.css);
+
+#header {
+	position: fixed;
+	top:0;
+	left:0;
+	right:0;
+	z-index: 10;
+}
+
+#headerBar {
+	position: relative;
+	background-color:#457F9F;
+	color:#CCCCCC;
+	overflow: hidden;
+	clear: both;
+}
+
+#header h1 {
+	float: left;
+	padding: 5px 10px;
+}
+
+	h1 a[rel='home'] {
+		font-size: 0.8em;
+		text-decoration: none;
+		color: #CCCCCC;
+	}
+
+		h1 a[rel='home']:hover {
+			border-bottom: 1px solid white;
+			color: white;
+		}
+
+	h1 span.title {
+		color: #ffffff;
+	}
+
+	h1 span.title:hover {
+		background-color: #74AFCF;
+		cursor: text;
+	}
+		
+	h1 span.title form {
+		display: inline;
+	}
+	
+		h1 span.title form input {
+			border:1px solid #CCCCCC;
+			font-family:Trebuchet,Tahoma,Arial,sans-serif;
+			font-size:1em;
+			padding:0 5px 0 2px;
+		}
+
+#actions {
+	font-size: 0.8em;
+	padding: 0 10px;
+	float: right;
+}
+
+	#actions li {
+		float: left;
+		padding: 7px;
+	}
+
+	#actions li.current {
+		border: 2px solid #457F9F;
+		border-bottom-color: #74AFCF;
+		background-color: #74AFCF; 
+		padding: 5px;
+		-moz-border-radius: 5px 5px 0 0;
+		-webkit-border-top-left-radius: 5px 5px;
+		-webkit-border-top-right-radius: 5px 5px;
+		}
+
+	#actions li a {
+		text-decoration: none;
+		color: #ffffff;
+	}
+
+	#actions li a:hover {
+		border-bottom: 1px solid #ffffff;
+	}
+
+#formActions {
+	position: absolute;
+	margin-right: 20px;
+	right: 0;
+}
+
+	#formActions fieldset {
+		background-color:#74AFCF;
+		padding: 7px 15px 15px;
+		width: 600px;
+
+		-moz-border-radius: 0 0 5px 5px;
+		-webkit-border-bottom-left-radius: 5px 5px;
+		-webkit-border-bottom-right-radius: 5px 5px;
+	}
+	
+	#formActions fieldset span {
+		color: #FFFFFF;
+	}
+
+	#formActions fieldset#fieldsetAddColumn {
+		width: 400px;
+	}
+	
+		#formActions fieldset a.actionHideForm {
+			position: absolute;
+			top: 0;
+			right: 10px;
+		}
+	
+		#formActions fieldset label {
+			color: #FFFFFF;
+			font-size: 0.8em;
+			display:block;
+			margin-bottom: 3px; 
+		}
+	
+		#formActions fieldset input[type=text] {
+			width: 540px;
+			border: 1px solid #CCCCCC;
+			padding: 2px;
+		}
+	
+		#formActions fieldset#fieldsetAddColumn input[type=text] {
+			width: 340px;
+		}
+
+#taskboard {
+	clear:both;
+	overflow:hidden;
+}
+
+	#taskboard .column {
+		float: left;
+		padding: 0 7px 0 0;
+		margin: 55px 0 0 7px;
+		border-right: 1px dashed #CCCCCC;
+		width: 210px;
+		position: relative;
+	}
+
+	#taskboard .column.placeholder {
+		min-height: 100px;
+	}
+
+	#taskboard .column.ui-sortable-helper {
+		border: none;
+	}
+
+		#taskboard .column.ui-sortable-helper a.deleteColumn {
+			display:none;
+		}
+
+		#taskboard .column.ui-sortable-helper ol.cards li span {
+			visibility:hidden;
+		}
+
+		#taskboard .column h2 {
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		#taskboard .column h2:hover {
+			background-color: #FFFFD3;
+			cursor: text;
+		}
+		
+		#taskboard .column a.deleteColumn {
+			position: absolute;
+			top: -20px;
+			right: 0px;
+			margin: 3px;
+		}
+
+		#taskboard .column ol.cards {
+			min-height:200px;
+		}
+
+			#taskboard .column ol.cards > li {
+				min-height: 10px;
+				margin-bottom: 5px;
+				border: 1px solid transparent;
+				padding: 5px 20px 5px 5px;
+				background-color: #F8E065;
+				position: relative;
+				overflow: hidden;
+				font-size: 0.8em;
+				-moz-border-radius: 5px;
+				-webkit-border-radius: 5px;
+			}
+
+				#taskboard .column ol.cards li ul.actions {
+					display: none;
+					position: absolute;
+					top: 5px;
+					right: 5px;
+				}
+
+				#taskboard .column ol.cards li:hover ul.actions {
+					display: block;
+				}
+
+
+					#taskboard .column ol.cards li ul.actions li {
+						min-height: auto;
+						margin-bottom: 2px;
+						border: none;
+						padding: 0;
+						background-color: transparent;
+						position: static;
+						line-height: 0;
+					}
+
+					#taskboard .column ol.cards li ul.actions li a {
+						display: block;
+					}
+				
+				#taskboard .column ol.cards li span.alias {
+					display:block;
+					margin-bottom: 5px;
+				}
+
+				#taskboard .column ol.cards li ul.tags {
+					clear: both;
+					overflow: hidden;
+				}
+
+					#taskboard .column ol.cards li ul.tags li {
+						float:left;
+						padding: 2px;
+						margin: 2px 2px 0 0;
+						border: 1px solid #CCCCCC;
+						background-color: #EEEEEE;
+						font-size: 0.8em;
+						-moz-border-radius: 5px;
+						-webkit-border-radius: 5px;
+					}
+
+				
+				#taskboard .column ol.cards li span.progress {
+					display:block;
+					font-size: 0.8em;
+					text-align: right;
+				}
+
+					#taskboard .column ol.cards li span.progress .hours {
+						font-size: 1.2em;
+						font-weight: bold;
+					}
+
+						#taskboard .column ol.cards li span.progress .hours form {
+							display: inline;
+						}
+
+							#taskboard .column ol.cards li span.progress .hours form input{
+								min-width: 30px;
+								text-align: right;
+							}
+
+			#taskboard .column ol.cards li.placeholder {
+				background-color: #FFFFFF;
+				border: 1px dashed #93853C;
+				color: #FFFFFF;
+			}
+
+			#taskboard .column ol.cards li.placeholder span,
+			#taskboard .column ol.cards li.placeholder ul {
+				visibility : hidden;
+			}
+
+			#taskboard .column ol.cards li.collapsed {
+				padding: 3px;
+				font-size: 0.6em;
+			}
+
+				#taskboard .column ol.cards li.collapsed:hover ul.actions {
+					display: none;
+				}
+
+				#taskboard .column ol.cards li.collapsed span.alias {
+					display:inline;
+					margin-bottom: 0;
+				}
+
+				#taskboard .column ol.cards li.collapsed span.progress,
+				#taskboard .column ol.cards li.collapsed ul.tags {
+					display:none;
+				}
+
+#taskboard.collapsed .column ol.cards li {
+	padding: 3px;
+	font-size: 0.6em;
+}
+
+	#taskboard.collapsed .column ol.cards li:hover ul.actions {
+		display: none;
+	}
+
+	#taskboard.collapsed .column ol.cards li span.alias {
+		display:inline;
+		margin-bottom: 0;
+	}
+
+	#taskboard.collapsed .column ol.cards li span.progress,
+	#taskboard.collapsed .column ol.cards li ul.tags {
+		display:none;
+	}
+
+/* zoom levels */
+
+/* zoom 0 - alias and name only in one line */
+
+#taskboard.zoom_0 .column ol.cards li {
+	padding: 3px;
+	font-size: 0.6em;
+	height: 1em;
+}
+
+	#taskboard.zoom_0 .column ol.cards li:hover ul.actions {
+		display: none;
+	}
+
+	#taskboard.zoom_0 .column ol.cards li span.alias {
+		display:inline;
+		margin-bottom: 0;
+	}
+
+	#taskboard.zoom_0 .column ol.cards li span.progress,
+	#taskboard.zoom_0 .column ol.cards li ul.tags {
+		display:none;
+	}
+
+/* zoom 1 - alias and name only */
+
+#taskboard.zoom_1 .column ol.cards li {
+	padding: 3px;
+	font-size: 0.6em;
+}
+
+	#taskboard.zoom_1 .column ol.cards li:hover ul.actions {
+		display: none;
+	}
+
+	#taskboard.zoom_1 .column ol.cards li span.alias {
+		display:inline;
+		margin-bottom: 0;
+	}
+
+	#taskboard.zoom_1 .column ol.cards li span.progress,
+	#taskboard.zoom_1 .column ol.cards li ul.tags {
+		display:none;
+	}
+
+/* zoom 2 */
+
+	#taskboard.zoom_2 .column ol.cards li span.progress,
+	#taskboard.zoom_2 .column ol.cards li ul.tags {
+		display:none;
+	}
+
+/* zoom 3 */
+
+	#taskboard.zoom_3 .column ol.cards li ul.tags {
+		display:none;
+	}
+
+/* zoom 4 */
+
+	#taskboard.zoom_4 .column ol.cards li ul.tags {
+		height: 1.6em;
+	}
+
+/* Form drop animation hack */
+.ui-effects-wrapper {
+	left: auto !important;
+	right: 0 !important;
+}
+
+#tooltip {
+	font-size: 12px;
+	position: fixed;
+	display: none;
+	padding: 10px 10px 10px 36px;
+	width: 200px;
+	background: #FFEEAA url(/images/warning.png) no-repeat 10px 50%;
+	border: 1px solid #999999;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#loading {
+	position: fixed;
+	z-index: 5;
+	width: 100%;
+	height: 100%;
+	background: #FFFFFF url(/images/loading.gif) no-repeat 50% 50%;
+	top: 0;
+	left: 0;
+	opacity: 0.7;
+}
+
+
+#notifications {
+	position : fixed;
+	bottom : 0;
+	right : 0;
+}
+
+#notifications li {
+	font-size: 0.8em;
+	margin: 3px;
+	background-color : #CCCCCC;
+	width: 200px;
+	padding: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+#notifications li.success {
+	background-color : #44AA00;
+}
+
+
+#card {
+	position: absolute;
+	top: 50px;
+	left: 50%;
+	margin-left: -400px;
+	padding: 20px;
+	width: 760px;
+	clear:both;
+	overflow: hidden;
+	-moz-border-radius: 10px;
+	-webkit-border-radius : 10px;
+}
+
+#card dt {
+	float: left;
+	width: 200px;
+	clear: both;
+	font-weight: bold;
+}
+
+#card dd {
+	float: right;
+	width: 550px;
+	margin-bottom: 10px;
+}
+
+#card .hovered {
+	background-color: #FFFFD3;
+}
+
+#card #notes h1,
+#card #notes h2,
+#card #notes h3,
+#card #notes h4,
+#card #notes h5 {
+	font-weight: bold;
+	margin-bottom: 0.5em;
+}
+
+#card #notes h1 { font-size: 1.5em; }
+#card #notes h2 { font-size: 1.4em; }
+#card #notes h3 { font-size: 1.2em; }
+#card #notes h4 { font-size: 1.1em; }
+#card #notes h5 { font-size: 1em; }
+#card #notes h6 { font-size: 0.8em; }
+
+#card #notes p {
+	margin-bottom: 0.5em;
+}
+
+#card #notes ul,
+#card #notes ol {
+	margin-bottom: 0.5em;
+}
+
+#card #notes ul {
+	margin-left: 20px;
+	list-style: disc;
+}
+
+#card #notes ol {
+	margin-left: 30px;
+	list-style: decimal;
+}
+#card #notes em {
+	font-style: italic;
+}
+
+#card #notes strong {
+	font-weight: bold;
+}
+
+
+
+#card #name h1,
+#card #name h2,
+#card #name h3,
+#card #name h4,
+#card #name h5 {
+	font-weight: bold;
+	margin-bottom: 0.5em;
+}
+
+#card #name h1 { font-size: 1.5em; }
+#card #name h2 { font-size: 1.4em; }
+#card #name h3 { font-size: 1.2em; }
+#card #name h4 { font-size: 1.1em; }
+#card #name h5 { font-size: 1em; }
+#card #name h6 { font-size: 0.8em; }
+
+#card #name p {
+	margin-bottom: 0.5em;
+}
+
+#card #name em {
+	font-style: italic;
+}
+
+#card #name strong {
+	font-weight: bold;
+}
+
+#card .tags li {
+	padding: 5px;
+	margin-right: 5px;
+	border: 1px solid #CCCCCC;
+	background-color: #EEEEEE;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	float: left;
+}
+
+	#card .tags li a {
+		padding-left: 5px;
+		margin-left: 3px;
+		border-left: 1px solid #000000;
+		text-decoration : none;
+		color: #777777;
+	}
+
+	#card .tags li a:hover {
+		color: #000000;
+	}
+
+
+
+
+
+/* Resizable
+----------------------------------*/
+.ui-resizable { position: relative;}
+.ui-resizable-handle { position: absolute;font-size: 0.1px; display: block;}
+.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
+.ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0px; }
+.ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0px; }
+.ui-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0px; height: 100%; }
+.ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0px; height: 100%; }
+.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
+
+
+/* color picker */
+
+#colorPicker {
+	position: absolute;
+	background-color: #FFFFFF;
+	padding-left: 11px;
+	background: url(/images/tip.png) no-repeat;
+}
+
+#colorPicker ol {
+	border:1px solid #b7b7b7;
+	border-left: none;
+	overflow:hidden; /* for IE6 */
+	background-color: #F7F7F7;
+	padding: 2px;
+}
+
+#colorPicker .color {
+	background:url(/images/jquery/jquery.colorpicker.gif) no-repeat;
+	float:left;
+	width:16px;
+	height:16px;
+	cursor:pointer;
+	overflow:hidden; /* for IE6 */
+	border:1px solid #666666;
+	margin:1px;
+}
+
+#colorPicker .checkwht {
+	cursor:default;	
+	background-position:-16px 0;
+}
+#colorPicker .checkblk {
+	cursor:default;	
+	background-position:-32px 0;
+}
+
+#filterTags {
+	overflow: hidden;
+	clear: both;
+}
+
+#filterTags li {
+	float:left;
+}
+
+#filterTags li a {
+	display: block;
+	padding: 3px;
+	background-color: #CCCCCC;
+	border: 1px solid #555555;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin: 2px;
+	text-decoration: none;
+	color: #000000;
+}
+
+#filterTags li.current a {
+	background-color: #EEE;
+	border: 1px solid #CCC;
+
+}

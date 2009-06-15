@@ -1,0 +1,62 @@
+firefox:
+ issue_no: 'ISSUE-36'
+ url: 'http://jira.example.com/jira/browse/ISSUE-36'
+ name: 'Support for Firefox 3.0'
+ color: '#fc0fc0'
+ taskboard: first_iteration
+ position: 1
+ column: todo
+coffee: 
+ name: 'Go for a coffee and a donut'
+ taskboard: first_iteration
+ position: 2
+ column: todo
+sleep:
+ name: 'Have to sleep tonight well'
+ position: 1
+ taskboard: first_iteration
+ column: in_progress
+
+big_todo_first:
+ name: 'First thing to do'
+ position: 1
+ taskboard: big_iteration
+ column: big_todo
+ notes: 'Original notes'
+big_todo_second:
+ name: 'Second thing to do'
+ position: 2
+ taskboard: big_iteration
+ column: big_todo
+big_todo_third:
+ name: 'Third thing to do'
+ position: 3
+ taskboard: big_iteration
+ column: big_todo
+big_todo_another:
+ name: 'Yet another thing to do'
+ position: 4
+ taskboard: big_iteration
+ column: big_todo
+big_in_progress_first:
+ name: 'First thing already in progress'
+ position: 1
+ taskboard: big_iteration
+ column: big_in_progress
+big_in_progress_second:
+ name: 'Second thing already in progress'
+ position: 2
+ taskboard: big_iteration
+ column: big_in_progress
+big_test_needed_first:
+ name: 'Something that needs to be tested'
+ position: 1
+ taskboard: big_iteration
+ column: big_test_needed
+big_done_first:
+ name: 'Thing that is already done'
+ position: 1 
+ taskboard: big_iteration
+ column: big_done
+
+

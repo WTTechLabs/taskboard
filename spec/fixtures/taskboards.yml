@@ -1,0 +1,9 @@
+first_iteration:
+  name: "Iteration 1"
+big_iteration:
+  name: "Many cards inside"
+without_columns:
+  name: "Without columns"
+with_two_columns:
+  name: "With two columns"
+

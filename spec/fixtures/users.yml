@@ -1,0 +1,10 @@
+editor:
+  username: "editor"
+  salt: "salt"
+  hashed_password: <%= User.encrypted_password("editor_password", "salt") %>
+  editor: true
+viewer:
+  username: "viewer"
+  salt: "salt"
+  hashed_password: <%= User.encrypted_password("viewer_password", "salt") %>
+

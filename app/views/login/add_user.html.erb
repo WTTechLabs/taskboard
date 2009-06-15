@@ -1,0 +1,50 @@
+<%#
+Copyright (C) 2009 Cognifide
+
+This file is part of Taskboard.
+
+Taskboard is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Taskboard is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
+-%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Taskboard: login page</title>
+		<%= stylesheet_link_tag 'login' %>
+	</head>
+	<body>
+		<h1>Taskboard</h1>
+		<%= link_to "List users", :controller => 'login', :action => 'list_users' %>
+		<% if flash[:notice] -%>
+		<div id="notice"><%= flash[:notice] %></div>
+		<% end -%>
+		<%= error_messages_for 'user' %>
+		<% form_for :user do |form| %>
+		<fieldset>
+		<dl>
+			<dt><label for="user_username">User name:</label></dt>
+			<dd><%= form.text_field :username, :size => 40 %></dd>
+			<dt><label for="user_password">Password:</label></dt>
+			<dd><%= form.password_field :password, :size => 40 %></dd>
+			<dt><label for="user_password_confirmation">Confirm password:</label></dt>
+			<dd><%= form.password_field :password_confirmation, :size => 40 %></dd>
+			<dt><label for="user_editor">Editor</label></dt>
+			<dd><%= form.check_box :editor %></dd>
+		</dl>
+		<%= submit_tag "Add user" %>
+		</fieldset>
+		<% end %>
+	</body>
+</html>

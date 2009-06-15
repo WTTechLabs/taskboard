@@ -1,0 +1,62 @@
+<rss version="0.92" >
+<channel>
+    <title>Some Issue Tracking</title>
+    <link>http://some.issue.tracker.com/jira</link>
+    <description>Fake issue tracker</description>
+    <language>en-gb</language>
+<item>
+<title>[ISSUE-12] Table name case</title>
+<link>http://jira.example.com/jira/browse/ISSUE-12</link>
+  <description>Description of the issue.</description>
+  <key id="27615">ISSUE-12</key>
+  <summary>Table name case</summary>
+    <type id="10" iconUrl="http://jira.example.com/jira/images/icons/bug.gif">Software Bug</type>
+    <priority id="4" iconUrl="http://jira.example.com/jira/images/icons/priority_minor.gif">Standard</priority>    
+    <status id="6" iconUrl="http://jira.example.com/jira/images/icons/status_closed.gif">Closed</status>
+    <resolution id="1">Fixed</resolution>
+    <assignee username="joe">Joe Texas</assignee>
+    <reporter username="joe">Joe Texas</reporter>
+            
+    <created>Wed, 10 Sep 2008 15:06:21 +0100 (BST)</created>
+    <updated>Wed, 17 Sep 2008 17:43:30 +0100 (BST)</updated>
+
+    <version>1.1</version>
+    <fixVersion>1.3</fixVersion>
+            
+    <component>The Software</component>
+
+    <votes>0</votes>
+    
+    <comments>
+      <comment id="30842" author="bob" created="Thu, 11 Sep 2008 13:52:04 +0100 (BST)">Question?</comment>
+      <comment id="30857" author="frederickm" created="Thu, 11 Sep 2008 15:55:58 +0100 (BST)">Answer.</comment>
+    </comments>
+    
+    <attachments>
+         <attachment id="14456" name="text.txt" size="33456" author="joe" created="Wed, 10 Sep 2008 15:06:21 +0100 (BST)" />
+    </attachments>
+
+    <subtasks>
+    </subtasks>
+
+    <customfields>
+      <customfield id="customfield_10220" key="com.customtypes:select">
+          <customfieldname>Story points</customfieldname>
+          <customfieldvalues>
+              <customfieldvalue><![CDATA[8]]></customfieldvalue>
+          </customfieldvalues>
+      </customfield>
+
+      <customfield id="customfield_10132" key="com.customtypes:select">
+          <customfieldname>Iteration Scheduled</customfieldname>
+          <customfieldvalues>
+              <customfieldvalue><![CDATA[10]]></customfieldvalue>
+          </customfieldvalues>
+      </customfield>
+
+    </customfields>
+    
+</item>
+</channel>
+</rss>
+

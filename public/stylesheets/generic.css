@@ -1,0 +1,30 @@
+/*
+ * Copyright (C) 2009 Cognifide
+ * 
+ * This file is part of Taskboard.
+ * 
+ * Taskboard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Taskboard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* Reset */
+html,body,div,span,ul,ol,li,dl,dd,dt,h1,h2,h3,h4,h5,h6,p,fieldset { margin: 0; padding: 0; }
+h1,h2,h3,h4,h5,h6,em,strong { font-size: 1em; font-weight: normal; font-style: normal; }
+ul,ol { list-style: none; }
+img,fieldset { border: none; }
+a { outline: 0; }
+
+body {
+	font-family: Trebuchet, Tahoma, Arial, sans-serif;
+}
+
