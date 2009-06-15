@@ -9,7 +9,9 @@ coverage/
 
 db/schema.rb
 
+log/*.log
 log/*/*.log
 test/
 tmp/
+taskboard_internal/
 
