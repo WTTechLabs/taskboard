@@ -24,16 +24,14 @@ describe TaskboardController, "while showing taskboards list page" do
   
   it "should show list of taskboards" do
     taskboards = [Taskboard.new, Taskboard.new]
-    # TODO: quick fix to hide external taskboards
-    Taskboard.should_receive(:find).with(:all, { :conditions => nil, :order => "name" }).and_return(taskboards)
+    Taskboard.should_receive(:find).with(:all, {:order => "name"}).and_return(taskboards)
     get 'index', {}, {:user_id => 1, :editor => true}
     response.should be_success
   end
 
   it "should show list of taskboards for viewer" do
     taskboards = [Taskboard.new, Taskboard.new]
-    # TODO: quick fix to hide external taskboards
-    Taskboard.should_receive(:find).with(:all, { :conditions => ['name LIKE ?', "Iteration%"], :order => "name" }).and_return(taskboards)
+    Taskboard.should_receive(:find).with(:all, {:order => "name"}).and_return(taskboards)
     get 'index', {}, {:user_id => 2}
     response.should be_success
   end
