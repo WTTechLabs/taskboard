@@ -12,7 +12,7 @@
 :hosts:
   - :port: 5001
     :host: 127.0.0.1
-    :public_host: 200.xxx.yyy.zzz
-    :public_port: 5001
+    :public_host: 127.0.0.1  # change this to your public IP/host to make juggernaut accessible externally
+    :public_port: 5001       # make sure this is the same as public port in juggernaut.yml config
     # :secret_key: your_secret_key
     # :environment: :development
