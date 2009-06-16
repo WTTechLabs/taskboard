@@ -11,6 +11,9 @@ db/schema.rb
 
 log/*.log
 log/*/*.log
+
+nbproject/
+
 test/
 tmp/
 taskboard_internal/
