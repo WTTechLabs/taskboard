@@ -21,9 +21,7 @@ class TaskboardController < JuggernautSyncController
   before_filter :authorize_read_only, :except => ["show", "index", "get_taskboard", "load_burndown"]
 
   def index
-    # FIXME: quick fix to hide external taskboards :)
-    conditions = ['name LIKE ?', "Iteration%"] if session[:user_id] == 2;
-    @taskboards = Taskboard.find(:all, :conditions => conditions, :order => 'name')
+    @taskboards = Taskboard.find(:all, :order => 'name')
   end
 
   def show
