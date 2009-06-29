@@ -79,7 +79,6 @@
 			});
 
 		$('body').one('click', function(ev){
-			console.log('hide', ev);
 			$('#' + settings.id).fadeOut("fast", function(){ $(this).remove() });
 		});
 	};
