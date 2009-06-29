@@ -7,8 +7,6 @@ config/*.yml
 
 coverage/
 
-db/schema.rb
-
 log/*.log
 log/*/*.log
 
