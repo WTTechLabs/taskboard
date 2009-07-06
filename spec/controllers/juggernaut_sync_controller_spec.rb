@@ -133,6 +133,8 @@ describe JuggernautSyncController, "while saving report" do
     @card.column_id = @column.id
     @card.column = @column
     @card.position = 1
+    
+    Juggernaut.should_receive(:send_to_channels)
   end
     
   context "of taskboard actions" do
