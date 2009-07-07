@@ -1,0 +1,9 @@
+first_row:
+  name: 'First row'
+  position: 1
+  taskboard: first_iteration
+second_row:
+  name: 'Second row'
+  position: 2
+  taskboard: first_iteration
+
