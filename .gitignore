@@ -12,6 +12,15 @@ log/*/*.log
 
 nbproject/
 
+lib/tasks/cruise.rake
+lib/tasks/rspec.rake
+
+script/spec
+script/spec_server
+
+spec/rcov.opts
+spec/spec.opts
+
 test/
 tmp/
 taskboard_internal/

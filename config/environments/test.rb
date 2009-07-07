@@ -23,5 +23,5 @@ config.action_mailer.delivery_method = :test
 
 config.gem 'rspec', :lib => 'spec'
 config.gem 'rspec-rails', :lib => 'spec'
-#config.gem 'ZenTest'
-#config.gem 'rcov'
+config.gem 'ZenTest', :lib => false
+config.gem 'rcov', :lib => false
