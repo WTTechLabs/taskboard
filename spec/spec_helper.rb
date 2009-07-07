@@ -4,7 +4,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
 require 'spec/autorun'
 require 'spec/rails'
-
+ 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
@@ -46,6 +46,63 @@ Spec::Runner.configure do |config|
   # config.mock_with :rr
   #
   # == Notes
-  #
+  # 
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
+end
+
+module BeforeAndAfter
+
+  LEFT_SIDE_LATER  = 1
+  RIGHT_SIDE_LATER = -1
+  
+  def before?(input_time)
+    (self <=> input_time) == RIGHT_SIDE_LATER
+  end
+  
+  def after?(input_time)
+    (self <=> input_time) == LEFT_SIDE_LATER
+  end
+end
+
+Time.send :include , BeforeAndAfter
+
+module Spec
+  module Mocks
+    module ArgumentMatchers
+      class DateAroundMatcher
+
+        # Takes an argument of expected date
+        def initialize(expected)
+          @expected = expected
+        end
+
+        # actual is a date (hopefully) passed to the method by the user.
+        # We'll check if this date is 'around' expected date, where 'around' means
+        # thay don't differ more than a second
+        def ==(actual)
+          if actual.kind_of? Time
+             return (actual - @expected).abs < 1.second
+          else
+            return false
+          end
+        end
+
+        def description
+          "date around #{@expected}"
+        end
+
+      end
+
+      # Usage:
+      #  some_mock.should_receive(:message).with( date_around(Time.now) )
+      def date_around(*args)
+        DateAroundMatcher.new(*args)
+      end
+    end
+  end
+end
+
+module DisableFlashSweeping
+  def sweep
+  end
 end
