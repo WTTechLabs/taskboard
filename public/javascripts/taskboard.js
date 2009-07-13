@@ -432,6 +432,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 					var index = card.tag_list.indexOf(tag);
 					card.tag_list.splice(index, index);
 					TASKBOARD.api.updateCard({ card: card });
+					TASKBOARD.remote.api.removeTag(card.id, tag);
 					$(this).parent().remove();
 				});
 			});
@@ -493,6 +494,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			var index = card.tag_list.indexOf(tag);
 			card.tag_list.splice(index, index);
 			TASKBOARD.api.updateCard({ card: card });
+			TASKBOARD.remote.api.removeTag(card.id, tag);
 			$(this).parent().remove();
 		});
 	}

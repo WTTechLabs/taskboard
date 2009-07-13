@@ -58,7 +58,7 @@ class LoginController < ApplicationController
   def logout
     clear_session
     flash[:notice] = "You have logged out successfuly!";
-    redirect_to :action => "login"
+    redirect_to :controller => "login", :action => "login"    
   end
 
   private
