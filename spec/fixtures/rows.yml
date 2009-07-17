@@ -1,9 +1,10 @@
-first_row:
-  name: 'First row'
+first_row_in_big:
+  name: 'First row in big taskboard'
   position: 1
-  taskboard: first_iteration
-second_row:
-  name: 'Second row'
+  taskboard: big_taskboard
+
+second_row_in_big:
+  name: 'Second row in big taskboard'
   position: 2
-  taskboard: first_iteration
+  taskboard: big_taskboard
 

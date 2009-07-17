@@ -109,10 +109,14 @@ describe Card, "while serializing to json" do
     @card.to_json.should_not include('taskboard_id')
   end
 
-  it "should include references to column (for use while reordering cards" do
+  it "should include references to column (for use while reordering cards)" do
     @card.to_json.should include('column_id')
   end
-  
+
+  it "should include references to row (for use while reordering cards)" do
+    @card.to_json.should include('row_id')
+  end
+    
   it "should include all tags" do
     @card.to_json.should include('tag_list')
     @card.tag_list.add('ala', 'ma', 'kota')
@@ -120,7 +124,7 @@ describe Card, "while serializing to json" do
   end
   
   it "should include last hours left" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.to_json.should include('hours_left')
     
     card.update_hours(666)
@@ -128,7 +132,7 @@ describe Card, "while serializing to json" do
   end
 
   it "should include last hours left update date" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.to_json.should include('hours_left_updated')
     
     card.update_hours(666)
@@ -137,9 +141,9 @@ describe Card, "while serializing to json" do
   end
 
   it "should include cards with urls" do  
-    card = cards(:firefox)
-    card.to_json.should include_text('"issue_no": "ISSUE-36"')
-    card.to_json.should include_text('"url": "http')
+    card = cards(:first_card_in_big)
+    card.to_json.should include_text('"issue_no": "' + card.issue_no+ '"')
+    card.to_json.should include_text('"url": "' + card.url + '"')
   end
   
 end
@@ -148,12 +152,12 @@ describe Card, "while dealing with ideal hours" do
   fixtures :cards, :hours
   
   it "should have not empty list of ideal hours" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.hours.size.should eql(6)
   end  
   
   it "should allow adding new hours" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.update_hours(4)
     
     card.hours.last.left.should eql(4)
@@ -161,7 +165,7 @@ describe Card, "while dealing with ideal hours" do
   end
 
   it "should allow adding new hours to card without previous hours" do
-    card = cards(:sleep)
+    card = cards(:third_card_in_big)
     card.update_hours(44)
 
     card.hours.last.left.should eql(44)
@@ -169,7 +173,7 @@ describe Card, "while dealing with ideal hours" do
   end
   
   it "should have correct order of hours (by date)" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.hours[0].left.should eql(30)
     card.hours[1].left.should eql(25)
     card.hours[2].left.should eql(28)
@@ -179,7 +183,7 @@ describe Card, "while dealing with ideal hours" do
   end
   
   it "should update hours while adding another ones in same day" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
 
     card.update_hours(3)
     card.hours.last.left.should eql(3)
@@ -191,7 +195,7 @@ describe Card, "while dealing with ideal hours" do
   end
   
   it "should update hours while adding another ones in same time" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     
     card.update_hours(33, card.hours.last.date)
     card.hours.last.left.should eql(33)
@@ -199,7 +203,7 @@ describe Card, "while dealing with ideal hours" do
   end
   
   it "should allow getting remaining hours quickly" do
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.hours_left.should eql(0)
     card.update_hours(3)
     card.hours_left.should eql(3)
@@ -210,7 +214,7 @@ describe Card, "while dealing with ideal hours" do
   end
 
   it "should allow checking when the remaining hours were updated" do
-    card = cards(:sleep)
+    card = cards(:second_card_in_big)
     card.hours_left_updated.should eql(nil)
     card.update_hours(3)
     card.hours_left_updated.should_not eql(nil)
@@ -225,7 +229,7 @@ describe Card, "while dealing with ideal hours" do
   it "should allow adding new hours in the past" do
     past = 3.days.ago
 
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.update_hours(4, past)
 
     card.hours.last.left.should eql(4)
@@ -236,7 +240,7 @@ describe Card, "while dealing with ideal hours" do
   it "should allow updating hours in the past" do
     past = 3.days.ago
 
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.update_hours(4, past)
 
     card.hours.last.left.should eql(4)
@@ -255,7 +259,7 @@ describe Card, "while dealing with ideal hours" do
   it "should allow updating hours in the antient past" do
     past = 13.days.ago
 
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.update_hours(4, past)
 
     card.hours.sort_by{|h| h.date}.last.left.should eql(0)
@@ -272,113 +276,143 @@ describe Card, "while dealing with ideal hours" do
   end
 
   it "should generate valid burndown data" do
-    card = cards(:firefox)
+    card = cards(:second_card_in_big)
     card.update_hours(3)
     card.burndown.values.should eql([3])
 
-    card = cards(:sleep)
+    card = cards(:third_card_in_big)
     card.hours << Hour.new(:left => 10, :date => 2.days.ago)
     card.burndown.map{|x| x[1] }.should eql([10, 10, 10])
 
-    card = cards(:coffee)
+    card = cards(:first_card_in_big)
     card.burndown.sort.map{|x| x[1] }.should eql([30, 25, 28, 19, 9, 0])
   end
 
   it "should generate burndown data without gaps" do
-    card = cards(:firefox)
+    card = cards(:fifth_card_in_big)
 
-    days = [10.days.ago, 8.days.ago, 4.days.ago, 2.days.ago]
-
-    card.hours << Hour.new(:left => 10, :date => days[0] )
-    card.hours << Hour.new(:left => 7, :date => days[1] )
-    card.hours << Hour.new(:left => 5, :date => days[2] )
-    card.hours << Hour.new(:left => 3, :date => days[3] )
+    card.hours << Hour.new(:left => 10, :date => 10.days.ago )
+    card.hours << Hour.new(:left => 7, :date => 8.days.ago )
+    card.hours << Hour.new(:left => 5, :date => 4.days.ago )
+    card.hours << Hour.new(:left => 3, :date => 2.days.ago )
 
     burndown = card.burndown
 
-    burndown[days[0].strftime("%Y-%m-%d")].should eql(10)
-    burndown[9.days.ago.strftime("%Y-%m-%d")].should eql(10)
-    burndown[days[1].strftime("%Y-%m-%d")].should eql(7)
-    burndown[7.days.ago.strftime("%Y-%m-%d")].should eql(7)
-    burndown[6.days.ago.strftime("%Y-%m-%d")].should eql(7)
-    burndown[5.days.ago.strftime("%Y-%m-%d")].should eql(7)
-    burndown[days[2].strftime("%Y-%m-%d")].should eql(5)
-    burndown[3.days.ago.strftime("%Y-%m-%d")].should eql(5)
-    burndown[days[3].strftime("%Y-%m-%d")].should eql(3)
-    burndown[1.days.ago.strftime("%Y-%m-%d")].should eql(3)
-    burndown[Time.now.strftime("%Y-%m-%d")].should eql(3)
+    expected_hours = [3,3,3,5,5,7,7,7,7,10,10]
+    (10..0).each { |n|
+      burndown[n.days.ago.strftime("%Y-%m-%d")].should eql(expected_hours[n])
+    }
   end
 end
 
 describe Card, "while working with database" do
-  fixtures :cards, :taskboards, :columns, :hours
+  fixtures :cards, :taskboards, :columns, :rows, :hours
 
   it "should have non-empty collection of cards" do
     Card.find(:all).should_not be_empty
   end
 
   it "should allow inserting new card at given position" do
-    card = Card.create!(:name => 'very new card', :taskboard_id => taskboards(:big_iteration).id, :column_id => columns(:big_todo).id)
+    card = Card.create!(:name => 'very new card',
+        :taskboard_id => taskboards(:big_taskboard).id,
+        :column_id => columns(:first_column_in_big).id,
+        :row_id => rows(:first_row_in_big).id)
     card.insert_at(2)
-    card.higher_item.should eql(cards(:big_todo_first))
-    card.lower_item.should eql(cards(:big_todo_second))
+    card.higher_item.should eql(cards(:first_card_in_big))
+    card.lower_item.should eql(cards(:second_card_in_big))
   end
   
-  it "should reorder cards within same column" do
-    card = cards(:big_todo_second)
-    card.move_to(columns(:big_todo).id, 3)
-    columns(:big_todo).cards.should include(card)
-    card.position.should eql(3)
-    card.higher_item.should eql(cards(:big_todo_third))
-    card.lower_item.should eql(cards(:big_todo_another))
+  it "should reorder cards within same column and row" do
+    card = cards(:first_card_in_big)
+    card.move_to(columns(:first_column_in_big).id, rows(:first_row_in_big).id, 2)
+    
+    columns(:first_column_in_big).cards.should include(card)
+    rows(:first_row_in_big).cards.should include(card)
+    card.position.should eql(2)
+    card.higher_item.should eql(cards(:second_card_in_big))
+    card.lower_item.should eql(cards(:third_card_in_big))
   end
   
-  it "should allow moving card to new column" do
-    card = cards(:big_todo_second)
-    card.move_to(columns(:big_empty).id, 1)
-    columns(:big_todo).cards.should_not include(card)
-    columns(:big_empty).cards.should include(card)
-    cards(:big_todo_second).position.should eql(1)
-    cards(:big_todo_third).position.should eql(2)
+  it "should allow moving card to new column in the same row" do
+    card = cards(:second_card_in_big)
+    card.move_to(columns(:second_column_in_big).id, rows(:first_row_in_big).id, 2)
+    
+    columns(:first_column_in_big).cards.should_not include(card)
+    columns(:second_column_in_big).cards.should include(card)
+    rows(:first_row_in_big).cards.should include(card)
+    card.position.should eql(2)
+    card.higher_item.should eql(cards(:fifth_card_in_big))
+    card.lower_item.should eql(cards(:sixth_card_in_big))
   end
   
   it "should allow adding new card at correct position" do
-    taskboard_id = taskboards(:big_iteration).id
-    column_id = columns(:big_todo).id
-    card = Card.add_new(taskboard_id, column_id)
-    card.name.should eql('Empty!')
-    card.issue_no.should be_nil
+    taskboard_id = taskboards(:big_taskboard).id
+    column_id = columns(:first_column_in_big).id
+    row_id = rows(:first_row_in_big).id
+    card = Card.add_new(taskboard_id, column_id, row_id)
+    
     card.position.should eql(1)
-    card.lower_item.should eql(cards(:big_todo_first))
+    card.lower_item.should eql(cards(:first_card_in_big))
   end
   
   it "should allow adding new card with appropriate name and issue number" do
-    taskboard_id = taskboards(:big_iteration).id
-    column_id = columns(:big_todo).id
-    card = Card.add_new(taskboard_id, column_id, 'not empty anymore', 'ist-1234')
-    card.name.should eql('not empty anymore')
-    card.issue_no.should eql('ist-1234')
+    taskboard_id = taskboards(:big_taskboard).id
+    column_id = columns(:first_column_in_big).id
+    row_id = rows(:first_row_in_big).id
+    card = Card.add_new(taskboard_id, column_id, row_id, 'New card name', 'ISSUE-1920')
+    
+    card.name.should eql('New card name')
+    card.issue_no.should eql('ISSUE-1920')
     card.position.should eql(1)
   end
   
   it "should allow color changing" do
-    card = cards(:big_todo_first)
+    card = cards(:first_card_in_big)
     card.color.should eql(Card::DEFAULT_COLOR)
     card.change_color('#fc0fc0')
     card.color.should eql('#fc0fc0')
   end
 
   it "should validate color format" do
-    card = cards(:big_todo_first)
+    card = cards(:first_card_in_big)
     card.color.should eql(Card::DEFAULT_COLOR)
     card.change_color('not so valid').should be_false
   end
 
   it "should allow notes changing" do
-    card = cards(:big_todo_first)
-    card.notes.should eql('Original notes')
-    card.notes = 'Notes new'
-    card.notes.should eql('Notes new')
+    card = cards(:first_card_in_big)
+    card.notes = 'New notes'
+    card.notes.should eql('New notes')
   end
 
+  context "and dealing with list scope" do
+  
+    before(:each) do
+      @card = Card.new(:name => 'Testing list scope')
+    end
+    
+    it "should return valid scope context when row and column are nil" do
+      @card.row_id = @card.column_id = nil
+      @card.scope_condition.should eql("column_id IS NULL AND row_id IS NULL")
+    end
+    
+    it "should return valid scope context when row is nil" do
+      @card.row_id = nil
+      @card.column_id = 35
+      @card.scope_condition.should eql("column_id = 35 AND row_id IS NULL")
+    end
+    
+    it "should return valid scope context when column is nil" do
+      @card.row_id = 57
+      @card.column_id = nil 
+      @card.scope_condition.should eql("column_id IS NULL AND row_id = 57")
+
+    end
+    
+    it "should return valid scope context when row and column are not nil" do
+      @card.row_id = 42
+      @card.column_id = 24
+      @card.scope_condition.should eql("column_id = 24 AND row_id = 42")
+    end
+  end
 end

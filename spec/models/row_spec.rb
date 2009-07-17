@@ -24,7 +24,7 @@ describe Row do
     @valid_attributes = {
       :name => 'TODO',
       :position => 1,
-      :taskboard_id => taskboards(:first_iteration).id
+      :taskboard_id => taskboards(:big_taskboard).id
     }
   end
 
@@ -40,15 +40,19 @@ describe Row, "while working with database" do
     Row.find(:all).should_not be_empty
   end
   
-
   it "should allow inserting new row at given position" do
-    row = Row.create!(:name => 'new row', :taskboard_id => taskboards(:first_iteration).id)
+    row = Row.create!(:name => 'new row', :taskboard_id => taskboards(:big_taskboard).id)
     row.insert_at(2)
-    row.higher_item.should eql(rows(:first_row))
-    row.lower_item.should eql(rows(:second_row))
+    row.higher_item.should eql(rows(:first_row_in_big))
+    row.lower_item.should eql(rows(:second_row_in_big))
   end
 
   it "should define default name" do
     Row.default_name.should_not be_empty
+  end
+  
+  it "should contain valid number of cards" do 
+    row = rows(:first_row_in_big)
+    row.should have(5).cards
   end
 end

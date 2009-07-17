@@ -18,7 +18,8 @@
 class Taskboard < ActiveRecord::Base
   has_many :cards
   has_many :columns
-
+  has_many :rows
+  
   def burndown
     burndown = Hash.new(0)
     self.cards.each { |card|

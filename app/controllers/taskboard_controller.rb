@@ -103,6 +103,8 @@ class TaskboardController < JuggernautSyncController
       column_id = params[:column_id].to_i
     end
 
+    row_id = params[:row_id].to_i
+    
     cards = []
     
     begin
@@ -111,7 +113,7 @@ class TaskboardController < JuggernautSyncController
       elsif UrlParser.is_url(name)
         cards = UrlParser.fetch_cards(name)
       else
-        cards << Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :name => name)
+        cards << Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :row_id => row_id, :name => name)
       end
     rescue
       render :text => "{ status: 'error', message: '#{$!.message}' }"

@@ -17,6 +17,7 @@
 
 class Row < ActiveRecord::Base
   belongs_to :taskboard
+  has_many :cards
   
   acts_as_list :scope => :taskboard
   

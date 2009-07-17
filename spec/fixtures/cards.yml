@@ -1,62 +1,42 @@
-firefox:
- issue_no: 'ISSUE-36'
- url: 'http://jira.example.com/jira/browse/ISSUE-36'
- name: 'Support for Firefox 3.0'
- color: '#fc0fc0'
- taskboard: first_iteration
+first_card_in_big:
+ name: 'First card on big taskboard'
+ url: 'http://example.com'
+ issue_no: 'ISSUE-1410'
+ notes: '*First card* notes'
+ taskboard: big_taskboard
+ column: first_column_in_big
+ row: first_row_in_big
  position: 1
- column: todo
-coffee: 
- name: 'Go for a coffee and a donut'
- taskboard: first_iteration
+second_card_in_big:
+ name: 'Second card on big taskboard'
+ taskboard: big_taskboard
+ column: first_column_in_big
+ row: first_row_in_big
  position: 2
- column: todo
-sleep:
- name: 'Have to sleep tonight well'
- position: 1
- taskboard: first_iteration
- column: in_progress
-
-big_todo_first:
- name: 'First thing to do'
- position: 1
- taskboard: big_iteration
- column: big_todo
- notes: 'Original notes'
-big_todo_second:
- name: 'Second thing to do'
- position: 2
- taskboard: big_iteration
- column: big_todo
-big_todo_third:
- name: 'Third thing to do'
+third_card_in_big:
+ name: 'Third card on big taskboard'
+ taskboard: big_taskboard
+ column: first_column_in_big
+ row: first_row_in_big
  position: 3
- taskboard: big_iteration
- column: big_todo
-big_todo_another:
- name: 'Yet another thing to do'
- position: 4
- taskboard: big_iteration
- column: big_todo
-big_in_progress_first:
- name: 'First thing already in progress'
+ 
+fourth_card_in_big:
+ name: '4th card on big taskboard'
+ taskboard: big_taskboard
+ column: first_column_in_big
+ row: second_row_in_big
  position: 1
- taskboard: big_iteration
- column: big_in_progress
-big_in_progress_second:
- name: 'Second thing already in progress'
- position: 2
- taskboard: big_iteration
- column: big_in_progress
-big_test_needed_first:
- name: 'Something that needs to be tested'
- position: 1
- taskboard: big_iteration
- column: big_test_needed
-big_done_first:
- name: 'Thing that is already done'
- position: 1 
- taskboard: big_iteration
- column: big_done
 
+fifth_card_in_big:
+ name: '5th card on big taskboard'
+ taskboard: big_taskboard
+ column: second_column_in_big
+ row: first_row_in_big
+ position: 1
+sixth_card_in_big:
+ name: '6th card on big taskboard'
+ taskboard: big_taskboard
+ column: second_column_in_big
+ row: first_row_in_big
+ position: 2
 
