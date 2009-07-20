@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090428123003) do
+ActiveRecord::Schema.define(:version => 20090707130233) do
 
   create_table "cards", :force => true do |t|
     t.text     "name",                        :null => false
@@ -22,9 +22,11 @@ ActiveRecord::Schema.define(:version => 20090428123003) do
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "row_id"
   end
 
   add_index "cards", ["column_id"], :name => "fk_cards_column_id"
+  add_index "cards", ["row_id"], :name => "fk_cards_row_id"
   add_index "cards", ["taskboard_id"], :name => "fk_cards_taskboard_id"
 
   create_table "columns", :force => true do |t|
@@ -44,6 +46,16 @@ ActiveRecord::Schema.define(:version => 20090428123003) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "rows", :force => true do |t|
+    t.text     "name",         :null => false
+    t.integer  "position"
+    t.integer  "taskboard_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "rows", ["taskboard_id"], :name => "fk_rows_taskboard_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false

@@ -21,35 +21,39 @@ class Card < ActiveRecord::Base
   has_many :hours, :order => "date asc"
   belongs_to :taskboard
   belongs_to :column
+  belongs_to :row
   
   DEFAULT_COLOR = '#F8E065'.freeze
-  
-  acts_as_list :scope => :column
+
+  # card's list scope is within a single cell
+  # so it means that both column_id and row_id must be the same
+  # this long ugly line also makes sure that scope is fine when row or column is nil
+  acts_as_list :scope => 'column_id #{column_id.nil? ? "IS NULL" : "= " + column_id.to_s} AND row_id #{row_id.nil? ? "IS NULL" : "= " + row_id.to_s}'
   acts_as_taggable
-  
+    
   def validate
     errors.add('Color is not valid!') if not color.match(/^#([abcdefABCDEF]|\d){6}$/)
   end
 
-  def self.add_new taskboard_id, column_id, name = 'Empty!', issue_no = nil, url = nil
-    card = Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :name => name,
+  def self.add_new taskboard_id, column_id, row_id, name = 'Empty!', issue_no = nil, url = nil
+    card = Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :row_id => row_id, :name => name,
       :issue_no => issue_no, :url => url)
     card.save!
     card.insert_at(1)
     card
   end
   
-  # FIXME: self is needed in almost every line here?
-  def move_to column_id, position
-    if self.column_id == column_id
-      # move in the same column
-      self.insert_at position 
-    else  
+  # FIXME: why self is needed there?
+  def move_to target_column_id, target_row_id, target_position
+    target_column_id ||= column_id
+    target_row_id ||= row_id
+    if (column_id != target_column_id) or (row_id != target_row_id)
       # TODO check if new column is in same taskboard?
-      self.remove_from_list
-      self.column_id = column_id
-      self.insert_at(position)
+      remove_from_list
+      self.column_id = target_column_id
+      self.row_id = target_row_id
     end
+    insert_at target_position
   end
   
   def color

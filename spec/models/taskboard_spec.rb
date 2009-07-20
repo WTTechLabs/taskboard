@@ -31,17 +31,18 @@ describe Taskboard do
   end
   
   it "should generate burndown data for whole taskboard" do
-    taskboard = taskboards(:first_iteration)
+    taskboard = taskboards(:big_taskboard)
     
-    cards_burndown = cards(:coffee).burndown.sort.map{|x| x[1] }
+    cards_burndown = cards(:first_card_in_big).burndown.sort.map{|x| x[1] }
     taskboard.burndown.sort.map{|x| x[1] }.should eql(cards_burndown)
     
     taskboard.cards.first.update_hours(3)
-    taskboard.burndown.sort.map{|x| x[1] }.should eql([30, 25, 28, 19, 9, 0, 3])
+    cards_burndown.push(3)
+    taskboard.burndown.sort.map{|x| x[1] }.should eql(cards_burndown)
     
     taskboard.cards.last.update_hours(2)
-    # last card has more hours causing extra zeros
-    taskboard.burndown.sort.map{|x| x[1] }.should eql([30, 25, 28, 19, 9, 0, 0, 0, 0, 0, 0, 5])
+    cards_burndown[-1] += 2
+    taskboard.burndown.sort.map{|x| x[1] }.should eql(cards_burndown)
   end
   
 end
@@ -50,13 +51,13 @@ describe Taskboard, "while working with database" do
   fixtures :taskboards, :cards, :columns
 
   it "should have fixed number of cards assigned" do
-    taskboard = taskboards(:first_iteration)
-    taskboard.cards.should have(3).records
+    taskboard = taskboards(:big_taskboard)
+    taskboard.should have(6).cards
   end
 
   it "should have valid number of columns (i.e. columns) assigned" do
-    taskboard = taskboards(:first_iteration)
-    taskboard.columns.should have(4).records
+    taskboard = taskboards(:big_taskboard)
+    taskboard.should have(3).columns
   end
 
 end
@@ -65,7 +66,7 @@ describe Taskboard, "while serializing to json" do
   fixtures :taskboards, :cards, :columns
 
   before(:each) do
-    @taskboard = taskboards(:first_iteration)	
+    @taskboard = taskboards(:big_taskboard)	
   end
 
   it "should not include any dates" do
@@ -74,19 +75,20 @@ describe Taskboard, "while serializing to json" do
   end
   
   it "should include belonging columns with cards" do
-    @taskboard.to_json.should include(columns(:todo).name)
-    @taskboard.to_json.should include(columns(:in_progress).name)
-    @taskboard.to_json.should include(cards(:sleep).name)
-    @taskboard.to_json.should include(cards(:firefox).name)
+    @taskboard.to_json.should include(columns(:first_column_in_big).name)
+    @taskboard.to_json.should include(columns(:second_column_in_big).name)
+    @taskboard.to_json.should include(columns(:third_column_in_big).name)
+    @taskboard.to_json.should include(cards(:first_card_in_big).name)
+    @taskboard.to_json.should include(cards(:sixth_card_in_big).name)
   end
 
   it "should include cards with urls" do
-    taskboard = taskboards(:first_iteration)
+    taskboard = taskboards(:big_taskboard)
 
-    firefox_card = cards(:firefox)
+    card = cards(:first_card_in_big)
 
-    taskboard.to_json.should include_text('"name": "'+taskboard.name+'"')
-    taskboard.to_json.should include_text('"url": "'+firefox_card.url+'"')
+    taskboard.to_json.should include_text('"name": "' + taskboard.name + '"')
+    taskboard.to_json.should include_text('"url": "' + card.url + '"')
   end
 
   it "should include cards with tag list" do
@@ -105,23 +107,19 @@ describe Taskboard, "while serializing to json" do
   end
 
   it "should include cards with hours left" do
-    taskboards(:first_iteration).to_json.should include_text('hours_left')
+    taskboards(:big_taskboard).to_json.should include_text('hours_left')
   end
 
   it "should include cards with hours updated date" do
-    taskboards(:first_iteration).to_json.should include_text('hours_left_updated')
+    taskboards(:big_taskboard).to_json.should include_text('hours_left_updated')
   end
 
-  it "should return card with url" do
-    card = cards(:firefox)
-    card.to_json.should include_text('"issue_no": "ISSUE-36')
-    card.to_json.should include_text('"url": "http')
-
-    taskboard = taskboards(:first_iteration)
-    taskboar_descirption = taskboard.name
-
-    taskboard.to_json.should include_text('"name": "' + taskboar_descirption + '"')
-    taskboard.to_json.should include_text('"url": "http')
+  it "should include cards with urls" do
+    taskboard = taskboards(:big_taskboard)
+    card = cards(:first_card_in_big)
+    
+    taskboard.to_json.should include_text('"name": "' + taskboard.name + '"')
+    taskboard.to_json.should include_text('"url": "' + card.url + '"')
   end
   
 end

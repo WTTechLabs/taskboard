@@ -15,25 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 
-class Taskboard < ActiveRecord::Base
+class Row < ActiveRecord::Base
+  belongs_to :taskboard
   has_many :cards
-  has_many :columns
-  has_many :rows
   
-  def burndown
-    burndown = Hash.new(0)
-    self.cards.each { |card|
-      card.burndown.each_pair { |date, hours|
-        burndown[date] += hours
-      }
-    }
-
-    return burndown
-  end
+  acts_as_list :scope => :taskboard
   
-  def to_json options = {}
-    options[:include] = { :columns => { :include => { :cards => { :methods => [:tag_list, :hours_left, :hours_left_updated] }}}}
-    options[:except] = [:created_at, :updated_at]
-    super(options)
+  def self.default_name
+    'Brave new row'
   end
 end

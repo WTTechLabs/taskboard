@@ -36,6 +36,7 @@ class TaskboardController < JuggernautSyncController
       taskboard = Taskboard.new
       taskboard.name = params[:name]
       taskboard.columns << Column.new(:name => Column.default_name)
+      taskboard.rows << Row.new(:name => Row.default_name)
       taskboard.save!
       redirect_to :action => 'show', :id => taskboard.id
     end
@@ -94,8 +95,9 @@ class TaskboardController < JuggernautSyncController
     name = params[:name]
     taskboard_id = params[:taskboard_id].to_i
     column_id = params[:column_id]
-
-    if column_id == ''
+    row_id = params[:row_id]
+    
+    if column_id.nil? or column_id == ''
       new_column = insert_column taskboard_id
       column_id = new_column.id
       sync_add_column(new_column)
@@ -103,6 +105,12 @@ class TaskboardController < JuggernautSyncController
       column_id = params[:column_id].to_i
     end
 
+    if row_id.nil? or row_id == ''
+      row_id = Taskboard.find(taskboard_id).rows.first.id
+    else
+      row_id = row_id.to_i
+    end
+    
     cards = []
     
     begin
@@ -111,7 +119,7 @@ class TaskboardController < JuggernautSyncController
       elsif UrlParser.is_url(name)
         cards = UrlParser.fetch_cards(name)
       else
-        cards << Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :name => name)
+        cards << Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :row_id => row_id, :name => name)
       end
     rescue
       render :text => "{ status: 'error', message: '#{$!.message}' }"
@@ -124,6 +132,7 @@ class TaskboardController < JuggernautSyncController
       }.each{ |card|
         card.taskboard_id = taskboard_id
         card.column_id = column_id
+        card.row_id = row_id
         card.save!
         card.insert_at(1)
       }
@@ -139,7 +148,11 @@ class TaskboardController < JuggernautSyncController
   def reorder_cards
     card = Card.find(params[:id].to_i)
     before = "#{card.position} @ #{card.column.name}"
-    card.move_to(params[:column_id].to_i, params[:position].to_i)
+    target_column_id = params[:column_id].to_i unless params[:column_id].blank?
+    target_row_id = params[:row_id].to_i unless params[:row_id].blank?
+    target_position = params[:position].to_i unless params[:position].blank?
+    
+    card.move_to(target_column_id, target_row_id, target_position)
     render :json => sync_move_card(card, { :before => before })
   end
   

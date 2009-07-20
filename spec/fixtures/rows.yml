@@ -1,0 +1,10 @@
+first_row_in_big:
+  name: 'First row in big taskboard'
+  position: 1
+  taskboard: big_taskboard
+
+second_row_in_big:
+  name: 'Second row in big taskboard'
+  position: 2
+  taskboard: big_taskboard
+
