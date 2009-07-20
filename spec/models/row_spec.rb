@@ -55,4 +55,22 @@ describe Row, "while working with database" do
     row = rows(:first_row_in_big)
     row.should have(5).cards
   end
+
+  it "should clone name and position" do
+    row = rows(:first_row_in_big)
+    clonned = row.clone
+
+    clonned.should_not eql(row)
+    clonned.name.should eql(row.name)
+    clonned.position.should eql(row.position)
+    clonned.taskboard_id.should eql(row.taskboard_id)
+
+    clonned = row.clone 234
+
+    clonned.should_not eql(row)
+    clonned.name.should eql(row.name)
+    clonned.position.should eql(row.position)
+    clonned.taskboard_id.should eql(234)
+  end
+  
 end

@@ -21,6 +21,10 @@ class Column < ActiveRecord::Base
 
   acts_as_list :scope => :taskboard
 
+  def clone taskboard_id = taskboard_id
+    Column.new(:name => name, :position => position, :taskboard_id => taskboard_id)
+  end
+
   def to_json options = {}
     options[:include] = { :cards => { :methods => [:tag_list, :hours_left, :hours_left_updated] }}
     options[:except] = [:created_at, :updated_at, :taskboard_id]

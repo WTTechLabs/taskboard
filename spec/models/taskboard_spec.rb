@@ -44,7 +44,28 @@ describe Taskboard do
     cards_burndown[-1] += 2
     taskboard.burndown.sort.map{|x| x[1] }.should eql(cards_burndown)
   end
-  
+
+end
+
+describe Taskboard, "while cloning" do
+  fixtures :taskboards, :cards, :columns
+
+  it "should initialize right properties and perform cloning on cards" do
+    taskboard = taskboards(:big_taskboard)
+    clonned = taskboard.clone
+
+    clonned.should_not eql(taskboard)
+    clonned.name.should eql(taskboard.name)
+    #clonned.should have(6).cards
+
+    first_card = taskboard.cards.first
+    first_clonned_card = clonned.cards.first
+
+    first_clonned_card.should_not eql(first_card)
+    first_clonned_card.name.should eql(first_card.name)
+
+  end
+
 end
 
 describe Taskboard, "while working with database" do

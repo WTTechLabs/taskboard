@@ -20,7 +20,11 @@ class Row < ActiveRecord::Base
   has_many :cards
   
   acts_as_list :scope => :taskboard
-  
+
+  def clone taskboard_id = taskboard_id
+    Column.new(:name => name, :position => position, :taskboard_id => taskboard_id)
+  end
+
   def self.default_name
     'Brave new row'
   end

@@ -80,6 +80,21 @@ describe Card, "while creating new instance" do
     clonned.issue_no.should eql(card.issue_no)
     clonned.notes.should eql(card.notes)
     clonned.position.should eql(card.position)
+    clonned.taskboard_id.should eql(card.taskboard_id)
+    clonned.column_id.should eql(card.column_id)
+    clonned.row_id.should eql(card.row_id)
+
+    clonned = card.clone 123, 234, 345
+
+    clonned.should_not eql(card)
+    clonned.name.should eql(card.name)
+    clonned.url.should eql(card.url)
+    clonned.issue_no.should eql(card.issue_no)
+    clonned.notes.should eql(card.notes)
+    clonned.position.should eql(card.position)
+    clonned.taskboard_id.should eql(123)
+    clonned.column_id.should eql(234)
+    clonned.row_id.should eql(345)
   end
 
 end

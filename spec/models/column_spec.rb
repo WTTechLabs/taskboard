@@ -55,6 +55,23 @@ describe Column, "while working with database" do
   it "should define default name" do
     Column.default_name.should_not be_empty
   end
+
+  it "should clone right poperties" do
+    column = columns(:first_column_in_big)
+    clonned = column.clone
+
+    clonned.should_not eql(column)
+    clonned.name.should eql(column.name)
+    clonned.position.should eql(column.position)
+    clonned.taskboard_id.should eql(column.taskboard_id)
+
+    clonned = column.clone 234
+
+    clonned.should_not eql(column)
+    clonned.name.should eql(column.name)
+    clonned.position.should eql(column.position)
+    clonned.taskboard_id.should eql(234)
+  end
 end
 
 describe Column, "while serializing to json" do

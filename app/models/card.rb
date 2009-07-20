@@ -31,8 +31,9 @@ class Card < ActiveRecord::Base
   acts_as_list :scope => 'column_id #{column_id.nil? ? "IS NULL" : "= " + column_id.to_s} AND row_id #{row_id.nil? ? "IS NULL" : "= " + row_id.to_s}'
   acts_as_taggable
 
-  def clone
-    Card.new(:name => name, :url => url, :issue_no => issue_no, :notes => notes, :position => position)
+  def clone taskboard_id = taskboard_id, column_id = column_id, row_id = row_id
+    Card.new(:name => name, :url => url, :issue_no => issue_no, :notes => notes, :position => position,
+      :taskboard_id => taskboard_id, :column_id => column_id, :row_id => row_id)
   end
 
   def validate
