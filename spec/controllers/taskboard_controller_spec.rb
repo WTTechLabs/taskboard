@@ -35,13 +35,20 @@ describe TaskboardController, "while showing taskboards list page" do
     get 'index', {}, {:user_id => 2}
     response.should be_success
   end
-    
+
+end
+
+describe TaskboardController, "while creating new taskboard" do
+
+  integrate_views
+  fixtures :taskboards, :columns, :cards
+
   it "should not allow adding new taskboards with empty name" do
     post 'add_taskboard', { :name => '' }, {:user_id => 1, :editor => true}
     flash[:error].should eql("Taskboard name cannot be empty!")
     response.should redirect_to({ :action => 'index' })
   end
-  
+
   it "should allow adding new taskboards" do
     taskboard = Taskboard.new
     Taskboard.should_receive(:new).and_return(taskboard)
@@ -51,6 +58,27 @@ describe TaskboardController, "while showing taskboards list page" do
     taskboard.name.should eql('new taskboard!')
     taskboard.should have(1).column
     taskboard.should have(1).row
+  end
+
+  it "should not allow cloning taskboard with empty name and without selecting taskboard" do
+    post 'clone_taskboard', { :taskboard_id => '2', :name => '' }, {:user_id => 1, :editor => true}
+    flash[:error].should eql("Source taskboard and name should be set!")
+    response.should redirect_to({ :action => 'index' })
+  end
+
+  it "should not allow cloning taskboard with empty name and without selecting taskboard" do
+    post 'clone_taskboard', { :taskboard_id => '', :name => 'New name' }, {:user_id => 1, :editor => true}
+    flash[:error].should eql("Source taskboard and name should be set!")
+    response.should redirect_to({ :action => 'index' })
+  end
+
+  it "should allow cloning taskboards" do
+    taskboard = Taskboard.new
+    Taskboard.should_receive(:new).and_return(taskboard)
+    taskboard.should_receive(:save!)
+    post 'clone_taskboard', { :taskboard_id => '2', :name => 'Clon' }, {:user_id => 1, :editor => true}
+    response.should redirect_to("http://test.host/taskboard/show")
+    taskboard.name.should eql('Clon')
   end
 
 end
