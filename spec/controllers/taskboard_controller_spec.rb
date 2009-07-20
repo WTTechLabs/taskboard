@@ -20,7 +20,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TaskboardController, "while showing taskboards list page" do
 
   integrate_views
-  fixtures :taskboards, :columns, :cards
+  fixtures :taskboards, :columns, :rows, :cards
   
   it "should show list of taskboards" do
     taskboards = [Taskboard.new, Taskboard.new]
@@ -58,7 +58,7 @@ end
 describe TaskboardController, "while showing single taskboard page" do
 
   integrate_views
-  fixtures :taskboards, :columns, :cards
+  fixtures :taskboards, :columns, :rows, :cards
   
   before(:each) do
     # TODO: needed because of juggernaut helper
@@ -235,7 +235,7 @@ end
 describe TaskboardController, "while adding new card" do
 
   integrate_views
-  fixtures :taskboards, :columns, :cards
+  fixtures :taskboards, :columns, :rows, :cards
   
   before(:each) do
     TaskboardConfig.reset
