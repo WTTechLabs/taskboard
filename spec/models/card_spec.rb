@@ -332,7 +332,18 @@ describe Card, "while working with database" do
     card.higher_item.should eql(cards(:second_card_in_big))
     card.lower_item.should eql(cards(:third_card_in_big))
   end
-  
+
+  it "should reorder card in the same row and column if row and column ids are not provided" do
+    card = cards(:first_card_in_big)
+    card.move_to(nil, nil, 2)
+    
+    columns(:first_column_in_big).cards.should include(card)
+    rows(:first_row_in_big).cards.should include(card)
+    card.position.should eql(2)
+    card.higher_item.should eql(cards(:second_card_in_big))
+    card.lower_item.should eql(cards(:third_card_in_big))
+  end
+    
   it "should allow moving card to new column in the same row" do
     card = cards(:second_card_in_big)
     card.move_to(columns(:second_column_in_big).id, rows(:first_row_in_big).id, 2)
@@ -344,7 +355,56 @@ describe Card, "while working with database" do
     card.higher_item.should eql(cards(:fifth_card_in_big))
     card.lower_item.should eql(cards(:sixth_card_in_big))
   end
+
+  it "should move a card in the same row if row id is not provided" do
+    card = cards(:second_card_in_big)
+    card.move_to(columns(:second_column_in_big).id, nil, 2)
+    
+    columns(:first_column_in_big).cards.should_not include(card)
+    columns(:second_column_in_big).cards.should include(card)
+    rows(:first_row_in_big).cards.should include(card)
+    card.position.should eql(2)
+    card.higher_item.should eql(cards(:fifth_card_in_big))
+    card.lower_item.should eql(cards(:sixth_card_in_big))
+  end
   
+  it "should allow moving card to new row in the same column" do
+    card = cards(:fourth_card_in_big)
+    card.move_to(columns(:first_column_in_big).id, rows(:first_row_in_big).id, 3)
+    
+    columns(:first_column_in_big).cards.should include(card)
+    rows(:first_row_in_big).cards.should include(card)
+    rows(:second_row_in_big).cards.should_not include(card)
+    card.position.should eql(3)
+    card.higher_item.should eql(cards(:second_card_in_big))
+    card.lower_item.should eql(cards(:third_card_in_big))
+  end
+
+  it "should move a card in the same column if column id is not provided" do
+    card = cards(:fourth_card_in_big)
+    card.move_to(nil, rows(:first_row_in_big).id, 3)
+    
+    columns(:first_column_in_big).cards.should include(card)
+    rows(:first_row_in_big).cards.should include(card)
+    rows(:second_row_in_big).cards.should_not include(card)
+    card.position.should eql(3)
+    card.higher_item.should eql(cards(:second_card_in_big))
+    card.lower_item.should eql(cards(:third_card_in_big))
+  end
+  
+  it "should allow moving card to new column and new row" do
+    card = cards(:fourth_card_in_big)
+    card.move_to(columns(:second_column_in_big).id, rows(:first_row_in_big).id, 2)
+    
+    columns(:second_column_in_big).cards.should include(card)
+    columns(:first_column_in_big).cards.should_not include(card)
+    rows(:first_row_in_big).cards.should include(card)
+    rows(:second_row_in_big).cards.should_not include(card)
+    card.position.should eql(2)
+    card.higher_item.should eql(cards(:fifth_card_in_big))
+    card.lower_item.should eql(cards(:sixth_card_in_big))
+  end
+      
   it "should allow adding new card at correct position" do
     taskboard_id = taskboards(:big_taskboard).id
     column_id = columns(:first_column_in_big).id

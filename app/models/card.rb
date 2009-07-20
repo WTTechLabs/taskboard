@@ -45,10 +45,13 @@ class Card < ActiveRecord::Base
   
   # FIXME: why self is needed there?
   def move_to target_column_id, target_row_id, target_position
-    if column_id != target_column_id
+    target_column_id ||= column_id
+    target_row_id ||= row_id
+    if (column_id != target_column_id) or (row_id != target_row_id)
       # TODO check if new column is in same taskboard?
       remove_from_list
       self.column_id = target_column_id
+      self.row_id = target_row_id
     end
     insert_at target_position
   end

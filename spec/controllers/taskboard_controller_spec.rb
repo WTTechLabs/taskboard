@@ -49,7 +49,8 @@ describe TaskboardController, "while showing taskboards list page" do
     post 'add_taskboard', { :name => 'new taskboard!' }, {:user_id => 1, :editor => true}
     response.should redirect_to("http://test.host/taskboard/show")
     taskboard.name.should eql('new taskboard!')
-    taskboard.columns.size.should eql(1)
+    taskboard.should have(1).column
+    taskboard.should have(1).row
   end
 
 end
@@ -204,9 +205,9 @@ describe TaskboardController, "while showing single taskboard page" do
       card = Card.new(:taskboard_id => 77, :name => 'Card to be moved')
       card.column = Column.new
       Card.should_receive(:find).with(13).and_return(card)
-      card.should_receive(:move_to).with(3, 5)
+      card.should_receive(:move_to).with(3, 4, 5)
       controller.should_receive(:sync_move_card).with(card, hash_including(:before)).and_return("{ status: 'success' }")
-      post 'reorder_cards', { :id => 13, :column_id => 3, :position => 5 }, {:user_id => 1, :editor => true}
+      post 'reorder_cards', { :id => 13, :column_id => 3, :row_id => 4, :position => 5 }, {:user_id => 1, :editor => true}
       response.should be_success
       response.body.should include_text("status: 'success'")
     end
@@ -242,43 +243,43 @@ describe TaskboardController, "while adding new card" do
 
     @taskboard = taskboards(:big_taskboard)
     @taskboard_old_cards_size = @taskboard.cards.size
+    
+    @column = @taskboard.columns.first
+    @row = @taskboard.rows.first
   end
 
-  it "should allow adding new card" do
-    column = @taskboard.columns.first
-    row = @taskboard.rows.first
-    
+  it "should allow adding new card" do   
     new_card = Card.new(:taskboard_id => @taskboard.id, :name => 'Our brand new card')
-    Card.should_receive(:new).with(:taskboard_id => @taskboard.id, :column_id => column.id, :row_id => row.id, :name => 'Our brand new card').and_return(new_card)
+    Card.should_receive(:new).with(:taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id, :name => 'Our brand new card').and_return(new_card)
     controller.should_receive(:sync_add_cards).with([new_card]).and_return("{ status: 'success' }")
 
-    post 'add_card', { :name => 'Our brand new card', :taskboard_id => @taskboard.id, :column_id => column.id, :row_id => row.id }, {:user_id => 1, :editor => true}
+    post 'add_card', { :name => 'Our brand new card', :taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id }, {:user_id => 1, :editor => true}
     response.should be_success
     response.body.should include_text("status: 'success'")
 
     @taskboard.cards.size.should eql(@taskboard_old_cards_size + 1)
+    new_card.column.should eql(@column)
+    new_card.row.should eql(@row)    
   end
 
   it "should allow adding new card from jira url" do
-    column = @taskboard.columns.first
-
-    new_card = Card.new(:taskboard_id => @taskboard.id, :column_id => column.id, :name => 'from jira', :issue_no => 'IST-4703',
+    new_card = Card.new(:taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id, :name => 'from jira', :issue_no => 'IST-4703',
       :url => 'http://some.url.com/jira/browse/IST-4703')
 
     JiraParser.should_receive(:fetch_cards).with('http://some.url.com/jira/browse/IST-4703').and_return(Array.[](new_card))
     controller.should_receive(:sync_add_cards).with([new_card]).and_return("{ status: 'success' }")
 
-    post 'add_card', { :name => 'http://some.url.com/jira/browse/IST-4703', :taskboard_id => @taskboard.id, :column_id => column.id }, {:user_id => 1, :editor => true}
+    post 'add_card', { :name => 'http://some.url.com/jira/browse/IST-4703', :taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id }, {:user_id => 1, :editor => true}
     response.should be_success
     response.body.should include_text("status: 'success'")
 
     @taskboard.cards.size.should eql(@taskboard_old_cards_size + 1)
+    new_card.column.should eql(@column)
+    new_card.row.should eql(@row)   
   end
 
   it "shouldn't cause duplicates after adding new card from jira url" do
-    column = @taskboard.columns.first
-
-    old_card = Card.new(:taskboard_id => @taskboard.id, :column_id => column.id, :name => 'from jira', :issue_no => 'IST-4703', :url => 'http://some.url.com/jira/browse/IST-4703')
+    old_card = Card.new(:taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id, :name => 'from jira', :issue_no => 'IST-4703', :url => 'http://some.url.com/jira/browse/IST-4703')
     old_card.save!
 
     @taskboard.cards.size.should eql(@taskboard_old_cards_size + 1)
@@ -287,7 +288,7 @@ describe TaskboardController, "while adding new card" do
 
     JiraParser.should_receive(:fetch_cards).with('http://some.url.com/jira/browse/IST-4703').and_return(Array.[](new_card))
 
-    post 'add_card', { :name => 'http://some.url.com/jira/browse/IST-4703', :taskboard_id => @taskboard.id, :column_id => column.id }, {:user_id => 1, :editor => true}
+    post 'add_card', { :name => 'http://some.url.com/jira/browse/IST-4703', :taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id }, {:user_id => 1, :editor => true}
     response.should be_success
     response.body.should include_text("status : 'success'")
 
@@ -302,46 +303,65 @@ describe TaskboardController, "while adding new card" do
     controller.should_receive(:sync_add_cards).with(new_cards).and_return("{ status: 'success' }")
 
     post 'add_card', { :name => 'http://some.url.com/jira/browse/IST-4703',
-      :taskboard_id => @taskboard.id, :column_id => @taskboard.columns.first.id }, {:user_id => 1, :editor => true}
+      :taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id }, {:user_id => 1, :editor => true}
     response.should be_success
     response.body.should include_text("status: 'success'")
 
     @taskboard.cards.size.should eql(@taskboard_old_cards_size + 3)
+    new_cards.each { |card|
+      card.column.should eql(@column)
+      card.row.should eql(@row)
+    }
   end
 
   it "should allow adding new card from url" do
-    column = @taskboard.columns.first
-
-    new_card = Card.new(:taskboard_id => @taskboard.id, :column_id => column.id, :name => 'http://example.com', :issue_no => 'example.com', :url => 'http://example.com')
+    new_card = Card.new(:taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id, :name => 'http://example.com', :issue_no => 'example.com', :url => 'http://example.com')
 
     UrlParser.should_receive(:fetch_cards).with('http://example.com').and_return(Array.[](new_card))
     controller.should_receive(:sync_add_cards).with([new_card]).and_return("{ status: 'success' }")
 
-    post 'add_card', { :name => 'http://example.com', :taskboard_id => @taskboard.id, :column_id => column.id }, {:user_id => 1, :editor => true}
+    post 'add_card', { :name => 'http://example.com', :taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @row.id }, {:user_id => 1, :editor => true}
     response.should be_success
     response.body.should include_text("status: 'success'")
 
     @taskboard.cards.size.should eql(@taskboard_old_cards_size + 1)
+    new_card.row.should eql(@row)
+    new_card.column.should eql(@column)
   end
 
-  # FIXME change dummy row_id
   it "should allow adding new card with empty column_id" do
     new_column = Column.new(:name => "Some not empty name for column", :taskboard_id => @taskboard.id)
     new_column.id = 100
 
     new_card = Card.new(:taskboard_id => @taskboard.id, :name => 'Our brand new card')
-    Card.should_receive(:new).with(:taskboard_id => @taskboard.id, :column_id => new_column.id, :row_id => 0,  :name => 'Our brand new card').and_return(new_card)
+    Card.should_receive(:new).with(:taskboard_id => @taskboard.id, :column_id => new_column.id, :row_id => @row.id, :name => 'Our brand new card').and_return(new_card)
     Column.should_receive(:new).and_return(new_column)
     controller.should_receive(:sync_add_column).with(new_column).and_return("{ status: 'success' }")
     controller.should_receive(:sync_add_cards).with([new_card]).and_return("{ status: 'success' }")
 
-    post 'add_card', { :name => 'Our brand new card', :taskboard_id => @taskboard.id, :column_id => '', :row_id => '' }, {:user_id => 1, :editor => true}
+    post 'add_card', { :name => 'Our brand new card', :taskboard_id => @taskboard.id, :column_id => '', :row_id => @row.id }, {:user_id => 1, :editor => true}
     response.should be_success
     response.body.should include_text("status: 'success'")
 
     @taskboard.cards.size.should eql(@taskboard_old_cards_size + 1)
+    new_card.row.should eql(@row)
+    new_card.column.should eql(new_column)
   end
 
+  it "should add a card to first row if row id is not provided" do
+    new_card = Card.new(:taskboard_id => @taskboard.id, :name => 'Our brand new card')
+    Card.should_receive(:new).with(:taskboard_id => @taskboard.id, :column_id => @column.id, :row_id => @taskboard.rows.first.id, :name => 'Our brand new card').and_return(new_card)
+    controller.should_receive(:sync_add_cards).with([new_card]).and_return("{ status: 'success' }")
+
+    post 'add_card', { :name => 'Our brand new card', :taskboard_id => @taskboard.id, :column_id => @column.id }, {:user_id => 1, :editor => true}
+    response.should be_success
+    response.body.should include_text("status: 'success'")
+
+    @taskboard.cards.size.should eql(@taskboard_old_cards_size + 1)
+    new_card.column.should eql(@column)
+    new_card.row.should eql(@taskboard.rows.first)  
+  end
+  
   it "should give an error message with error occurs" do
     column = @taskboard.columns.first
     error = RuntimeError.new "test"
