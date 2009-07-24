@@ -60,6 +60,7 @@ describe Column, "while working with database" do
     column = columns(:first_column_in_big)
     clonned = column.clone
 
+    clonned.class.should be(Column)
     clonned.should_not eql(column)
     clonned.name.should eql(column.name)
     clonned.position.should eql(column.position)
@@ -67,6 +68,7 @@ describe Column, "while working with database" do
 
     clonned = column.clone 234
 
+    clonned.class.should be(Column)
     clonned.should_not eql(column)
     clonned.name.should eql(column.name)
     clonned.position.should eql(column.position)

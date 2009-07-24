@@ -22,7 +22,7 @@ class Row < ActiveRecord::Base
   acts_as_list :scope => :taskboard
 
   def clone taskboard_id = taskboard_id
-    Column.new(:name => name, :position => position, :taskboard_id => taskboard_id)
+    Row.new(:name => name, :position => position, :taskboard_id => taskboard_id)
   end
 
   def self.default_name

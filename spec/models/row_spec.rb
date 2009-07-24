@@ -60,6 +60,7 @@ describe Row, "while working with database" do
     row = rows(:first_row_in_big)
     clonned = row.clone
 
+    clonned.class.should be(Row)
     clonned.should_not eql(row)
     clonned.name.should eql(row.name)
     clonned.position.should eql(row.position)
@@ -67,6 +68,7 @@ describe Row, "while working with database" do
 
     clonned = row.clone 234
 
+    clonned.class.should be(Row)
     clonned.should_not eql(row)
     clonned.name.should eql(row.name)
     clonned.position.should eql(row.position)

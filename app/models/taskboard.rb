@@ -40,7 +40,7 @@ class Taskboard < ActiveRecord::Base
     }
 
     cards.each { |card|
-      clonned_card = card.clone clonned_taskboard.id #, columns_map[card.column_id], rows_map[card.row_id]
+      clonned_card = card.clone clonned_taskboard.id, columns_map[card.column_id], rows_map[card.row_id]
       clonned_card.save!
     }
 

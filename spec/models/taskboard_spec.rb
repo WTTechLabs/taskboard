@@ -56,14 +56,24 @@ describe Taskboard, "while cloning" do
 
     clonned.should_not eql(taskboard)
     clonned.name.should eql(taskboard.name)
-    #clonned.should have(6).cards
+    clonned.should have(6).cards
 
     first_card = taskboard.cards.first
     first_clonned_card = clonned.cards.first
 
     first_clonned_card.should_not eql(first_card)
     first_clonned_card.name.should eql(first_card.name)
+    first_clonned_card.url.should eql(first_card.url)
+    first_clonned_card.issue_no.should eql(first_card.issue_no)
+    first_clonned_card.position.should eql(first_card.position)
 
+    first_clonned_card.taskboard_id.should_not eql(first_card.taskboard_id)
+    first_clonned_card.column_id.should_not eql(first_card.column_id)
+    first_clonned_card.row_id.should_not eql(first_card.row_id)
+
+    first_clonned_card.taskboard_id.should eql(clonned.id)
+    first_clonned_card.column_id.should eql(clonned.columns[1].id)
+    first_clonned_card.row_id.should eql(clonned.rows.first.id)
   end
 
 end

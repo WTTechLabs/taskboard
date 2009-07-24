@@ -74,6 +74,7 @@ describe Card, "while creating new instance" do
     card = cards(:first_card_in_big)
     clonned = card.clone
 
+    clonned.class.should be(Card)
     clonned.should_not eql(card)
     clonned.name.should eql(card.name)
     clonned.url.should eql(card.url)
@@ -86,6 +87,7 @@ describe Card, "while creating new instance" do
 
     clonned = card.clone 123, 234, 345
 
+    clonned.class.should be(Card)
     clonned.should_not eql(card)
     clonned.name.should eql(card.name)
     clonned.url.should eql(card.url)

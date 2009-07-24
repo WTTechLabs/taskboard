@@ -43,16 +43,15 @@ class TaskboardController < JuggernautSyncController
   end
 
   def clone_taskboard
-    if params[:taskboard_id].empty? or params[:name].empty?
-      flash[:error] = "Source taskboard and name should be set!"
+    if params[:id].empty?
+      flash[:error] = "Source taskboard should be set!"
       redirect_to :action => 'index'
     else
-      taskboard = Taskboard.new
-      taskboard.name = params[:name]
-      taskboard.columns << Column.new(:name => Column.default_name)
-      taskboard.rows << Row.new(:name => Row.default_name)
-      taskboard.save!
-      redirect_to :action => 'show', :id => taskboard.id
+      taskboard = Taskboard.find(params[:id].to_i)
+      clonned = taskboard.clone
+      clonned.name = 'Copy of ' + taskboard.name
+      clonned.save!
+      redirect_to :action => 'show', :id => clonned.id
     end
   end
   

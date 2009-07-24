@@ -60,25 +60,25 @@ describe TaskboardController, "while creating new taskboard" do
     taskboard.should have(1).row
   end
 
-  it "should not allow cloning taskboard with empty name and without selecting taskboard" do
-    post 'clone_taskboard', { :taskboard_id => '2', :name => '' }, {:user_id => 1, :editor => true}
-    flash[:error].should eql("Source taskboard and name should be set!")
-    response.should redirect_to({ :action => 'index' })
-  end
-
-  it "should not allow cloning taskboard with empty name and without selecting taskboard" do
-    post 'clone_taskboard', { :taskboard_id => '', :name => 'New name' }, {:user_id => 1, :editor => true}
-    flash[:error].should eql("Source taskboard and name should be set!")
+  it "should not allow cloning taskboard selecting taskboard" do
+    post 'clone_taskboard', { :id => '' }, {:user_id => 1, :editor => true}
+    flash[:error].should eql("Source taskboard should be set!")
     response.should redirect_to({ :action => 'index' })
   end
 
   it "should allow cloning taskboards" do
     taskboard = Taskboard.new
-    Taskboard.should_receive(:new).and_return(taskboard)
-    taskboard.should_receive(:save!)
-    post 'clone_taskboard', { :taskboard_id => '2', :name => 'Clon' }, {:user_id => 1, :editor => true}
-    response.should redirect_to("http://test.host/taskboard/show")
-    taskboard.name.should eql('Clon')
+    taskboard.name = "Some name"
+
+    clonned = Taskboard.new
+    clonned.id = 10
+
+    Taskboard.should_receive(:find).with(2).and_return(taskboard)
+    taskboard.should_receive(:clone).and_return(clonned)
+    clonned.should_receive(:save!)
+    post 'clone_taskboard', { :id => '2' }, {:user_id => 1, :editor => true}
+    response.should redirect_to("http://test.host/taskboard/show/10")
+    clonned.name.should eql('Copy of Some name')
   end
 
 end
