@@ -32,7 +32,7 @@ class Taskboard < ActiveRecord::Base
   end
   
   def to_json options = {}
-    options[:include] = { :columns => { :include => { :cards => { :methods => [:tag_list, :hours_left, :hours_left_updated] }}}}
+    options[:include] = { :columns => {}, :rows => {}, :cards => { :methods => [:tag_list, :hours_left, :hours_left_updated] } }
     options[:except] = [:created_at, :updated_at]
     super(options)
   end

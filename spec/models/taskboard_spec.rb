@@ -63,7 +63,7 @@ describe Taskboard, "while working with database" do
 end
 
 describe Taskboard, "while serializing to json" do
-  fixtures :taskboards, :cards, :columns
+  fixtures :taskboards, :cards, :columns, :rows
 
   before(:each) do
     @taskboard = taskboards(:big_taskboard)	
@@ -80,6 +80,11 @@ describe Taskboard, "while serializing to json" do
     @taskboard.to_json.should include(columns(:third_column_in_big).name)
     @taskboard.to_json.should include(cards(:first_card_in_big).name)
     @taskboard.to_json.should include(cards(:sixth_card_in_big).name)
+  end
+
+  it "should include belonging rows" do
+    @taskboard.to_json.should include(rows(:first_row_in_big).name)
+    @taskboard.to_json.should include(rows(:second_row_in_big).name)
   end
 
   it "should include cards with urls" do
@@ -101,6 +106,7 @@ describe Taskboard, "while serializing to json" do
 
     taskboard = Taskboard.new
     taskboard.columns << column
+    taskboard.cards << card
     taskboard.columns.should have(1).records
 
     taskboard.to_json.should include_text('"tag_list": ["ala", "ma", "kota"]')

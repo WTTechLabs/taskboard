@@ -102,9 +102,10 @@ TASKBOARD.builder.options = {
 			// there is no placeholder already
 			var position = ui.item.parent().children().index(ui.item) + 1;
 			var column_id = ui.item.parent().parent().data('data').id;
+			var row_id = ui.item.parent().data('data').id;
 			// TODO: check if card column and position changed
 			//	if(position != ui.item.data('position')){
-				TASKBOARD.remote.api.moveCard(ui.item.data("data").id, column_id, position);
+				TASKBOARD.remote.api.moveCard(ui.item.data("data").id, column_id, row_id, position);
 			//	}
 		},
 		zIndex : 5
@@ -168,15 +169,6 @@ TASKBOARD.builder.strings = {
  * Builds a column element from JSON data.
  */
 TASKBOARD.builder.buildColumnFromJSON = function(column){
-	var cardsOl = $.tag("ol", { className : 'cards' });
-	cardsOl = $(cardsOl);
-	if(TASKBOARD.editor){
-		cardsOl.sortable(TASKBOARD.builder.options.cardSort);
-	}
-	$.each(column.cards.sortByPosition(), function(i, card){
-		cardsOl.append(TASKBOARD.builder.buildCardFromJSON(card));
-	});
-	
 	var header = $.tag("h2", column.name.escapeHTML());
 	var columnLi = "";
 	// edit-mode-only
@@ -186,17 +178,27 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 								 { className : 'deleteColumn', title : 'Delete column', href : '#' });
 		columnLi += deleteAction;
 	}
-
 	columnLi += header;
 	columnLi = $.tag("li", columnLi, { id : 'column_' + column.id, className :'column' });
 	columnLi = $(columnLi)
-				.append(cardsOl)
 				.data('data', column)
 				.resizable(TASKBOARD.builder.options.columnResize);
-
+	$.each(column.rows.sortByPosition(), function(i, row){
+		var cardsOl = $.tag("ol", { className : 'cards' });
+		cardsOl = $(cardsOl);
+		cardsOl.data("data", row).addClass("row_" + row.id);
+		if(TASKBOARD.editor){
+			cardsOl.sortable(TASKBOARD.builder.options.cardSort);
+		}
+		if(column.cardsMap && column.cardsMap[row.id]){
+			$.each(column.cardsMap[row.id].sortByPosition(), function(j, card){
+				cardsOl.append(TASKBOARD.builder.buildCardFromJSON(card));
+			});
+		}
+		columnLi.append(cardsOl);
+	});
 	var width = TASKBOARD.cookie.getColumnWidth(column.id) ? parseInt(TASKBOARD.cookie.getColumnWidth(column.id), 10) : "";
 	columnLi.width(width);
-	
 	// edit-mode-only
 	if(TASKBOARD.editor){
 		columnLi.find("h2")
@@ -207,7 +209,6 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 					return value.escapeHTML();
 				}, { event : "dblclick", data : function(){ return $(this).closest(".column").data('data').name; }  })
 			.attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
-
 		// edit-mode-only
 		columnLi.find(".deleteColumn")
 			.bind("click", function(ev){ 
@@ -604,6 +605,7 @@ TASKBOARD.api = {
 		if(column.column){
 			column = column.column;
 		}
+		column.rows = TASKBOARD.data.rows;
 		TASKBOARD.builder.buildColumnFromJSON(column)
 			.prependTo($("#taskboard"))
 			.effect("highlight", {}, 2000);
@@ -627,11 +629,10 @@ TASKBOARD.api = {
 	/*
 	 * Loads cards from JSON into first column.
 	 */
-	// FIXME: check column!!!!
 	addCards : function(cards){
 		$.each(cards, function(i, card){
 			card = card.card;
-			$("#column_" + card.column_id + " ol.cards").prepend(TASKBOARD.builder.buildCardFromJSON(card));
+			$("#column_" + card.column_id + " ol.cards").eq(0).prepend(TASKBOARD.builder.buildCardFromJSON(card));
 		});
 		TASKBOARD.utils.expandTaskboard();
 		TASKBOARD.remote.loading.stop();
@@ -639,23 +640,18 @@ TASKBOARD.api = {
 		TASKBOARD.tags.updateCardSelection();
 	},
 
-	//TODO: refactor ??
 	moveCard : function(card){
 		card = card.card;
-		var cardLi = $('#card_' + card.id);
-		var currentPosition = cardLi.parent().children().index(cardLi) + 1;
-		var currentColumn = cardLi.parent().parent().data('data').id;
-		if(currentColumn === card.column_id){
-			if(currentPosition > card.position){
-				$(cardLi.parent().children()[card.position - 1]).before(cardLi);
-			} else if(currentPosition < card.position){
-				$(cardLi.parent().children()[card.position - 1]).after(cardLi);
-			}
-		} else {
-			if($('#column_' + card.column_id + ' .cards').children().length < card.position){
-				$('#column_' + card.column_id + ' .cards').append(cardLi);
-			} else {
-				$($('#column_' + card.column_id + ' .cards').children()[card.position - 1]).before(cardLi);
+		var cardLi = $('#card_' + card.id),
+			currentPosition = cardLi.parent().children().index(cardLi) + 1,
+			currentColumn = cardLi.parent().parent().data('data').id,
+			currentRow = cardLi.parent().data('data').id;
+
+		if((currentColumn !== card.column_id) || (currentRow !== card.row_id) || (currentPosition !== card.position)){
+			var targetCell = $("#column_" + card.column_id + " .row_" + card.row_id);
+			targetCell.append(cardLi);
+			if(targetCell.children().length != card.position){
+				targetCell.children().eq(card.position - 1).before(cardLi);
 			}
 		}
 		cardLi.effect('highlight', {}, 1000);
@@ -819,7 +815,21 @@ TASKBOARD.loadFromJSON = function(taskboard){
 	$("#header h1").append(" ").append(title);
 
 	$("#taskboard").html("");
+	// build a mapping between cards and their position in columns/rows
+	var cardsMap = {}
+	$.each(taskboard.cards, function(i, card){
+		if(typeof cardsMap[card.column_id] === 'undefined'){
+			cardsMap[card.column_id] = {};
+		}
+		if(typeof cardsMap[card.column_id][card.row_id] === 'undefined'){
+			cardsMap[card.column_id][card.row_id] = [];
+		}
+		cardsMap[card.column_id][card.row_id].push(card);
+	});
+	// build columns
 	$.each(taskboard.columns.sortByPosition(), function(i, column){
+		column.cardsMap = cardsMap[column.id];
+		column.rows = taskboard.rows;
 		$("#taskboard").append(TASKBOARD.builder.buildColumnFromJSON(column));
 	});
 	if(TASKBOARD.editor){
@@ -1076,9 +1086,9 @@ TASKBOARD.remote = {
 							{ name : name, taskboard_id : TASKBOARD.id },
 							'addColumn');
 		},
-		moveCard : function(cardId, columnId, position){
+		moveCard : function(cardId, columnId, rowId, position){
 			TASKBOARD.remote.callback("/taskboard/reorder_cards",
-							{ position : position, column_id : columnId, id : cardId });
+							{ position : position, column_id : columnId, id : cardId, row_id: rowId });
 		},
 		moveColumn : function(columnId, position){
 			TASKBOARD.remote.callback("/taskboard/reorder_columns",

@@ -197,6 +197,8 @@
 
 		#taskboard .column ol.cards {
 			min-height:200px;
+			border-bottom: 1px dashed #CCCCCC;
+			padding: 5px 0;
 		}
 
 			#taskboard .column ol.cards > li {
