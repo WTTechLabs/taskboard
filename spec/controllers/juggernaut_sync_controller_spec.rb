@@ -68,6 +68,26 @@ describe JuggernautSyncController, "while dealing with column actions" do
 
 end
 
+describe JuggernautSyncController, "while dealing with row actions" do
+
+  it "should synchronize adding a row" do
+    row = Row.new
+    row.taskboard_id = 84
+    Juggernaut.should_receive(:send_to_channels).with(/sync\.addRow.*/, [84])
+
+    controller.sync_add_row(row).should include("success")
+  end
+
+  it "should synchronize deleting a row" do
+    row = Row.new
+    row.taskboard_id = 1444
+    Juggernaut.should_receive(:send_to_channels).with(/sync\.deleteRow.*/, [1444])
+
+    controller.sync_delete_row(row).should include("success")
+  end
+
+end
+
 describe JuggernautSyncController, "while dealing with cards actions" do
 
   it "should synchronize adding cards" do

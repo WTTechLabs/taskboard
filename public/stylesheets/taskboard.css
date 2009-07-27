@@ -153,10 +153,28 @@
 	overflow:hidden;
 }
 
-	#taskboard .column {
+	#taskboard .lane {
 		float: left;
+		margin-top: 55px;
+	}
+
+	#taskboard #metaLane {
+		margin-top: 80px;
+	}
+
+			#taskboard .lane .row {
+			min-height:200px;
+			border-top: 1px dashed #CCCCCC;
+			padding: 5px 0;
+		}
+
+		#taskboard #metaLane .row {
+			border-color: #FFFFFF;
+		}
+
+	#taskboard .column {
 		padding: 0 7px 0 0;
-		margin: 55px 0 0 7px;
+		margin-left: 7px;
 		border-right: 1px dashed #CCCCCC;
 		width: 210px;
 		position: relative;
@@ -174,7 +192,7 @@
 			display:none;
 		}
 
-		#taskboard .column.ui-sortable-helper ol.cards li span {
+		#taskboard .column.ui-sortable-helper .cards li span {
 			visibility:hidden;
 		}
 
@@ -193,10 +211,6 @@
 			top: -20px;
 			right: 0px;
 			margin: 3px;
-		}
-
-		#taskboard .column ol.cards {
-			min-height:200px;
 		}
 
 			#taskboard .column ol.cards > li {
@@ -222,7 +236,6 @@
 				#taskboard .column ol.cards li:hover ul.actions {
 					display: block;
 				}
-
 
 					#taskboard .column ol.cards li ul.actions li {
 						min-height: auto;
