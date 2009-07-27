@@ -75,6 +75,28 @@ class JuggernautSyncController < ApplicationController
     sync_column_action column, 'deleteColumn', options
   end
 
+  # Row actions
+  def sync_row_action row, action, params = {}
+    options = { :message => "Action '#{action}' called on a '#{row.name}' row",
+                :object_id => row.id,
+                :object_name => row.name,
+                :before => "", # should come in params
+                :after => "" }
+    options.update params
+
+    report row.taskboard_id, action, options[:message], options
+    send_via_juggernaut row.taskboard_id, action, row.to_json, options[:message]
+  end
+
+  def sync_add_row row, params = {}
+    options = { :message => "Added a row" }.update params
+    sync_row_action row, 'addRow', options
+  end
+
+  def sync_delete_row row, params = {}
+    options = { :message => "Deleted a row" }.update params
+    sync_row_action row, 'deleteRow', options
+  end
 
   # Card actions
   

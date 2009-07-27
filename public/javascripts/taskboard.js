@@ -36,15 +36,16 @@ TASKBOARD.utils = {
 	 * and min-height property to keep them expandable.
 	 */  
 	expandColumnsHeight : function(){
-		$("#taskboard ol.cards").equalHeight({ offset : 50, css : "min-height" });
+		$("#taskboard .row").equalHeight({ offset : 50, css : "min-height" });
 	},
 
 	/* 
 	 * Expand taskboard width so all columns can fit into it,
 	 * but don't make the body narrower than window.
-	 */  
+	 */
+	//FIXME body width with meta column
 	expandTaskboardWidth : function(){
-		var columnsWidth = $("#taskboard .column").sumWidth() + 10;
+		var columnsWidth = $("#taskboard .lane").sumWidth() + 10;
 		$("body").width(columnsWidth);
 		if ($(window).width() > columnsWidth){
 			$("body").width($(window).width());
@@ -116,7 +117,7 @@ TASKBOARD.builder.options = {
 	columnSort : {
 		connectWith: ["#taskboard"],
 		cursor: "move",
-		placeholder: "column placeholder",
+		placeholder: "lane column placeholder",
 		revert: 50,
 		start: function(ev, ui){
 			var position = $("#taskboard .column").index(ui.item);
@@ -165,6 +166,7 @@ TASKBOARD.builder.strings = {
 	columnHeaderTitle : "Double-click to edit"
 };
 
+
 /*
  * Builds a column element from JSON data.
  */
@@ -179,14 +181,14 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 		columnLi += deleteAction;
 	}
 	columnLi += header;
-	columnLi = $.tag("li", columnLi, { id : 'column_' + column.id, className :'column' });
+	columnLi = $.tag("li", columnLi, { id : 'column_' + column.id, className :'lane column' });
 	columnLi = $(columnLi)
 				.data('data', column)
 				.resizable(TASKBOARD.builder.options.columnResize);
 	$.each(column.rows.sortByPosition(), function(i, row){
 		var cardsOl = $.tag("ol", { className : 'cards' });
 		cardsOl = $(cardsOl);
-		cardsOl.data("data", row).addClass("row_" + row.id);
+		cardsOl.data("data", row).addClass("row").addClass("row_" + row.id);
 		if(TASKBOARD.editor){
 			cardsOl.sortable(TASKBOARD.builder.options.cardSort);
 		}
@@ -214,21 +216,10 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 			.bind("click", function(ev){ 
 				ev.preventDefault();
 				if($(this).parent().find("ol.cards").children().length !== 0){
-					// TODO: tooltip plugin?
-					// will it be needed when deleting column with cards?
-					var target = this;
-					if(!$('#tooltip').exists()){ $('<div id="tooltip"></div>').appendTo($('body'));	}
-					$('#tooltip').data('targetTitle', $(this).attr('title'));
-					$(this).attr('title', '');
-					$('#tooltip')
-						.text('You cannot delete a column that is not empty!')
-						.css( { top : $(target).offset().top + 30, left : $(target).offset().left })
-						.fadeIn(500);
-					$(this).one('mouseleave', function(){
-							$('#tooltip').fadeOut(500);
-							$(target).attr('title', $('#tooltip').data('targetTitle'));
-						});
-				} else {
+					$(this).tooltip("You cannot delete a column that is not empty!");
+				} if ($("#taskboard .column").length == 1){
+					$(this).tooltip("You cannot delete last column!");
+				}else {
 					TASKBOARD.remote.api.deleteColumn($(this).parent().data('data').id);
 					$(this).parent().fadeOut(1000, function(){ $(this).remove(); } );
 				}
@@ -238,6 +229,41 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 	return columnLi;
 };
 
+TASKBOARD.builder.buildRowMeta = function(row){
+	var rowDiv = $.tag("div", { className : 'row' });
+	rowDiv = $(rowDiv);
+	if(TASKBOARD.editor){
+		// TODO: css images and rollover
+		var deleteAction = $.tag("a", "<img src='/images/cross_off.png' alt='Delete row'/>",
+								 { className : 'deleteRow', title : 'Delete row', href : '#' });
+		rowDiv.append(deleteAction);
+		rowDiv.data("data", row).addClass("row_" + row.id);
+		rowDiv.find(".deleteRow")
+			.bind("click", function(ev){
+				ev.preventDefault();
+				var cards = $(".column .row_" + row.id).children();
+				if(cards.length !== 0){
+					$(this).tooltip("You cannot delete a row that is not empty!");
+				} else if($("#metaLane .row").length == 1) {
+					$(this).tooltip("You cannot delete last row!");
+				} else {
+					TASKBOARD.remote.api.deleteRow(row.id);
+					$(".row_" + row.id).fadeOut(1000, function(){ $(this).remove(); } );
+				}
+			})
+		.children().rollover();
+	}
+	return rowDiv;
+};
+
+TASKBOARD.builder.buildMetaLane = function(){
+	var metaLane = $($.tag("li", { id: "metaLane", className: "lane"}));
+	$.each(TASKBOARD.data.rows.sortByPosition(), function(i, row){
+		var rowDiv = TASKBOARD.builder.buildRowMeta(row);
+		metaLane.append(rowDiv);
+	});
+	return metaLane;
+}
 /*
  * Builds a card element from JSON data.
  */
@@ -626,6 +652,29 @@ TASKBOARD.api = {
 		columnLi.effect('highlight', {}, 1000);
 		TASKBOARD.form.updateColumnSelect();
 	},
+
+	/*
+	 * Adds a column from JSON as a last row of taskboard.
+	 */
+	addRow : function(row){
+		if(row.row){
+			row = row.row;
+		}
+		var rowMeta = TASKBOARD.builder.buildRowMeta(row);
+		$("#taskboard #metaLane").append(rowMeta);
+		$("#taskboard .column").each(function(){
+			var cardsOl = $.tag("ol", { className : 'cards' });
+			cardsOl = $(cardsOl);
+			cardsOl.data("data", row).addClass("row").addClass("row_" + row.id);
+			if(TASKBOARD.editor){
+				cardsOl.sortable(TASKBOARD.builder.options.cardSort);
+			}
+			$(this).append(cardsOl);
+		});
+		$(".row_" + row.id).effect("highlight", {}, 2000);
+		TASKBOARD.utils.expandTaskboard();
+	},
+
 	/*
 	 * Loads cards from JSON into first column.
 	 */
@@ -674,6 +723,13 @@ TASKBOARD.api = {
 		var columnLi = $('#column_' + column.id);
 		columnLi.fadeOut(1000, function(){$(this).remove();} );
 		TASKBOARD.form.updateColumnSelect();
+		TASKBOARD.utils.expandTaskboard();
+	},
+
+	deleteRow : function(row){
+		row = row.row;
+		var row = $('.row_' + row.id);
+		row.fadeOut(1000, function(){$(this).remove();} );
 		TASKBOARD.utils.expandTaskboard();
 	},
 
@@ -772,6 +828,11 @@ TASKBOARD.init = function(){
 		ev.preventDefault();
 	});
 
+	$(".actionAddRow").bind("click", function(ev){
+		TASKBOARD.remote.api.addRow();
+		ev.preventDefault();
+	});
+
 	$(".actionShowTagSearch").bind("click", function(ev){
 		$(this).parent().siblings().removeClass("current").end().toggleClass("current");
 		TASKBOARD.form.toggle('#fieldsetTags');
@@ -814,7 +875,10 @@ TASKBOARD.loadFromJSON = function(taskboard){
 	}
 	$("#header h1").append(" ").append(title);
 
-	$("#taskboard").html("");
+	$("#taskboard").html("")
+
+	var metaLane = TASKBOARD.builder.buildMetaLane();
+	$("#taskboard").append(metaLane);
 	// build a mapping between cards and their position in columns/rows
 	var cardsMap = {}
 	$.each(taskboard.cards, function(i, card){
@@ -1086,6 +1150,11 @@ TASKBOARD.remote = {
 							{ name : name, taskboard_id : TASKBOARD.id },
 							'addColumn');
 		},
+		addRow : function(){
+			TASKBOARD.remote.callback("/taskboard/add_row",
+							{ taskboard_id : TASKBOARD.id },
+							'addRow');
+		},
 		moveCard : function(cardId, columnId, rowId, position){
 			TASKBOARD.remote.callback("/taskboard/reorder_cards",
 							{ position : position, column_id : columnId, id : cardId, row_id: rowId });
@@ -1114,6 +1183,9 @@ TASKBOARD.remote = {
 		},
 		deleteColumn : function(columnId){
 			TASKBOARD.remote.callback('/taskboard/remove_column/', { id: columnId });
+		},
+		deleteRow : function(rowId){
+			TASKBOARD.remote.callback('/taskboard/remove_row/', { id: rowId });
 		},
 		updateCardHours : function(cardId, hours, updatedAt){
 			TASKBOARD.remote.callback('/card/update_hours/', { id: cardId, hours_left: hours, updated_at: updatedAt });
@@ -1145,6 +1217,7 @@ window.sync = {
 
 $.each(['renameTaskboard',
 		'addColumn', 'renameColumn', 'moveColumn', 'deleteColumn',
+		'addRow', 'deleteRow',
 		'addCards','moveCard','updateCardHours','changeCardColor','deleteCard', 'renameCard', 'updateCard'],
 		function(){
 			var action = this;

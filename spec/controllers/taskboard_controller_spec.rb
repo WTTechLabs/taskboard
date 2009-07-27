@@ -184,7 +184,35 @@ describe TaskboardController, "while showing single taskboard page" do
       response.body.should include_text("status: 'error'")
       column.name.should eql('Column')
     end
- 
+
+  end
+
+  context "while dealing with rows" do
+    fixtures :taskboards, :rows
+
+    it "should allow adding new row" do
+      taskboard = taskboards(:big_taskboard)
+      new_row = Row.new(:name => 'New row', :taskboard_id => taskboard.id)
+      Row.should_receive(:new).and_return(new_row)
+      new_row.should_receive(:save!)
+      new_row.should_receive(:insert_at).with(taskboard.rows.size + 1)
+      controller.should_receive(:sync_add_row).with(new_row).and_return("{ status: 'success' }")
+      post 'add_row', { :name => new_row.name, :taskboard_id => taskboard.id }, {:user_id => 1, :editor => true}
+      response.should be_success
+      response.body.should include_text("status: 'success'")
+    end
+
+    it "should allow removing row" do
+      row = Row.new(:taskboard_id => 7, :name => 'Row to be deleted')
+      Row.should_receive(:find).with(34).and_return(row)
+      row.should_receive(:remove_from_list)
+      Row.should_receive(:delete).with(34)
+      controller.should_receive(:sync_delete_row).with(row).and_return("{ status: 'success' }")
+      post 'remove_row', { :id => '34' }, {:user_id => 1, :editor => true}
+      response.should be_success
+      response.body.should include_text("status: 'success'")
+    end
+
   end
   
   context "while dealing with cards" do
