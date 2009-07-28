@@ -36,7 +36,10 @@ TASKBOARD.utils = {
 	 * and min-height property to keep them expandable.
 	 */  
 	expandColumnsHeight : function(){
-		$("#taskboard .row").equalHeight({ offset : 50, css : "min-height" });
+		$("#taskboard .lane:first .row").each(function(){
+			$("#taskboard .row_" + $(this).data("data").id).equalHeight({ offset : 50, css : "min-height" });
+		});
+		//$("#taskboard .row").equalHeight({ offset : 50, css : "min-height" });
 	},
 
 	/* 
@@ -116,6 +119,7 @@ TASKBOARD.builder.options = {
 	/* Options for sorting columns */
 	columnSort : {
 		connectWith: ["#taskboard"],
+		items: ".column",
 		cursor: "move",
 		placeholder: "lane column placeholder",
 		revert: 50,
@@ -217,7 +221,7 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 				ev.preventDefault();
 				if($(this).parent().find("ol.cards").children().length !== 0){
 					$(this).tooltip("You cannot delete a column that is not empty!");
-				} if ($("#taskboard .column").length == 1){
+				} else if ($("#taskboard .column").length == 1) {
 					$(this).tooltip("You cannot delete last column!");
 				}else {
 					TASKBOARD.remote.api.deleteColumn($(this).parent().data('data').id);
@@ -631,9 +635,11 @@ TASKBOARD.api = {
 		if(column.column){
 			column = column.column;
 		}
-		column.rows = TASKBOARD.data.rows;
+		var rows = [];
+		$("#taskboard #metaLane .row").each(function(){ rows.push($(this).data("data")); });
+		column.rows = rows;
 		TASKBOARD.builder.buildColumnFromJSON(column)
-			.prependTo($("#taskboard"))
+			.insertBefore($("#taskboard .column:first"))
 			.effect("highlight", {}, 2000);
 		TASKBOARD.utils.expandTaskboard();
 		TASKBOARD.form.updateColumnSelect();
@@ -645,9 +651,9 @@ TASKBOARD.api = {
 		var columnLi = $('#column_' + column.id);
 		var currentPosition = $("#taskboard .column").index(columnLi) + 1;
 		if(currentPosition > column.position){
-			$($('#taskboard').children()[column.position - 1]).before(columnLi);
+			$($('#taskboard').children(".column")[column.position - 1]).before(columnLi);
 		} else if(currentPosition < column.position){
-			$($('#taskboard').children()[column.position - 1]).after(columnLi);
+			$($('#taskboard').children(".column")[column.position - 1]).after(columnLi);
 		}
 		columnLi.effect('highlight', {}, 1000);
 		TASKBOARD.form.updateColumnSelect();
@@ -983,6 +989,11 @@ $(document).ready(function() {
 	var self = TASKBOARD;
 	self.init();
 	TASKBOARD.remote.get.taskboardData(self.id, self.loadFromJSON);
+
+	// highlight resizing columns
+	$(".ui-resizable-handle")
+		.live("mouseover", function(){ $(this).parent().addClass("resizing"); })
+		.live("mouseout", function(){ $(this).parent().removeClass("resizing"); });
 
 	// open external links in new window
 	$('a[rel="external"]').live('click',function(ev) {
