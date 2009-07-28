@@ -58,8 +58,12 @@ describe Taskboard, "while cloning" do
     clonned.name.should eql(taskboard.name)
     clonned.should have(6).cards
 
-    first_card = taskboard.cards.first
-    first_clonned_card = clonned.cards.first
+    first_column = columns(:first_column_in_big)
+    first_clonned_column = clonned.columns.first
+    first_clonned_column.position.should eql(first_column.position)
+
+    first_card = cards(:sixth_card_in_big)
+    first_clonned_card = clonned.columns[1].cards[1]
 
     first_clonned_card.should_not eql(first_card)
     first_clonned_card.name.should eql(first_card.name)
