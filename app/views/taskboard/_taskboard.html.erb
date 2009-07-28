@@ -18,5 +18,5 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 -%>
 <li>
 	<%= link_to truncate(h(taskboard.name), :length => 35), { :controller => 'taskboard', :action => 'show', :id => taskboard }, :title => "Go to '#{h(taskboard.name)}'" %>
-    (<%= link_to "clone", { :controller => 'taskboard', :action => 'clone_taskboard', :id => taskboard }, :title => "Create a copy of this taskboard " %>)
+    <%= link_to "<img src=\"/images/copy.png\" alt=\"Create copy of this taskboard\" />", { :controller => 'taskboard', :action => 'clone_taskboard', :id => taskboard }, :title => "Create a copy of this taskboard " %>
 </li>

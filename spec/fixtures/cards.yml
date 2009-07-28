@@ -3,6 +3,7 @@ first_card_in_big:
  url: 'http://example.com'
  issue_no: 'ISSUE-1410'
  notes: '*First card* notes'
+ color: '#12C2D9'
  taskboard: big_taskboard
  column: first_column_in_big
  row: first_row_in_big
