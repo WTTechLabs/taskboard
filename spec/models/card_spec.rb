@@ -72,6 +72,8 @@ describe Card, "while creating new instance" do
 
   it "should initialize right properties when clonning" do
     card = cards(:first_card_in_big)
+    card.tag_list.add("Big tag")
+    card.tag_list.add("Small taggy")
     clonned = card.clone
 
     clonned.class.should be(Card)
@@ -81,6 +83,8 @@ describe Card, "while creating new instance" do
     clonned.issue_no.should eql(card.issue_no)
     clonned.notes.should eql(card.notes)
     clonned.position.should eql(card.position)
+    clonned.color.should eql(card.color)
+    clonned.tag_list.should eql(card.tag_list)
     clonned.taskboard_id.should eql(card.taskboard_id)
     clonned.column_id.should eql(card.column_id)
     clonned.row_id.should eql(card.row_id)
@@ -94,6 +98,8 @@ describe Card, "while creating new instance" do
     clonned.issue_no.should eql(card.issue_no)
     clonned.notes.should eql(card.notes)
     clonned.position.should eql(card.position)
+    clonned.color.should eql(card.color)
+    clonned.tag_list.should eql(card.tag_list)
     clonned.taskboard_id.should eql(123)
     clonned.column_id.should eql(234)
     clonned.row_id.should eql(345)
@@ -462,14 +468,14 @@ describe Card, "while working with database" do
   end
   
   it "should allow color changing" do
-    card = cards(:first_card_in_big)
+    card = cards(:second_card_in_big)
     card.color.should eql(Card::DEFAULT_COLOR)
     card.change_color('#fc0fc0')
     card.color.should eql('#fc0fc0')
   end
 
   it "should validate color format" do
-    card = cards(:first_card_in_big)
+    card = cards(:second_card_in_big)
     card.color.should eql(Card::DEFAULT_COLOR)
     card.change_color('not so valid').should be_false
   end
