@@ -57,7 +57,7 @@ describe Column, "while working with database" do
   end
 
   it "should clone right poperties" do
-    column = columns(:first_column_in_big)
+    column = columns(:third_column_in_big)
     clonned = column.clone
 
     clonned.class.should be(Column)

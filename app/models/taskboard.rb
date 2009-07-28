@@ -22,25 +22,26 @@ class Taskboard < ActiveRecord::Base
 
   def clone
     clonned_taskboard = Taskboard.new(:name => name)
-    clonned_taskboard.save!
 
     columns_map = {}
     rows_map = {}
 
-    columns.each { |column|
-      clonned_column = column.clone clonned_taskboard.id
-      clonned_column.save!
-      columns_map[column.id] = clonned_column.id
+    columns.sort{|col1, col2| col1.position <=> col2.position}.each { |column|
+      clonned_column = column.clone
+      clonned_taskboard.columns << clonned_column
+      columns_map[column.id] = clonned_column
     }
 
-    rows.each { |row|
-      clonned_row = row.clone clonned_taskboard.id
-      clonned_row.save!
-      rows_map[row.id] = clonned_row.id
+    rows.sort{|row1, row2| row1.position <=> row2.position}.each { |row|
+      clonned_row = row.clone
+      clonned_taskboard.rows << clonned_row
+      rows_map[row.id] = clonned_row
     }
+
+    clonned_taskboard.save!
 
     cards.each { |card|
-      clonned_card = card.clone clonned_taskboard.id, columns_map[card.column_id], rows_map[card.row_id]
+      clonned_card = card.clone clonned_taskboard.id, columns_map[card.column_id].id, rows_map[card.row_id].id
       clonned_card.save!
     }
 
