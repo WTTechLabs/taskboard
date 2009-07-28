@@ -122,7 +122,7 @@
 	}
 
 	#formActions fieldset#fieldsetAddColumn {
-		width: 400px;
+		width: 450px;
 	}
 	
 		#formActions fieldset a.actionHideForm {
@@ -145,7 +145,7 @@
 		}
 	
 		#formActions fieldset#fieldsetAddColumn input[type=text] {
-			width: 340px;
+			width: 390px;
 		}
 
 #taskboard {
@@ -159,13 +159,14 @@
 	}
 
 	#taskboard #metaLane {
+		min-width: 15px;
 		margin-top: 80px;
 	}
 
 			#taskboard .lane .row {
-			min-height:200px;
+			min-height:100px;
 			border-top: 1px dashed #CCCCCC;
-			padding: 5px 0;
+			padding: 5px;
 		}
 
 		#taskboard #metaLane .row {
@@ -173,12 +174,16 @@
 		}
 
 	#taskboard .column {
-		padding: 0 7px 0 0;
-		margin-left: 7px;
 		border-right: 1px dashed #CCCCCC;
 		width: 210px;
 		position: relative;
 	}
+
+	#taskboard .column.ui-resizable-resizing,
+	#taskboard .column.resizing {
+		border-color: #777777;
+	}
+
 
 	#taskboard .column.placeholder {
 		min-height: 100px;
