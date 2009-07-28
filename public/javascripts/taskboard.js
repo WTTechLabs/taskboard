@@ -636,7 +636,7 @@ TASKBOARD.api = {
 			column = column.column;
 		}
 		var rows = [];
-		$("#taskboard #metaLane .row").each(function(){ rows.push($(this).data("data")); });
+		$("#taskboard .lane:first .row").each(function(){ rows.push($(this).data("data")); });
 		column.rows = rows;
 		TASKBOARD.builder.buildColumnFromJSON(column)
 			.insertBefore($("#taskboard .column:first"))
