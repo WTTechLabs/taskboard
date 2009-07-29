@@ -28,3 +28,18 @@ body {
 	font-family: Trebuchet, Tahoma, Arial, sans-serif;
 }
 
+#taskboard_meta {
+	font-size:0.7em;
+	color:#777777;
+	text-align:right;
+	position:fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	padding: 5px;
+}
+
+#taskboard_meta .version {
+	font-size:1.2em;
+	color: #555;
+}

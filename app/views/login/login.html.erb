@@ -19,26 +19,27 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>Taskboard: login page</title>
-		<%= stylesheet_link_tag 'login' %>
-	</head>
-	<body>
-		<h1>Taskboard</h1>
-		<% if flash[:notice] -%>
-		<div id="notice"><%= flash[:notice] %></div>
-		<% end -%>
-		<% form_tag do %>
-		<fieldset>
-		<dl>
-			<dt><label for="login">User name:</label></dt>
-			<dd><%= text_field_tag :login, params[:login] %></dd>
-			<dt><label for="password">Password:</label></dt>
-			<dd><%= password_field_tag :password, params[:password] %></dd>
-		</dl>
-		<%= submit_tag "Login" %>
-		</fieldset>
-		<% end %>
-	</body>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Taskboard: login page</title>
+	<%= stylesheet_link_tag 'login' %>
+</head>
+<body>
+	<h1>Taskboard</h1>
+	<% if flash[:notice] -%>
+	<div id="notice"><%= flash[:notice] %></div>
+	<% end -%>
+	<% form_tag do %>
+	<fieldset>
+	<dl>
+		<dt><label for="login">User name:</label></dt>
+		<dd><%= text_field_tag :login, params[:login] %></dd>
+		<dt><label for="password">Password:</label></dt>
+		<dd><%= password_field_tag :password, params[:password] %></dd>
+	</dl>
+	<%= submit_tag "Login" %>
+	</fieldset>
+	<% end %>
+	<%= render :partial => 'taskboard/meta' %>
+</body>
 </html>
