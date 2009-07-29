@@ -162,8 +162,7 @@
 		margin-top: 80px;
 	}
 
-			#taskboard .lane .row {
-			min-height:100px;
+		#taskboard .lane .row {
 			border-top: 1px dashed #CCCCCC;
 			padding: 5px;
 		}
