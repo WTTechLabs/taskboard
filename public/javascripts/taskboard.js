@@ -37,7 +37,7 @@ TASKBOARD.utils = {
 	 */  
 	expandColumnsHeight : function(){
 		$("#taskboard .lane:first .row").each(function(){
-			$("#taskboard .row_" + $(this).data("data").id).equalHeight({ css : "min-height" });
+			$("#taskboard .row_" + $(this).data("data").id).equalHeight({ offset: 30, css : "min-height" });
 		});
 		$("#taskboard .column h2").equalHeight({ css : "min-height" });
 	},
@@ -217,7 +217,10 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 					TASKBOARD.remote.api.renameColumn(id, value);
 					$(this).closest(".column").data('data').name = value;
 					return value.escapeHTML();
-				}, { event : "dblclick", data : function(){ return $(this).closest(".column").data('data').name; }  })
+				}, { event : "dblclick",
+					 data : function(){ return $(this).closest(".column").data('data').name; },
+					 callback: function(){ TASKBOARD.utils.expandColumnsHeight(); }
+			 })
 			.attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
 		// edit-mode-only
 		columnLi.find(".deleteColumn")
