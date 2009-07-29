@@ -150,7 +150,6 @@
 
 #taskboard {
 	clear:both;
-	overflow:hidden;
 }
 
 	#taskboard .lane {
@@ -203,7 +202,7 @@
 
 		#taskboard .column h2 {
 			text-align: center;
-			margin-bottom: 10px;
+			margin: 0 5px 10px;
 		}
 
 		#taskboard .column h2:hover {
@@ -229,6 +228,10 @@
 				font-size: 0.8em;
 				-moz-border-radius: 5px;
 				-webkit-border-radius: 5px;
+			}
+
+			#taskboard .column ol.cards > li:last-child {
+				margin-bottom: 0;
 			}
 
 				#taskboard .column ol.cards li ul.actions {

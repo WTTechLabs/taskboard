@@ -37,9 +37,9 @@ TASKBOARD.utils = {
 	 */  
 	expandColumnsHeight : function(){
 		$("#taskboard .lane:first .row").each(function(){
-			$("#taskboard .row_" + $(this).data("data").id).equalHeight({ offset : 50, css : "min-height" });
+			$("#taskboard .row_" + $(this).data("data").id).equalHeight({ css : "min-height" });
 		});
-		//$("#taskboard .row").equalHeight({ offset : 50, css : "min-height" });
+		$("#taskboard .column h2").equalHeight({ css : "min-height" });
 	},
 
 	/* 
@@ -87,6 +87,7 @@ TASKBOARD.builder.options = {
 		placeholder: "placeholder",
 		distance : 30,
 		revert: 50,
+		tolerance: 'pointer',
 		start: function(ev, ui){
 			ui.placeholder.html($(ui.item).html());
 			if($(ui.item).hasClass("collapsed")){
@@ -98,6 +99,9 @@ TASKBOARD.builder.options = {
 		//.TODO: just a workaround for opacity
 		sort : function(ev, ui){
 			ui.item.css({opacity : 0.4});
+		},
+		change : function(ev, ui){
+			TASKBOARD.utils.expandTaskboard();
 		},
 		stop : function(ev, ui){
 			TASKBOARD.utils.expandColumnsHeight();
@@ -153,7 +157,7 @@ TASKBOARD.builder.options = {
 		handles: "e",
 		transparent: false, 
 		resize : function(ev, ui){
-			TASKBOARD.utils.expandTaskboardWidth();
+			TASKBOARD.utils.expandTaskboard();
 			ui.element.height("auto");
 		},
 		stop : function(ev, ui){
