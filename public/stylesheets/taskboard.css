@@ -122,7 +122,7 @@
 	}
 
 	#formActions fieldset#fieldsetAddColumn {
-		width: 400px;
+		width: 450px;
 	}
 	
 		#formActions fieldset a.actionHideForm {
@@ -145,22 +145,43 @@
 		}
 	
 		#formActions fieldset#fieldsetAddColumn input[type=text] {
-			width: 340px;
+			width: 390px;
 		}
 
 #taskboard {
 	clear:both;
-	overflow:hidden;
 }
 
-	#taskboard .column {
+	#taskboard .lane {
 		float: left;
-		padding: 0 7px 0 0;
-		margin: 55px 0 0 7px;
+		margin-top: 55px;
+	}
+
+	#taskboard #metaLane {
+		min-width: 15px;
+		margin-top: 80px;
+	}
+
+		#taskboard .lane .row {
+			border-top: 1px dashed #CCCCCC;
+			padding: 5px;
+		}
+
+		#taskboard #metaLane .row {
+			border-color: #FFFFFF;
+		}
+
+	#taskboard .column {
 		border-right: 1px dashed #CCCCCC;
 		width: 210px;
 		position: relative;
 	}
+
+	#taskboard .column.ui-resizable-resizing,
+	#taskboard .column.resizing {
+		border-color: #777777;
+	}
+
 
 	#taskboard .column.placeholder {
 		min-height: 100px;
@@ -174,13 +195,13 @@
 			display:none;
 		}
 
-		#taskboard .column.ui-sortable-helper ol.cards li span {
+		#taskboard .column.ui-sortable-helper .cards li span {
 			visibility:hidden;
 		}
 
 		#taskboard .column h2 {
 			text-align: center;
-			margin-bottom: 10px;
+			margin: 0 5px 10px;
 		}
 
 		#taskboard .column h2:hover {
@@ -193,10 +214,6 @@
 			top: -20px;
 			right: 0px;
 			margin: 3px;
-		}
-
-		#taskboard .column ol.cards {
-			min-height:200px;
 		}
 
 			#taskboard .column ol.cards > li {
@@ -212,6 +229,10 @@
 				-webkit-border-radius: 5px;
 			}
 
+			#taskboard .column ol.cards > li:last-child {
+				margin-bottom: 0;
+			}
+
 				#taskboard .column ol.cards li ul.actions {
 					display: none;
 					position: absolute;
@@ -222,7 +243,6 @@
 				#taskboard .column ol.cards li:hover ul.actions {
 					display: block;
 				}
-
 
 					#taskboard .column ol.cards li ul.actions li {
 						min-height: auto;

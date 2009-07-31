@@ -24,7 +24,7 @@ describe Column do
     @valid_attributes = {
       :name => 'TODO',
       :position => 1,
-      :taskboard_id => taskboards(:first_iteration).id
+      :taskboard_id => taskboards(:big_taskboard).id
     }
   end
 
@@ -41,15 +41,15 @@ describe Column, "while working with database" do
   end
   
   it "should contain valid number of cards" do 
-    column = columns(:todo)
-    column.cards.should have(2).records
+    column = columns(:first_column_in_big)
+    column.should have(4).cards
   end
 
   it "should allow inserting new column at given position" do
-    column = Column.create!(:name => 'very new column', :taskboard_id => taskboards(:first_iteration).id)
-    column.insert_at(3)
-    column.higher_item.should eql(columns(:in_progress))
-    column.lower_item.should eql(columns(:test_needed))
+    column = Column.create!(:name => 'very new column', :taskboard_id => taskboards(:big_taskboard).id)
+    column.insert_at(2)
+    column.higher_item.should eql(columns(:first_column_in_big))
+    column.lower_item.should eql(columns(:second_column_in_big))
   end
 
   it "should define default name" do
@@ -61,7 +61,7 @@ describe Column, "while serializing to json" do
   fixtures :columns, :cards
 
   before(:each) do
-    @column = columns(:todo)	
+    @column = columns(:first_column_in_big)	
   end
 
   it "should not include any dates" do
@@ -74,9 +74,9 @@ describe Column, "while serializing to json" do
   end
 
   it "should include belonging cards" do
-    @column.to_json.should include(cards(:coffee).name)
-    @column.to_json.should include(cards(:firefox).name)
-    @column.to_json.should_not include(cards(:sleep).name)
+    @column.to_json.should include(cards(:first_card_in_big).name)
+    @column.to_json.should include(cards(:second_card_in_big).name)
+    @column.to_json.should_not include(cards(:fifth_card_in_big).name)
   end
 
   it "should include cards with tag list" do

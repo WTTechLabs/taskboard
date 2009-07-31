@@ -171,6 +171,23 @@ $.fn.rollover = function(){
 	});
 };
 
+$.fn.tooltip = function(message){
+	var target = this;
+	if(!$('#tooltip').exists()){ $('<div id="tooltip"></div>').appendTo($('body')); }
+	$('#tooltip').data('targetTitle', $(this).attr('title'));
+	$(this).attr('title', '');
+	$('#tooltip')
+		.text(message)
+		.css( { top : $(target).offset().top + 30 - $(document).scrollTop(),
+		        left : $(target).offset().left - $(document).scrollLeft() })
+		.fadeIn(500);
+	$(this).one('mouseleave', function(){
+		$('#tooltip').fadeOut(500);
+		$(target).attr('title', $('#tooltip').data('targetTitle'));
+	});
+	return this;
+}
+
 $.tag = function(tagName, content, attrs){
 	if((attrs == null) && (content) && (content.constructor == Object)){
 		attrs = content;

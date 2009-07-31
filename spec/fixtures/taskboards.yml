@@ -1,9 +1,7 @@
-first_iteration:
-  name: "Iteration 1"
-big_iteration:
+# taskboard with some columns, 2 rows and many cards
+big_taskboard:
   name: "Many cards inside"
-without_columns:
-  name: "Without columns"
-with_two_columns:
-  name: "With two columns"
+
+empty_taskboard:
+  name: "Empty taskboard (no rows, columns, cards)"
 

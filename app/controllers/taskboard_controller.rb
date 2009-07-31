@@ -36,6 +36,7 @@ class TaskboardController < JuggernautSyncController
       taskboard = Taskboard.new
       taskboard.name = params[:name]
       taskboard.columns << Column.new(:name => Column.default_name)
+      taskboard.rows << Row.new(:name => Row.default_name)
       taskboard.save!
       redirect_to :action => 'show', :id => taskboard.id
     end
@@ -90,12 +91,27 @@ class TaskboardController < JuggernautSyncController
     render :json => sync_delete_column(column)
   end
   
+  def add_row
+    row = insert_row params[:taskboard_id].to_i
+    render :json => sync_add_row(row)
+  end
+
+  def remove_row
+    # first remove from list, than delete from db
+    # to keep the rest of the list consistent
+    row = Row.find(params[:id].to_i)
+    row.remove_from_list
+    Row.delete params[:id].to_i
+    render :json => sync_delete_row(row)
+  end
+
   def add_card
     name = params[:name]
     taskboard_id = params[:taskboard_id].to_i
     column_id = params[:column_id]
-
-    if column_id == ''
+    row_id = params[:row_id]
+    
+    if column_id.nil? or column_id == ''
       new_column = insert_column taskboard_id
       column_id = new_column.id
       sync_add_column(new_column)
@@ -103,6 +119,12 @@ class TaskboardController < JuggernautSyncController
       column_id = params[:column_id].to_i
     end
 
+    if row_id.nil? or row_id == ''
+      row_id = Taskboard.find(taskboard_id).rows.first.id
+    else
+      row_id = row_id.to_i
+    end
+    
     cards = []
     
     begin
@@ -111,7 +133,7 @@ class TaskboardController < JuggernautSyncController
       elsif UrlParser.is_url(name)
         cards = UrlParser.fetch_cards(name)
       else
-        cards << Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :name => name)
+        cards << Card.new(:taskboard_id => taskboard_id, :column_id => column_id, :row_id => row_id, :name => name)
       end
     rescue
       render :text => "{ status: 'error', message: '#{$!.message}' }"
@@ -124,6 +146,7 @@ class TaskboardController < JuggernautSyncController
       }.each{ |card|
         card.taskboard_id = taskboard_id
         card.column_id = column_id
+        card.row_id = row_id
         card.save!
         card.insert_at(1)
       }
@@ -139,10 +162,14 @@ class TaskboardController < JuggernautSyncController
   def reorder_cards
     card = Card.find(params[:id].to_i)
     before = "#{card.position} @ #{card.column.name}"
-    card.move_to(params[:column_id].to_i, params[:position].to_i)
+    target_column_id = params[:column_id].to_i unless params[:column_id].blank?
+    target_row_id = params[:row_id].to_i unless params[:row_id].blank?
+    target_position = params[:position].to_i unless params[:position].blank?
+
+    card.move_to(target_column_id, target_row_id, target_position)
     render :json => sync_move_card(card, { :before => before })
   end
-  
+
   def remove_card
     # first remove from list, than delete from db
     # to keep the rest of the list consistent
@@ -151,7 +178,7 @@ class TaskboardController < JuggernautSyncController
     Card.delete params[:id].to_i
     render :json => sync_delete_card(card)
   end
-  
+
   def load_burndown
     taskboard = Taskboard.find(params[:id].to_i)
     render :text => burndown(taskboard)
@@ -164,6 +191,14 @@ class TaskboardController < JuggernautSyncController
       column.save!
       column.insert_at(position)
       return column
+    end
+
+    def insert_row taskboard_id, name = Row.default_name, position = nil
+      position ||= Taskboard.find(taskboard_id).rows.size + 1
+      row = Row.new(:name => name, :taskboard_id => taskboard_id)
+      row.save!
+      row.insert_at(position)
+      return row
     end
 
     def send_error message = 'Error!'
