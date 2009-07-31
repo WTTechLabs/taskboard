@@ -263,7 +263,7 @@ end
 describe TaskboardController, "while adding new card" do
 
   integrate_views
-  fixtures :taskboards, :columns, :cards
+  fixtures :taskboards, :columns, :rows, :cards
   
   before(:each) do
     TaskboardConfig.reset
