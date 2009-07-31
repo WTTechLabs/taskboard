@@ -34,7 +34,7 @@ describe Row do
 end
 
 describe Row, "while working with database" do
-  fixtures :taskboards, :rows
+  fixtures :taskboards, :rows, :cards
 
   it "should have non-empty collection of rows" do
     Row.find(:all).should_not be_empty
