@@ -95,7 +95,7 @@ Screw.Unit(function(){
 
         it("should sort properly by 'position' key", function(){
           var arrayToSort = [ { position : 2 }, { position : 3 }, { position : 1 } ];
-          var arraySorted = [ arrayToSort[2], arrayToSort[0], arrayToSort[1] ];	
+          var arraySorted = [ arrayToSort[2], arrayToSort[0], arrayToSort[1] ];
           expect(arrayToSort.sortByPosition()).to(equal, arraySorted);
         });
       });
@@ -141,7 +141,7 @@ Screw.Unit(function(){
         $('#main').css('visibility', '').hide();
       });
     });
-    
+
     describe("#sumHeight", function(){
       it("should be defined", function(){
         expect($.fn.sumHeight).to(be_function);
@@ -230,4 +230,3 @@ Screw.Unit(function(){
 
   }); // Utils jQuery
 });
-
