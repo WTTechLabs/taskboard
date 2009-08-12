@@ -6,12 +6,11 @@ if(arguments.length == 0) {
 var PLUGIN_PREFIX = environment["blue.ridge.prefix"] || "../../vendor/plugins/blue-ridge";
 
 var BlueRidge = {
-  require: function(file, options){ 
+  require: function(file, callback){ 
     load(file); 
   
-    options = options || {};
-    if(options['onload']) {
-      options['onload'].call();
+    if(callback) {
+      callback.call();
     }
   },
 
