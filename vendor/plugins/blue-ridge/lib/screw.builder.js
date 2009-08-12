@@ -66,7 +66,7 @@ var Screw = (function($) {
 
   $(screw).queue(function() { $(screw).trigger('loading') });
   
-  $(window).load(function(){
+  $(function() {
     $('<div class="describe"></div>')
       .append('<h3 class="status"></h3>')
       .append('<ol class="befores"></ol>')
