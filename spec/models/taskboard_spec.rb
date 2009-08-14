@@ -78,6 +78,15 @@ describe Taskboard, "while cloning" do
     first_clonned_card.taskboard_id.should eql(clonned.id)
     first_clonned_card.column_id.should eql(clonned.columns[1].id)
     first_clonned_card.row_id.should eql(clonned.rows.first.id)
+
+    # check cards order
+    positions = Hash[*clonned.cards.collect { |card| [card.name, card.position] }.flatten]
+    positions['First card on big taskboard'].should eql(1)
+    positions['Second card on big taskboard'].should eql(2)
+    positions['Third card on big taskboard'].should eql(3)
+    positions['4th card on big taskboard'].should eql(1)
+    positions['5th card on big taskboard'].should eql(1)
+    positions['6th card on big taskboard'].should eql(2)
   end
 
 end

@@ -40,7 +40,7 @@ class Taskboard < ActiveRecord::Base
 
     clonned_taskboard.save!
 
-    cards.each { |card|
+    cards.sort{|c1, c2| c1.position <=> c2.position}.each { |card|
       clonned_card = card.clone clonned_taskboard.id, columns_map[card.column_id].id, rows_map[card.row_id].id
       clonned_card.save!
     }
