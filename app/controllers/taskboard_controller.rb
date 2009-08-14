@@ -29,7 +29,7 @@ class TaskboardController < JuggernautSyncController
   end
 
   def add_taskboard
-    if params[:name].empty?
+    if params[:name].blank?
       flash[:error] = "Taskboard name cannot be empty!"
       redirect_to :action => 'index'
     else
@@ -48,7 +48,7 @@ class TaskboardController < JuggernautSyncController
 
   def rename_taskboard
     taskboard = Taskboard.find(params[:id].to_i)
-    if not params[:name].empty?
+    if not params[:name].blank?
       before = taskboard.name
       taskboard.name = params[:name]
       taskboard.save!

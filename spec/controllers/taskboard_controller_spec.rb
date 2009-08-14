@@ -41,6 +41,12 @@ describe TaskboardController, "while showing taskboards list page" do
     flash[:error].should eql("Taskboard name cannot be empty!")
     response.should redirect_to({ :action => 'index' })
   end
+
+  it "should not allow adding new taskboards with name contains only whitespaces" do
+    post 'add_taskboard', { :name => '      ' }, {:user_id => 1, :editor => true}
+    flash[:error].should eql("Taskboard name cannot be empty!")
+    response.should redirect_to({ :action => 'index' })
+  end
   
   it "should allow adding new taskboards" do
     taskboard = Taskboard.new
@@ -123,6 +129,15 @@ describe TaskboardController, "while showing single taskboard page" do
       taskboard = Taskboard.new(:name => 'old')
       Taskboard.should_receive(:find).with(3).and_return(taskboard)
       post 'rename_taskboard', { :id => 3, :name => '' }, {:user_id => 1, :editor => true}
+      response.should be_success
+      response.body.should include_text("status: 'error'")
+      taskboard.name.should eql('old')
+    end
+
+        it "should not allow blank taskboard name while renaming" do
+      taskboard = Taskboard.new(:name => 'old')
+      Taskboard.should_receive(:find).with(3).and_return(taskboard)
+      post 'rename_taskboard', { :id => 3, :name => '     ' }, {:user_id => 1, :editor => true}
       response.should be_success
       response.body.should include_text("status: 'error'")
       taskboard.name.should eql('old')

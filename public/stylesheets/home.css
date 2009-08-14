@@ -53,4 +53,13 @@ h1 {
 	margin-bottom: 0.3em;
 }
 
+#home .error {
+    background-color: #CC0000;
+    color: #FFFFFF;
+    padding: 3px;
+    text-align: center;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
 

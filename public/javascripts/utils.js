@@ -181,10 +181,12 @@ $.fn.tooltip = function(message){
 		.css( { top : $(target).offset().top + 30 - $(document).scrollTop(),
 		        left : $(target).offset().left - $(document).scrollLeft() })
 		.fadeIn(500);
-	$(this).one('mouseleave', function(){
+        var close = function(){
 		$('#tooltip').fadeOut(500);
 		$(target).attr('title', $('#tooltip').data('targetTitle'));
-	});
+        };
+	$(this).one('mouseleave', close);
+        setTimeout(close, 3000);
 	return this;
 }
 

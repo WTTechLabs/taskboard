@@ -16,6 +16,9 @@
 # along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 
 class Taskboard < ActiveRecord::Base
+
+  validates_presence_of :name
+
   has_many :cards
   has_many :columns
   has_many :rows
