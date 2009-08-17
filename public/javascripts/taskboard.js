@@ -147,7 +147,8 @@ TASKBOARD.builder.options = {
 		axis: "x",
 		opacity: 0.40,
 		zIndex : 5,
-		appendTo : 'body'
+		appendTo : 'body',
+		handle : $.browser.msie ? "h2" : false
 	},
 
 	/* Options for resizing columns */
