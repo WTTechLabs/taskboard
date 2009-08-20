@@ -20,7 +20,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe TaskboardController, "while showing taskboards list page" do
 
   integrate_views
-  fixtures :taskboards, :columns, :cards
+  fixtures :taskboards, :columns, :rows, :cards
   
   it "should show list of taskboards" do
     taskboards = [Taskboard.new, Taskboard.new]
@@ -35,13 +35,20 @@ describe TaskboardController, "while showing taskboards list page" do
     get 'index', {}, {:user_id => 2}
     response.should be_success
   end
-    
+
+end
+
+describe TaskboardController, "while creating new taskboard" do
+
+  integrate_views
+  fixtures :taskboards, :columns, :cards
+
   it "should not allow adding new taskboards with empty name" do
     post 'add_taskboard', { :name => '' }, {:user_id => 1, :editor => true}
     flash[:error].should eql("Taskboard name cannot be empty!")
     response.should redirect_to({ :action => 'index' })
   end
-  
+
   it "should allow adding new taskboards" do
     taskboard = Taskboard.new
     Taskboard.should_receive(:new).and_return(taskboard)
@@ -53,12 +60,33 @@ describe TaskboardController, "while showing taskboards list page" do
     taskboard.should have(1).row
   end
 
+  it "should not allow cloning taskboard selecting taskboard" do
+    post 'clone_taskboard', { :id => '' }, {:user_id => 1, :editor => true}
+    flash[:error].should eql("Source taskboard should be set!")
+    response.should redirect_to({ :action => 'index' })
+  end
+
+  it "should allow cloning taskboards" do
+    taskboard = Taskboard.new
+    taskboard.name = "Some name"
+
+    clonned = Taskboard.new
+    clonned.id = 10
+
+    Taskboard.should_receive(:find).with(2).and_return(taskboard)
+    taskboard.should_receive(:clone).and_return(clonned)
+    clonned.should_receive(:save!)
+    post 'clone_taskboard', { :id => '2' }, {:user_id => 1, :editor => true}
+    response.should redirect_to("http://test.host/taskboard/show/10")
+    clonned.name.should eql('Copy of Some name')
+  end
+
 end
 
 describe TaskboardController, "while showing single taskboard page" do
 
   integrate_views
-  fixtures :taskboards, :columns, :cards
+  fixtures :taskboards, :columns, :rows, :cards
   
   before(:each) do
     # TODO: needed because of juggernaut helper

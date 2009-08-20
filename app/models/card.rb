@@ -30,7 +30,13 @@ class Card < ActiveRecord::Base
   # this long ugly line also makes sure that scope is fine when row or column is nil
   acts_as_list :scope => 'column_id #{column_id.nil? ? "IS NULL" : "= " + column_id.to_s} AND row_id #{row_id.nil? ? "IS NULL" : "= " + row_id.to_s}'
   acts_as_taggable
-    
+
+  def clone taskboard_id = taskboard_id, column_id = column_id, row_id = row_id
+    Card.new(:name => name, :url => url, :issue_no => issue_no, :notes => notes, :position => position,
+      :color => color, :tag_list => tag_list,
+      :taskboard_id => taskboard_id, :column_id => column_id, :row_id => row_id)
+  end
+
   def validate
     errors.add('Color is not valid!') if not color.match(/^#([abcdefABCDEF]|\d){6}$/)
   end

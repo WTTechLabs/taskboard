@@ -41,6 +41,19 @@ class TaskboardController < JuggernautSyncController
       redirect_to :action => 'show', :id => taskboard.id
     end
   end
+
+  def clone_taskboard
+    if params[:id].empty?
+      flash[:error] = "Source taskboard should be set!"
+      redirect_to :action => 'index'
+    else
+      taskboard = Taskboard.find(params[:id].to_i)
+      clonned = taskboard.clone
+      clonned.name = 'Copy of ' + taskboard.name
+      clonned.save!
+      redirect_to :action => 'show', :id => clonned.id
+    end
+  end
   
   def get_taskboard
     render :json => Taskboard.find(params[:id].to_i).to_json

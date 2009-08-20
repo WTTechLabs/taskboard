@@ -63,12 +63,53 @@ describe Card do
     card.name = "This is some very long name that needs to be shortened"
     card.short_name.should include("This is some very long")
     card.short_name.length.should eql(30)
-  end  
+  end
+
+end
+
+describe Card, "while creating new instance" do
+  fixtures :cards, :hours
+
+  it "should initialize right properties when clonning" do
+    card = cards(:first_card_in_big)
+    card.tag_list.add("Big tag")
+    card.tag_list.add("Small taggy")
+    clonned = card.clone
+
+    clonned.class.should be(Card)
+    clonned.should_not eql(card)
+    clonned.name.should eql(card.name)
+    clonned.url.should eql(card.url)
+    clonned.issue_no.should eql(card.issue_no)
+    clonned.notes.should eql(card.notes)
+    clonned.position.should eql(card.position)
+    clonned.color.should eql(card.color)
+    clonned.tag_list.should eql(card.tag_list)
+    clonned.taskboard_id.should eql(card.taskboard_id)
+    clonned.column_id.should eql(card.column_id)
+    clonned.row_id.should eql(card.row_id)
+
+    clonned = card.clone 123, 234, 345
+
+    clonned.class.should be(Card)
+    clonned.should_not eql(card)
+    clonned.name.should eql(card.name)
+    clonned.url.should eql(card.url)
+    clonned.issue_no.should eql(card.issue_no)
+    clonned.notes.should eql(card.notes)
+    clonned.position.should eql(card.position)
+    clonned.color.should eql(card.color)
+    clonned.tag_list.should eql(card.tag_list)
+    clonned.taskboard_id.should eql(123)
+    clonned.column_id.should eql(234)
+    clonned.row_id.should eql(345)
+  end
+
 end
 
 describe Card, "while serializing to json" do
   fixtures :cards, :hours
-  
+
   before(:each) do
     @valid_attributes = {
       :issue_no => 'ISSUE-3456',
@@ -78,7 +119,7 @@ describe Card, "while serializing to json" do
       :url => 'http://jira.example.com/jira/browse/ISSUE-3456'
     }
     @card = Card.create!(@valid_attributes)
-  end 
+  end
 
   it "should produce json valid for taskboard javascript application" do
     @card.to_json.should include(@valid_attributes[:url])
@@ -87,7 +128,7 @@ describe Card, "while serializing to json" do
     @card.to_json.should include(@valid_attributes[:notes])
     # TODO: other assertions if needed here
   end
-  
+
   it "should not include issue_no when issue_no doesn't exist" do
     card = Card.create!(@valid_attributes.except(:issue_no))
     card.to_json.should_not include('issue_no')
@@ -97,7 +138,7 @@ describe Card, "while serializing to json" do
     card = Card.create!(@valid_attributes.except(:url))
     card.to_json.should_not include('url')
   end
-  
+
   it "should have default color" do
     card = Card.create!(@valid_attributes.except(:color))
     card.to_json.should include('#F8E065')
@@ -116,17 +157,17 @@ describe Card, "while serializing to json" do
   it "should include references to row (for use while reordering cards)" do
     @card.to_json.should include('row_id')
   end
-    
+
   it "should include all tags" do
     @card.to_json.should include('tag_list')
     @card.tag_list.add('ala', 'ma', 'kota')
     @card.to_json.should include('"tag_list": ["ala", "ma", "kota"]')
   end
-  
+
   it "should include last hours left" do
     card = cards(:first_card_in_big)
     card.to_json.should include('hours_left')
-    
+
     card.update_hours(666)
     card.to_json.should include('"hours_left": 666')
   end
@@ -134,18 +175,18 @@ describe Card, "while serializing to json" do
   it "should include last hours left update date" do
     card = cards(:first_card_in_big)
     card.to_json.should include('hours_left_updated')
-    
+
     card.update_hours(666)
     today = Time.now.strftime("%Y-%m-%d")
     card.to_json.should include('"hours_left_updated": "' + today)
   end
 
-  it "should include cards with urls" do  
+  it "should include cards with urls" do
     card = cards(:first_card_in_big)
     card.to_json.should include_text('"issue_no": "' + card.issue_no+ '"')
     card.to_json.should include_text('"url": "' + card.url + '"')
   end
-  
+
 end
 
 describe Card, "while dealing with ideal hours" do
@@ -427,14 +468,14 @@ describe Card, "while working with database" do
   end
   
   it "should allow color changing" do
-    card = cards(:first_card_in_big)
+    card = cards(:second_card_in_big)
     card.color.should eql(Card::DEFAULT_COLOR)
     card.change_color('#fc0fc0')
     card.color.should eql('#fc0fc0')
   end
 
   it "should validate color format" do
-    card = cards(:first_card_in_big)
+    card = cards(:second_card_in_big)
     card.color.should eql(Card::DEFAULT_COLOR)
     card.change_color('not so valid').should be_false
   end

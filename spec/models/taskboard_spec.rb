@@ -44,7 +44,51 @@ describe Taskboard do
     cards_burndown[-1] += 2
     taskboard.burndown.sort.map{|x| x[1] }.should eql(cards_burndown)
   end
-  
+
+end
+
+describe Taskboard, "while cloning" do
+  fixtures :taskboards, :cards, :columns
+
+  it "should initialize right properties and perform cloning on cards" do
+    taskboard = taskboards(:big_taskboard)
+    clonned = taskboard.clone
+
+    clonned.should_not eql(taskboard)
+    clonned.name.should eql(taskboard.name)
+    clonned.should have(6).cards
+
+    first_column = columns(:first_column_in_big)
+    first_clonned_column = clonned.columns.first
+    first_clonned_column.position.should eql(first_column.position)
+
+    first_card = cards(:sixth_card_in_big)
+    first_clonned_card = clonned.columns[1].cards[1]
+
+    first_clonned_card.should_not eql(first_card)
+    first_clonned_card.name.should eql(first_card.name)
+    first_clonned_card.url.should eql(first_card.url)
+    first_clonned_card.issue_no.should eql(first_card.issue_no)
+    first_clonned_card.position.should eql(first_card.position)
+
+    first_clonned_card.taskboard_id.should_not eql(first_card.taskboard_id)
+    first_clonned_card.column_id.should_not eql(first_card.column_id)
+    first_clonned_card.row_id.should_not eql(first_card.row_id)
+
+    first_clonned_card.taskboard_id.should eql(clonned.id)
+    first_clonned_card.column_id.should eql(clonned.columns[1].id)
+    first_clonned_card.row_id.should eql(clonned.rows.first.id)
+
+    # check cards order
+    positions = Hash[*clonned.cards.collect { |card| [card.name, card.position] }.flatten]
+    positions['First card on big taskboard'].should eql(1)
+    positions['Second card on big taskboard'].should eql(2)
+    positions['Third card on big taskboard'].should eql(3)
+    positions['4th card on big taskboard'].should eql(1)
+    positions['5th card on big taskboard'].should eql(1)
+    positions['6th card on big taskboard'].should eql(2)
+  end
+
 end
 
 describe Taskboard, "while working with database" do
