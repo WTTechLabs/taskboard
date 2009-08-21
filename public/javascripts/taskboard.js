@@ -880,12 +880,17 @@ TASKBOARD.loadFromJSON = function(taskboard){
 	var title = $($.tag("span", taskboard.name.escapeHTML(), { className : 'title' }));
 	document.title = taskboard.name.escapeHTML() + " - Taskboard"; 
 	if(TASKBOARD.editor){
-		title.editable(function(value, settings){ 
-							TASKBOARD.remote.api.renameTaskboard(value);
-							TASKBOARD.data.name = value;
-							return value.escapeHTML();
-						}, { event : "dblclick", data : function(){ return TASKBOARD.data.name; } })
-						.attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
+		title.editable(function(value, settings){
+                        if(value.trim().length > 0) {
+                            TASKBOARD.remote.api.renameTaskboard(value);
+                            TASKBOARD.data.name = value;
+                            return value.escapeHTML();
+                        } else {
+                            $(this).tooltip("Name cannot be blank!");
+                            return this.revert;
+                        }
+                    }, { event : "dblclick", data : function(){ return TASKBOARD.data.name; } })
+                    .attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
 	}
 	$("#header h1").append(" ").append(title);
 

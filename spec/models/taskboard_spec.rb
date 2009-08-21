@@ -29,6 +29,13 @@ describe Taskboard do
   it "should create a new instance given valid attributes" do
     Taskboard.create!(@valid_attributes)
   end
+
+  it "should not be valid with invalid name" do
+    [nil, "", " ", "    " ].each { |invalid_name|
+        taskboard = Taskboard.new(:name => invalid_name)
+        taskboard.should_not be_valid 
+    }
+  end
   
   it "should generate burndown data for whole taskboard" do
     taskboard = taskboards(:big_taskboard)
