@@ -244,12 +244,12 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 TASKBOARD.builder.buildRowMeta = function(row){
 	var rowDiv = $.tag("div", { className : 'row' });
 	rowDiv = $(rowDiv);
+	rowDiv.data("data", row).addClass("row_" + row.id);
 	if(TASKBOARD.editor){
 		// TODO: css images and rollover
 		var deleteAction = $.tag("a", "<img src='/images/cross_off.png' alt='Delete row'/>",
 								 { className : 'deleteRow', title : 'Delete row', href : '#' });
 		rowDiv.append(deleteAction);
-		rowDiv.data("data", row).addClass("row_" + row.id);
 		rowDiv.find(".deleteRow")
 			.bind("click", function(ev){
 				ev.preventDefault();
@@ -896,8 +896,10 @@ TASKBOARD.loadFromJSON = function(taskboard){
 
 	$("#taskboard").html("")
 
-	var metaLane = TASKBOARD.builder.buildMetaLane();
-	$("#taskboard").append(metaLane);
+	if(TASKBOARD.editor){
+		var metaLane = TASKBOARD.builder.buildMetaLane();
+		$("#taskboard").append(metaLane);
+	}
 	// build a mapping between cards and their position in columns/rows
 	var cardsMap = {}
 	$.each(taskboard.cards, function(i, card){
