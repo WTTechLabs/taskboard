@@ -176,6 +176,15 @@ TASKBOARD.builder.strings = {
 };
 
 
+TASKBOARD.changeColor = {
+	changeColorAction : function(tag,id){
+            // TODO: css images and rollover
+            return $.tag(tag, $.tag("a", "<img src='/images/color_off.png' alt='Change the color'/>", { className : "changeColor", title : "Change the color", href : "#" }),{'id':id});
+	}
+
+
+};
+
 /*
  * Builds a column element from JSON data.
  */
@@ -311,8 +320,8 @@ TASKBOARD.builder.buildCardFromJSON = function(card){
 		deleteCardAction = $.tag("li", deleteCardAction);
 
 		// TODO: css images and rollover
-		var changeColorAction = $.tag("a", "<img src='/images/color_off.png' alt='Change the color'/>", { className : "changeColor", title : "Change the color", href : "#" });
-		changeColorAction = $.tag("li", changeColorAction);
+		// var changeColorAction = $.tag("a", "<img src='/images/color_off.png' alt='Change the color'/>", { className : "changeColor", title : "Change the color", href : "#" });
+		var changeColorAction = TASKBOARD.changeColor.changeColorAction("li","");
 
 		actionsUl += deleteCardAction;
 		actionsUl += changeColorAction;
@@ -992,6 +1001,28 @@ TASKBOARD.openCard = function(card){
 	var bigCard = TASKBOARD.builder.buildBigCard(card);
 	bigCard.appendTo($('body')).hide()
 		.openOverlay({ zIndex: 1001 });
+
+        var changeColorAction = TASKBOARD.changeColor.changeColorAction("dd","changeColor");
+        bigCard.append(changeColorAction);
+
+        bigCard.find(".changeColor").click(function(ev){
+				$.colorPicker2({
+						click : function(color){
+							$(bigCard).css({ backgroundColor : color});
+							$(bigCard).data('data').color = color;
+							TASKBOARD.remote.api.changeCardColor($(bigCard).data('data').id, color);
+						 },
+						colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
+						columns: 5,
+						top : 150,
+						left :240,
+						defaultColor : $(bigCard).data('data').color
+					});
+				ev.preventDefault();
+				ev.stopPropagation();
+			})
+		.children().rollover();
+        
 	TASKBOARD.remote.get.cardBurndown(card.id, function(data){
 		var burndown = $("<dd id='cardBurndown'></dd>");
 		burndown.css({ width: '550px', height: '300px' });
