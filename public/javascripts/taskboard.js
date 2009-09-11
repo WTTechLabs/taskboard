@@ -175,14 +175,19 @@ TASKBOARD.builder.strings = {
 	columnHeaderTitle : "Double-click to edit"
 };
 
+// TODO: css images and rollover
+TASKBOARD.builder.actions = {
+	changeColorAction : function(){            
+            return $.tag("a", "<img src='/images/color_off.png' alt='Change the color'/>", { className : "changeColor", title : "Change the color", href : "#" });
+	},
 
-TASKBOARD.changeColor = {
-	changeColorAction : function(tag,id){
-            // TODO: css images and rollover
-            return $.tag(tag, $.tag("a", "<img src='/images/color_off.png' alt='Change the color'/>", { className : "changeColor", title : "Change the color", href : "#" }),{'id':id});
-	}
+        openCardAction : function(){
+            return $.tag("a", "<img src='/images/open_off.png' alt='Open card'/>", { className : "openCard", title : "Open card", href : "#" });
+        },
 
-
+        deleteCardAction : function(){
+            return $.tag("a", "<img src='/images/cross_off.png' alt='Delete card'/>", { className : "deleteCard", title : "Delete card", href : "#" });
+        }
 };
 
 /*
@@ -311,23 +316,10 @@ TASKBOARD.builder.buildCardFromJSON = function(card){
 
 	// edit-mode-only
 	if(TASKBOARD.editor){
-		// TODO: css images and rollover
-		var openCardAction = $.tag("a", "<img src='/images/open_off.png' alt='Open card'/>", { className : "openCard", title : "Open card", href : "#" });
-		openCardAction = $.tag("li", openCardAction);
-
-		// TODO: css images and rollover
-		var deleteCardAction = $.tag("a", "<img src='/images/cross_off.png' alt='Delete card'/>", { className : "deleteCard", title : "Delete card", href : "#" });
-		deleteCardAction = $.tag("li", deleteCardAction);
-
-		// TODO: css images and rollover
-		// var changeColorAction = $.tag("a", "<img src='/images/color_off.png' alt='Change the color'/>", { className : "changeColor", title : "Change the color", href : "#" });
-		var changeColorAction = TASKBOARD.changeColor.changeColorAction("li","");
-
-		actionsUl += deleteCardAction;
-		actionsUl += changeColorAction;
+		actionsUl += $.tag("li", TASKBOARD.builder.actions.deleteCardAction());
+		actionsUl += $.tag("li", TASKBOARD.builder.actions.changeColorAction());
 
 		actionsUl = $.tag("ul", actionsUl, { className : 'actions' });
-
 		cardLi += actionsUl;
 	}
 
@@ -441,16 +433,38 @@ TASKBOARD.builder.buildBigCard = function(card){
 		tagsForm = $.tag("form", tagsForm, { id : 'tagsForm' });
 		tagsForm = $.tag("dd", tagsForm);
 		cardDl += tagsForm;
-	}
+
+                cardDl += $.tag("dt", "Color");                
+                cardDl += $.tag("dd", TASKBOARD.builder.actions.changeColorAction());
+        }
+        
 	cardDl += $.tag("dt", "Hours left");
 	cardDl += $.tag("dd", card.hours_left, { id : "progress" });
 
-	cardDl = $.tag("dl", cardDl, { id : 'card' });
+	cardDl = $.tag("dl", cardDl, { id: 'bigCard_' + card.id, className : 'bigCard'});
 
 	var bigCard = $(cardDl).css({ backgroundColor : card.color });
 
 	// edit-mode-only
 	if(TASKBOARD.editor){
+                bigCard.find(".changeColor").click(function(ev){
+                        $.colorPicker({
+				click : function(color){
+					$(bigCard).css({ backgroundColor : color});
+					$(bigCard).data('data').color = color;
+					TASKBOARD.remote.api.changeCardColor($(bigCard).data('data').id, color);
+				 },
+				 colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
+				 columns: 5,
+				 top : $(this).offset().top - 5,
+				 left : $(this).offset().left + 12,
+				 defaultColor : $(bigCard).data('data').color
+			});
+			ev.preventDefault();
+			ev.stopPropagation();
+		})
+		.children().rollover();
+
 		bigCard.find('#tagsForm').submit(function(ev){
 			var cardTags = $.map(card.tag_list, function(n){ return n.toUpperCase() });			
 			var tags = $(this).find(':text').val();			
@@ -790,8 +804,9 @@ TASKBOARD.api = {
 
 	changeCardColor : function(card){
 		card = card.card;
-		var cardLi = $('#card_' + card.id);
-		cardLi.css({ backgroundColor : card.color });
+		var cardElements = $('#card_' + card.id).add("#bigCard_" + card.id);
+		cardElements.css({ backgroundColor : card.color });
+                cardElements.data('data').color = card.color;
 	}
 };
 
@@ -997,31 +1012,10 @@ TASKBOARD.showBurndown = function(ev){
 };
 
 TASKBOARD.openCard = function(card){
-	$('#card').remove();
+	$('.bigCard').remove();
 	var bigCard = TASKBOARD.builder.buildBigCard(card);
 	bigCard.appendTo($('body')).hide()
 		.openOverlay({ zIndex: 1001 });
-
-        var changeColorAction = TASKBOARD.changeColor.changeColorAction("dd","changeColor");
-        bigCard.append(changeColorAction);
-
-        bigCard.find(".changeColor").click(function(ev){
-				$.colorPicker2({
-						click : function(color){
-							$(bigCard).css({ backgroundColor : color});
-							$(bigCard).data('data').color = color;
-							TASKBOARD.remote.api.changeCardColor($(bigCard).data('data').id, color);
-						 },
-						colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
-						columns: 5,
-						top : 150,
-						left :240,
-						defaultColor : $(bigCard).data('data').color
-					});
-				ev.preventDefault();
-				ev.stopPropagation();
-			})
-		.children().rollover();
         
 	TASKBOARD.remote.get.cardBurndown(card.id, function(data){
 		var burndown = $("<dd id='cardBurndown'></dd>");

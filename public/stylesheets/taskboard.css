@@ -465,7 +465,7 @@
 }
 
 
-#card {
+.bigCard {
 	position: absolute;
 	top: 50px;
 	left: 50%;
@@ -478,96 +478,96 @@
 	-webkit-border-radius : 10px;
 }
 
-#card dt {
+.bigCard dt {
 	float: left;
 	width: 200px;
 	clear: both;
 	font-weight: bold;
 }
 
-#card dd {
+.bigCard dd {
 	float: right;
 	width: 550px;
 	margin-bottom: 10px;
 }
 
-#card .hovered {
+.bigCard .hovered {
 	background-color: #FFFFD3;
 }
 
-#card #notes h1,
-#card #notes h2,
-#card #notes h3,
-#card #notes h4,
-#card #notes h5 {
+.bigCard #notes h1,
+.bigCard #notes h2,
+.bigCard #notes h3,
+.bigCard #notes h4,
+.bigCard #notes h5 {
 	font-weight: bold;
 	margin-bottom: 0.5em;
 }
 
-#card #notes h1 { font-size: 1.5em; }
-#card #notes h2 { font-size: 1.4em; }
-#card #notes h3 { font-size: 1.2em; }
-#card #notes h4 { font-size: 1.1em; }
-#card #notes h5 { font-size: 1em; }
-#card #notes h6 { font-size: 0.8em; }
+.bigCard #notes h1 { font-size: 1.5em; }
+.bigCard #notes h2 { font-size: 1.4em; }
+.bigCard #notes h3 { font-size: 1.2em; }
+.bigCard #notes h4 { font-size: 1.1em; }
+.bigCard #notes h5 { font-size: 1em; }
+.bigCard #notes h6 { font-size: 0.8em; }
 
-#card #notes p {
+.bigCard #notes p {
 	margin-bottom: 0.5em;
 }
 
-#card #notes ul,
-#card #notes ol {
+.bigCard #notes ul,
+.bigCard #notes ol {
 	margin-bottom: 0.5em;
 }
 
-#card #notes ul {
+.bigCard #notes ul {
 	margin-left: 20px;
 	list-style: disc;
 }
 
-#card #notes ol {
+.bigCard #notes ol {
 	margin-left: 30px;
 	list-style: decimal;
 }
-#card #notes em {
+.bigCard #notes em {
 	font-style: italic;
 }
 
-#card #notes strong {
+.bigCard #notes strong {
 	font-weight: bold;
 }
 
 
 
-#card #name h1,
-#card #name h2,
-#card #name h3,
-#card #name h4,
-#card #name h5 {
+.bigCard #name h1,
+.bigCard #name h2,
+.bigCard #name h3,
+.bigCard #name h4,
+.bigCard #name h5 {
 	font-weight: bold;
 	margin-bottom: 0.5em;
 }
 
-#card #name h1 { font-size: 1.5em; }
-#card #name h2 { font-size: 1.4em; }
-#card #name h3 { font-size: 1.2em; }
-#card #name h4 { font-size: 1.1em; }
-#card #name h5 { font-size: 1em; }
-#card #name h6 { font-size: 0.8em; }
+.bigCard #name h1 { font-size: 1.5em; }
+.bigCard #name h2 { font-size: 1.4em; }
+.bigCard #name h3 { font-size: 1.2em; }
+.bigCard #name h4 { font-size: 1.1em; }
+.bigCard #name h5 { font-size: 1em; }
+.bigCard #name h6 { font-size: 0.8em; }
 
-#card #name p {
+.bigCard #name p {
 	margin-bottom: 0.5em;
 }
 
-#card #name em {
+.bigCard #name em {
 	font-style: italic;
 }
 
-#card #name strong {
+.bigCard #name strong {
 	font-weight: bold;
 }
 
-#card .tags li {
+.bigCard .tags li {
 	padding: 5px;
 	margin-right: 5px;
 	border: 1px solid #CCCCCC;
@@ -577,7 +577,7 @@
 	float: left;
 }
 
-	#card .tags li a {
+	.bigCard .tags li a {
 		padding-left: 5px;
 		margin-left: 3px;
 		border-left: 1px solid #000000;
@@ -585,7 +585,7 @@
 		color: #777777;
 	}
 
-	#card .tags li a:hover {
+	.bigCard .tags li a:hover {
 		color: #000000;
 	}
 
@@ -615,6 +615,7 @@
 	background-color: #FFFFFF;
 	padding-left: 11px;
 	background: url(/images/tip.png) no-repeat;
+        z-index: 2000;
 }
 
 #colorPicker ol {

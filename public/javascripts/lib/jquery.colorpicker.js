@@ -82,66 +82,6 @@
 			$('#' + settings.id).fadeOut("fast", function(){ $(this).remove() });
 		});
 	};
-
-        	$.colorPicker2 = function(options) {
-		// Defaults
-		var defaults = {
-			new_colors: [ "#EE0000", "#FF8800", "#FFDD22", "#DDDD22", "#55CC22", "#00DDFF",       //"#33FF88", "#777777",
-						  "#EE6666", "#FFBB77", "#FFEE88", "#DDDD88", "#99DD77", "#77DDEE",       //"#88FFBB", "#AAAAAA",
-						  "#2288FF", "#4466DD", "#8855FF", "#BB44DD", "#FF00AA", "#888888",
-						  "#88BBEE", "#99AADD", "#BB99EE", "#CC99DD", "#EE77BB", "#EEEEEE"
-			],
-
-			colors : new Array(
-				"#FFFFFF", "#EEEEEE", "#FFFF88", "#FF7400", "#CDEB8B", "#6BBA70",
-				"#006E2E", "#C3D9FF", "#4096EE", "#356AA0", "#FF0096", "#B02B2C",
-				"#000000"
-				),
-			defaultColor: '#EEEEEE',
-			click: function(color){},
-			preview : function(color){},
-			top : 'auto',
-			left : 'auto',
-			right : 'auto',
-			bottom : 'auto',
-			id : 'colorPicker',
-			columns : 0
-		};
-
-		var settings = $.extend({}, defaults, options);
-
-		// hide existing picker
-		if($('#' + settings.id).exists()) $('#' + settings.id).fadeOut("fast", function(){ $(this).remove() });
-
-		var picker = $('<div id="' + settings.id + '"></div>');
-		var colors = $('<ol></ol>').appendTo(picker);
-
-		$.each(settings.colors, function(i, color){
-			$('<li></li>').addClass('color').addClass(color.substr(1)).data('color', color).css({ backgroundColor : color }).appendTo(colors);
-		});
-
-		colors.children().click(function(){
-			$('#' + settings.id + ' .color').removeClass('check').removeClass('checkwht').removeClass('checkblk');
-			$(this).addClass('check').addClass(isdark($(this).data('color')) ? 'checkwht' : 'checkblk');
-			settings.click($(this).data('color'));
-			$('#' + settings.id).fadeOut("fast", function(){ $(this).remove() });
-		});
-
-		// Simulate click for defaultColor
-		picker.appendTo($('dd#changeColor'));
-		picker.children('ol')
-				.width( (colors.children().width() + 4) * (settings.columns || colors.children().length) )
-				.end()
-			.css( { top : settings.top, left : settings.left, bottom : settings.bottom, right : settings.right })
-			.find('.' + settings.defaultColor.substr(1)).each(function(){
-				$(this).addClass('check').addClass(isdark($(this).data('color')) ? 'checkwht' : 'checkblk');
-			});
-
-		$('dd#changeColor').one('click', function(ev){
-			$('#' + settings.id).fadeOut("fast", function(){ $(this).remove() });
-		});
-	};
-
 })(jQuery);
 
 /**
