@@ -175,18 +175,13 @@ TASKBOARD.builder.strings = {
 	columnHeaderTitle : "Double-click to edit"
 };
 
-// TODO: css images and rollover
 TASKBOARD.builder.actions = {
-	changeColorAction : function(){            
-            return $.tag("a", "<img src='/images/color_off.png' alt='Change the color'/>", { className : "changeColor", title : "Change the color", href : "#" });
+	changeColorAction : function(){
+            return $.tag("a", "Change the color", { className : "changeColor", title : "Change the color", href : "#" });
 	},
 
-        openCardAction : function(){
-            return $.tag("a", "<img src='/images/open_off.png' alt='Open card'/>", { className : "openCard", title : "Open card", href : "#" });
-        },
-
         deleteCardAction : function(){
-            return $.tag("a", "<img src='/images/cross_off.png' alt='Delete card'/>", { className : "deleteCard", title : "Delete card", href : "#" });
+            return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete card", href : "#" });
         }
 };
 
@@ -360,35 +355,31 @@ TASKBOARD.builder.buildCardFromJSON = function(card){
 					}
 			});
 
-		cardLi.find(".openCard").click(function(ev){
-				var card = $(this).closest(".cards > li");
-				TASKBOARD.openCard(card.data('data'));
-				ev.preventDefault();
-			})
-		.children().rollover();
-
 		cardLi.find(".deleteCard").click(function(ev){
 				if(confirm("Do you really want to delete this card?")){
 					TASKBOARD.remote.api.deleteCard($(this).closest(".cards > li").data('data').id);
 					$(this).closest(".cards > li").fadeOut(1000, function(){$(this).remove();} );
 				}
 				ev.preventDefault();
-			})
-		.children().rollover();
+			});
 
 		cardLi.find(".changeColor").click(function(ev){
 				var card = $(this).closest(".cards > li");
                                 TASKBOARD.openColorPicker(card, $(this).offset().top - 8, $(this).offset().left + 12);
 				ev.preventDefault();
 				ev.stopPropagation();
-			})
-		.children().rollover();
+			});
 	}
 	return cardLi;
 };
 
 TASKBOARD.builder.buildBigCard = function(card){
 	var cardDl = "";
+        cardDl += $.tag("dt", "Actions", { id: "cardActionsTitle"});
+        var actions = $.tag("li", TASKBOARD.builder.actions.changeColorAction());
+        actions = $.tag("ul", actions, { className: "big actions"});
+        cardDl += $.tag("dd", actions, { id: "cardActions"});
+        
 	if(card.issue_no) {
 		cardDl +=  $.tag("dt", "Issue");
 		cardDl +=  $.tag("dd", card.issue_no.escapeHTML());
@@ -422,9 +413,6 @@ TASKBOARD.builder.buildBigCard = function(card){
 		tagsForm = $.tag("form", tagsForm, { id : 'tagsForm' });
 		tagsForm = $.tag("dd", tagsForm);
 		cardDl += tagsForm;
-
-                cardDl += $.tag("dt", "Color");                
-                cardDl += $.tag("dd", TASKBOARD.builder.actions.changeColorAction());
         }
         
 	cardDl += $.tag("dt", "Hours left");
@@ -438,23 +426,9 @@ TASKBOARD.builder.buildBigCard = function(card){
 	if(TASKBOARD.editor){
                 bigCard.find(".changeColor").click(function(ev){
                     TASKBOARD.openColorPicker(bigCard, $(this).offset().top - 5, $(this).offset().left + 12);
-                    /*    $.colorPicker({
-				click : function(color){
-					$(bigCard).css({ backgroundColor : color});
-					$(bigCard).data('data').color = color;
-					TASKBOARD.remote.api.changeCardColor($(bigCard).data('data').id, color);
-				 },
-				 colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
-				 columns: 5,
-				 top : $(this).offset().top - 5,
-				 left : $(this).offset().left + 12,
-				 defaultColor : $(bigCard).data('data').color
-			});
-                    */
                     ev.preventDefault();
                     ev.stopPropagation();
-		})
-		.children().rollover();
+		});
 
 		bigCard.find('#tagsForm').submit(function(ev){
 			var cardTags = $.map(card.tag_list, function(n){ return n.toUpperCase() });			

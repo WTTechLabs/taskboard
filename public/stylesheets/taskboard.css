@@ -413,6 +413,50 @@
 		height: 1.6em;
 	}
 
+/* Actions' icons */
+
+.actions li {
+	width: 12px;
+        height: 12px;
+        text-indent: -9999px;
+}
+
+.big.actions li {
+	width: 16px;
+        height: 16px;
+}
+
+.actions li a {
+	display: block;
+	width: 100%;
+        height: 100%;
+        background: transparent no-repeat 50% 50%;
+}
+
+	.actions li .changeColor {
+        	background-image: url(/images/color_off.png);
+	}
+
+	.actions li .changeColor:hover {
+        	background-image: url(/images/color_on.png);
+	}
+
+        .actions li .deleteCard {
+        	background-image: url(/images/cross_off.png);
+	}
+
+	.actions li .deleteCard:hover {
+        	background-image: url(/images/cross_on.png);
+	}
+
+        .big.actions li .changeColor {
+        	background-image: url(/images/color_big_off.png);
+	}
+
+	.big.actions li .changeColor:hover {
+        	background-image: url(/images/color_big_on.png);
+	}
+
 /* Form drop animation hack */
 .ui-effects-wrapper {
 	left: auto !important;
@@ -470,8 +514,8 @@
 	top: 50px;
 	left: 50%;
 	margin-left: -400px;
-	padding: 20px;
-	width: 760px;
+	padding: 20px 40px 20px 20px;
+	width: 740px;
 	clear:both;
 	overflow: hidden;
 	-moz-border-radius: 10px;
@@ -487,12 +531,24 @@
 
 .bigCard dd {
 	float: right;
-	width: 550px;
+	width: 530px;
 	margin-bottom: 10px;
 }
 
 .bigCard .hovered {
 	background-color: #FFFFD3;
+}
+
+.bigCard #cardActionsTitle {
+	display: none;
+}
+
+.bigCard #cardActions {
+	position: absolute;
+        width: auto;
+        margin: 10px;
+        top: 0;
+        right: 0;
 }
 
 .bigCard #notes h1,
