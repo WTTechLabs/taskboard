@@ -378,18 +378,7 @@ TASKBOARD.builder.buildCardFromJSON = function(card){
 
 		cardLi.find(".changeColor").click(function(ev){
 				var card = $(this).closest(".cards > li");
-				$.colorPicker({
-						click : function(color){ 
-							$(card).css({ backgroundColor : color});
-							$(card).data('data').color = color;
-							TASKBOARD.remote.api.changeCardColor($(card).data('data').id, color);
-						 },
-						colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
-						columns: 5,
-						top : $(this).offset().top - 8,
-						left : $(this).offset().left + 12,
-						defaultColor : $(card).data('data').color
-					});
+                                TASKBOARD.openColorPicker(card, $(this).offset().top - 8, $(this).offset().left + 12);
 				ev.preventDefault();
 				ev.stopPropagation();
 			})
@@ -448,7 +437,8 @@ TASKBOARD.builder.buildBigCard = function(card){
 	// edit-mode-only
 	if(TASKBOARD.editor){
                 bigCard.find(".changeColor").click(function(ev){
-                        $.colorPicker({
+                    TASKBOARD.openColorPicker(bigCard, $(this).offset().top - 5, $(this).offset().left + 12);
+                    /*    $.colorPicker({
 				click : function(color){
 					$(bigCard).css({ backgroundColor : color});
 					$(bigCard).data('data').color = color;
@@ -460,8 +450,9 @@ TASKBOARD.builder.buildBigCard = function(card){
 				 left : $(this).offset().left + 12,
 				 defaultColor : $(bigCard).data('data').color
 			});
-			ev.preventDefault();
-			ev.stopPropagation();
+                    */
+                    ev.preventDefault();
+                    ev.stopPropagation();
 		})
 		.children().rollover();
 
@@ -1024,7 +1015,22 @@ TASKBOARD.openCard = function(card){
 		TASKBOARD.burndown.render(burndown, data);
 	});	
 };
-  
+
+TASKBOARD.openColorPicker = function(card, top, left){
+    $.colorPicker({
+            click : function(color){
+                    $(card).css({ backgroundColor : color});
+                    $(card).data('data').color = color;
+                    TASKBOARD.remote.api.changeCardColor($(card).data('data').id, color);
+             },
+             colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
+             columns: 5,
+             top : top,
+             left : left,
+             defaultColor : $(card).data('data').color
+    });
+}
+
 $(document).ready(function() {
 	var self = TASKBOARD;
 	self.init();
