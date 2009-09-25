@@ -376,9 +376,12 @@ TASKBOARD.builder.buildCardFromJSON = function(card){
 TASKBOARD.builder.buildBigCard = function(card){
 	var cardDl = "";
         cardDl += $.tag("dt", "Actions", { id: "cardActionsTitle"});
-        var actions = $.tag("li", TASKBOARD.builder.actions.changeColorAction());
-        actions = $.tag("ul", actions, { className: "big actions"});
-        cardDl += $.tag("dd", actions, { id: "cardActions"});
+
+        if(TASKBOARD.editor){
+            var actions = $.tag("li", TASKBOARD.builder.actions.changeColorAction());
+            actions = $.tag("ul", actions, { className: "big actions"});
+            cardDl += $.tag("dd", actions, { id: "cardActions"});
+        }
         
 	if(card.issue_no) {
 		cardDl +=  $.tag("dt", "Issue");
