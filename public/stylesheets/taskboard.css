@@ -464,16 +464,44 @@
 }
 
 #tooltip {
-	font-size: 12px;
-	position: fixed;
+	font-size: 11px;
+	position: absolute;
 	display: none;
-	padding: 10px 10px 10px 36px;
+	padding: 10px;
 	width: 200px;
-	background: #FFEEAA url(/images/warning.png) no-repeat 10px 50%;
-	border: 1px solid #999999;
+	background: #FFF9CC;
+        background-repeat: no-repeat;
+        background-position: 10px 50%;
+	border: 1px solid #777777;
+        z-index: 1002;
 
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+}
+
+#tooltip .rightMiddle.tick {
+    position: absolute;
+    width: 11px; height: 100%;
+    left: -11px; top: 0;
+    display: block;
+    background: url(/images/tip-left.png) no-repeat 0 50%;
+}
+
+#tooltip .bottomLeft.tick {
+    position: absolute;
+    width: 100%; height: 11px;
+    left: 0; top: -11px;
+    display: block;
+    background: url(/images/tip-top.png) no-repeat 6px 0;
+}
+
+#tooltip strong { font-weight: bold; }
+#tooltip em { font-style: italic; }
+#tooltip p { margin-bottom: 0.5em; }
+
+#tooltip.warning {
+    padding-left: 36px;
+    background-image: url(/images/warning.png);
 }
 
 #loading {

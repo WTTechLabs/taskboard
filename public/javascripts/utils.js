@@ -171,23 +171,77 @@ $.fn.rollover = function(){
 	});
 };
 
-$.fn.tooltip = function(message){
-	var target = this;
-	if(!$('#tooltip').exists()){ $('<div id="tooltip"></div>').appendTo($('body')); }
-	$('#tooltip').data('targetTitle', $(this).attr('title'));
-	$(this).attr('title', '');
-	$('#tooltip')
-		.text(message)
-		.css( { top : $(target).offset().top + 30 - $(document).scrollTop(),
-		        left : $(target).offset().left - $(document).scrollLeft() })
-		.fadeIn(500);
-        var close = function(){
-		$('#tooltip').fadeOut(500);
-		$(target).attr('title', $('#tooltip').data('targetTitle'));
-        };
-	$(this).one('mouseleave', close);
-        setTimeout(close, 3000);
-	return this;
+$.fn.tooltip = function(message, options){
+ 	var settings = {
+            showEvent: 'mouseenter',
+            hideEvent: 'mouseleave',
+            timeout: false,
+            styles: {},
+            position: 'bottomLeft',
+            className: ""
+	};
+
+	if(options) {
+		$.extend(settings, options);
+	}
+
+        var positions = {
+            bottomLeft: function(target){
+                return  {
+                    top : $(target).offset().top + $(target).outerHeight() + 10,
+		    left : $(target).offset().left - 10
+                }
+            },
+
+            rightMiddle: function(target){
+                return  {
+                    top : $(target).offset().top + ($(target).outerHeight() / 2) - ($('#tooltip').outerHeight() / 2),
+		    left : $(target).offset().left + $(target).width() + 10
+                }
+            }
+        }
+
+        return $(this).each(function(){
+            var target = this;
+            var show = function(){
+                $('#tooltip').stop().remove(); // if old tooltip is still animated
+                $('<div id="tooltip"></div>').appendTo($('body'));
+                $('#tooltip')
+                    .data('targetTitle', $(target).attr('title'))
+                    .addClass(settings.className)
+                    .html(message)
+                    .append("<span class='tick " + settings.position + "'>");
+                $(target).attr('title', '');
+                $('#tooltip').css({visibility: "hidden", display: "block"});
+                $.extend(settings.styles, positions[settings.position](target));
+                $('#tooltip').css({visibility: "", display: ""});
+                $('#tooltip').css(settings.styles).fadeIn(200);
+            }
+
+            var close = function(){
+                $('#tooltip').fadeOut(200, function(){ $(this).remove(); });
+                $(target).attr('title', $('#tooltip').data('targetTitle'));
+            };
+            if(settings.showEvent){
+                $(target).bind(settings.showEvent, show);
+                $(target).bind(settings.hideEvent, close);
+            } else {
+                show();
+                $(target).one(settings.hideEvent, close);
+            }
+
+            if(settings.timeout){
+                setTimeout(close, settings.timeout);
+            }
+	});
+}
+
+$.fn.warningTooltip = function(message, settings){
+    return $(this).tooltip(message, $.extend({ className: "warning", showEvent: false, timeout: 3000 }, settings));
+}
+
+$.fn.helpTooltip = function(message){
+    return $(this).tooltip(message, { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" });
 }
 
 $.tag = function(tagName, content, attrs){

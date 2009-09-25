@@ -90,6 +90,9 @@
 					|| $.editable.types['defaults'].reset;
 		var callback = settings.callback || function() { };
 
+                /* TASKBOARD: readyCallback for Taskboard */
+                var readyCallback = settings.readyCallback || function() { };
+                
 		/* add custom event if it does not exist */
 		if  (!$.isFunction($(this)[settings.event])) {
 			$.fn[settings.event] = function(fn){
@@ -222,6 +225,9 @@
 
 				/* add created form to self */
 				$(self).append(form);
+
+                                /* TASKBOARD: readyCallback called for Taskboard */
+                                readyCallback.apply(self, [settings]);
 
 				/* attach 3rd party plugin if requested */
 				plugin.apply(form, [settings, self]);

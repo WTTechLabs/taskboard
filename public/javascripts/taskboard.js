@@ -172,7 +172,16 @@ TASKBOARD.builder.options = {
 /* String constants */
 // TODO: get rid of this
 TASKBOARD.builder.strings = {
-	columnHeaderTitle : "Double-click to edit"
+	columnHeaderTitle : "Double-click to edit",
+
+        tagsTooltip: "use '<strong>,</strong>' to add multiple tags<br/>e.g.: <strong>exempli, gratia</strong>",
+
+        notesTooltip: "<p>You can use Markdown syntax:</p>" +
+                     "<p># This is an H1<br/> ## This is an H2, etc...</p>"+
+                     "<p>**<strong>bold text</strong>** <br/><em>_italic text_</em></p>"+
+                     "<p>* first list item<br/>* second list item</p>" +
+                     "<p>1. first ordered list item<br/>2. second ordered list item</p>" +
+                     "Learn more from <a rel='external' href='http://daringfireball.net/projects/markdown/basics'>official Markdown syntax guide</a>."
 };
 
 TASKBOARD.builder.actions = {
@@ -237,9 +246,9 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 			.bind("click", function(ev){ 
 				ev.preventDefault();
 				if($(this).parent().find("ol.cards").children().length !== 0){
-					$(this).tooltip("You cannot delete a column that is not empty!");
+                                        $(this).warningTooltip("You cannot delete a column that is not empty!");
 				} else if ($("#taskboard .column").length == 1) {
-					$(this).tooltip("You cannot delete last column!");
+					$(this).warningTooltip("You cannot delete last column!");
 				}else {
 					TASKBOARD.remote.api.deleteColumn($(this).parent().data('data').id);
 					$(this).parent().fadeOut(1000, function(){ $(this).remove(); } );
@@ -264,9 +273,9 @@ TASKBOARD.builder.buildRowMeta = function(row){
 				ev.preventDefault();
 				var cards = $(".column .row_" + row.id).children();
 				if(cards.length !== 0){
-					$(this).tooltip("You cannot delete a row that is not empty!");
+					$(this).warningTooltip("You cannot delete a row that is not empty!", { position: "rightMiddle" });
 				} else if($("#metaLane .row").length == 1) {
-					$(this).tooltip("You cannot delete last row!");
+					$(this).warningTooltip("You cannot delete last row!", { position: "rightMiddle" });
 				} else {
 					TASKBOARD.remote.api.deleteRow(row.id);
 					$(".row_" + row.id).fadeOut(1000, function(){ $(this).remove(); } );
@@ -469,6 +478,9 @@ TASKBOARD.builder.buildBigCard = function(card){
 			ev.preventDefault();
 		}).find(":text").click(function() { $(this).val(""); });
 
+                bigCard.find('#inputTags').helpTooltip(TASKBOARD.builder.strings.tagsTooltip);
+
+
 		bigCard.find('#name')
 			.editable(function(value, settings){
 					TASKBOARD.remote.api.renameCard(card.id, value);
@@ -477,33 +489,28 @@ TASKBOARD.builder.buildBigCard = function(card){
 					return value.escapeHTML();
 				}, { height: 'none', width: '100%',
 					 submit : 'Save', cancel : 'Cancel', onblur : 'ignore',
-					 data : function(){ return $(this).closest('dl').data('data').name; } })
-			.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered"); })
+					 data : function(){ return $(this).closest('dl').data('data').name; },
+                                         readyCallback: function(){ $(this).removeClass("hovered"); }
+                                     })
+			.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered");})
 			.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
 		bigCard.find('#notes')
-			.editable(function(value, settings){
+			.editable(function(value){
 					TASKBOARD.remote.api.updateCardNotes(card.id, value);
 					card.notes = value;
 					return value ? (new Showdown.converter()).makeHtml(value.escapeHTML()) : "";
 				}, { height: '200px', width: '100%',
 					 type : 'textarea', submit : 'Save', cancel : 'Cancel', onblur : 'ignore',
-					 data : function(){ return $(this).closest('dl').data('data').notes; } })
+					 data : function(){ return $(this).closest('dl').data('data').notes; },
+                                         readyCallback : function(){
+                                             $(this).removeClass("hovered").find("textarea").helpTooltip(TASKBOARD.builder.strings.notesTooltip);
+                                         }
+                                     })
 			.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered"); })
 			.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
 		bigCard.find('#progress').editable(function(val){
-			var updatedDateString = card.hours_left_updated;
-			var updatedToday = false;
-			if(updatedDateString){
-				var updatedDate = new Date();
-				updatedDate.setISO8601(updatedDateString);
-				var now = new Date();
-				if(now.getYear() == updatedDate.getYear() && now.getMonth() == updatedDate.getMonth() && now.getDay() == updatedDate.getDay()){
-					updatedToday = true;
-				}
-			}
-			var value;
 			if(!isNaN(val) && val >= 0) {
 					TASKBOARD.remote.api.updateCardHours(card.id, val, $(this).find("select").val());
 					TASKBOARD.remote.get.cardBurndown(card.id, function(data){
@@ -515,7 +522,11 @@ TASKBOARD.builder.buildBigCard = function(card){
 			} else {
 				return this.revert;
 			}
-		}, { type : 'textselect', onblur : 'ignore', submit : 'Save', cancel : 'Cancel' })
+		}, { type : 'textselect', onblur : 'ignore', submit : 'Save', cancel : 'Cancel',
+                    readyCallback: function(){
+                        $(this).removeClass("hovered");
+                    }
+                })
 		.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered"); })
 		.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
@@ -878,7 +889,7 @@ TASKBOARD.loadFromJSON = function(taskboard){
                             TASKBOARD.data.name = value;
                             return value.escapeHTML();
                         } else {
-                            $(this).tooltip("Name cannot be blank!");
+                            $(this).warningTooltip("Name cannot be blank!");
                             return this.revert;
                         }
                     }, { event : "dblclick", data : function(){ return TASKBOARD.data.name; } })
