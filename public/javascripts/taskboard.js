@@ -174,13 +174,14 @@ TASKBOARD.builder.options = {
 TASKBOARD.builder.strings = {
 	columnHeaderTitle : "Double-click to edit",
 
-        tagsTooltip: "use '<strong>,</strong>' to add multiple tags<br/>e.g.: <strong>exempli, gratia</strong>",
+        tagsTooltip: "You can use '<strong>,</strong>' to add multiple tags<br/>e.g.: <strong>exempli, gratia</strong>",
 
         notesTooltip: "<p>You can use Markdown syntax:</p>" +
-                     "<p># This is an H1<br/> ## This is an H2, etc...</p>"+
-                     "<p>**<strong>bold text</strong>** <br/><em>_italic text_</em></p>"+
+                     "<p># This is an H1<br/> ### This is an H3, etc...</p>"+
+                     "<p>**<strong>bold text</strong>** <em>_italic text_</em></p>"+
                      "<p>* first list item<br/>* second list item</p>" +
                      "<p>1. first ordered list item<br/>2. second ordered list item</p>" +
+                     "<p>Remember to put empty line to start new paragraph.</p>"+
                      "Learn more from <a rel='external' href='http://daringfireball.net/projects/markdown/basics'>official Markdown syntax guide</a>."
 };
 
