@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>Home | JavaScript Testing Results</title>
+  <link rel="stylesheet" href="screw.css" type="text/css" charset="utf-8" />
+  <script type="text/javascript" src="../../../vendor/plugins/blue-ridge/lib/blue-ridge.js"></script>
+</head>
+
+<body>
+
+<dl id="projects">
+  <dt>Dummy project</dt>
+  <dd>
+  <ul class="taskboards">
+  <li>
+    <a href="#open">Brand new test taskboard</a>
+    <ul class="actions">
+    <li>
+      <a href="#clone" class="cloneTaskboard">Clone</a>
+    </li>
+    </ul>
+  </li>
+  <li class="addTaskboard">
+    <form action="#add_taskboard" method="get">
+    <fieldset>
+      <input type="hidden" name="project_id" value="42"/>
+      <label for="taskboard_name_1">Add a new taskboard to this project</label>
+      <div class="inputs">
+        <input type="text" id="taskboard_name_1" name="name" value="Enter some nice name for your new taskboard"/>
+        <input type="submit" value="Add"/>
+      </div>
+    </fieldset>
+    </form>
+  </li>
+  </ul>
+  </dd>
+
+  <dd class="addProject">
+    <form action="#add" method="get">
+    <fieldset>
+      <label for="project_name">Add a new project</label>
+      <div class="inputs">
+        <input type="text" id="project_name" name="name" value="Enter some nice name for your new project" />
+        <input type="submit" value="Add"/>
+      </div>
+    </fieldset>
+    </form>
+  </dd>
+</dl>
+
+</body>
+</html>

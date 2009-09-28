@@ -46,7 +46,7 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 			<li><a class="actionShowTagSearch" href="#" title="Filter cards by tags">Tags</a></li>
 			<li><a class="actionToggleAll" href="#" title="Zoom cards view">Zoom</a></li>
 			<li><a class="actionShowBurndown" href="#" title="Show burndown chart for this taskboard">Burndown</a></li>
-			<li class="user"><span title="You are logged in as '<%= session[:user].username %>' user"><%= session[:user].username %></span> - <%= link_to "Logout", { :controller => "login", :action => "logout" }, :title => "Logout from Taskboard app" %></li>
+			<li class="user"><%= render :partial => "login/user_meta" %></li>
 		</ul>
 	</div>
 		<form id="formActions" action="#">

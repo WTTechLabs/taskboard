@@ -1,7 +1,9 @@
 # taskboard with some columns, 2 rows and many cards
 big_taskboard:
   name: "Many cards inside"
+  project: test_project
 
 empty_taskboard:
   name: "Empty taskboard (no rows, columns, cards)"
+  project: test_project
 

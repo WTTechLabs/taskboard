@@ -9,6 +9,43 @@ require 'spec/rails'
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
+class String
+  def decode_json
+    ActiveSupport::JSON.decode(self)
+  end
+end
+
+module UserSessionAwareActions
+
+  EDITOR = User.new(:username => 'editor', :editor => true)
+  VIEWER = User.new(:username => 'viewer', :editor => false)
+
+  def get_as_editor(action, params = {})
+    get_as_user action, params, EDITOR
+  end
+
+  def post_as_editor(action, params = {})
+    post_as_user action, params, EDITOR
+  end
+
+  def get_as_viewer(action, params = {})
+    get_as_user action, params, VIEWER
+  end
+
+  def post_as_viewer(action, params = {})
+    post_as_user action, params, VIEWER
+  end
+
+  def get_as_user(action, params, user)
+    get action, params, {:user_id => 1, :editor => user.editor, :user => user}
+  end
+
+  def post_as_user(action, params, user)
+    post action, params, {:user_id => 1, :editor => user.editor, :user => user}
+  end
+
+end
+
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
   # lines, delete config/database.yml and disable :active_record
@@ -16,7 +53,9 @@ Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-
+  
+  config.include(UserSessionAwareActions, :type => :controller)
+  
   # == Fixtures
   #
   # You can declare fixtures for each example_group like this:
@@ -49,6 +88,8 @@ Spec::Runner.configure do |config|
   # 
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
+
+
 
 module BeforeAndAfter
 

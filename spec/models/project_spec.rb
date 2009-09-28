@@ -15,16 +15,29 @@
 # You should have received a copy of the GNU General Public License
 # along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 
-class Row < ActiveRecord::Base
-  belongs_to :taskboard
-  has_many :cards
-  
-  acts_as_list :scope => :taskboard
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-  DEFAULT_NAME = 'Brave new row'
+describe Project do
+  fixtures :projects, :taskboards
 
-  def clone taskboard_id = taskboard_id
-    Row.new(:name => name, :position => position, :taskboard_id => taskboard_id)
+  it "should create a new instance with given name" do
+    Project.create!(:name => "Test Project")
+  end
+
+  it "should not be valid with empty name" do
+    [nil, "", " ", "    " ].each { |invalid_name|
+        project = Project.new(:name => invalid_name)
+        project.should_not be_valid 
+    }
+  end
+
+  it "should have correct number of taskboards assigned" do
+    project = projects(:test_project)
+    project.should have(2).taskboards
+  end
+
+  it "should define default project's name" do
+    Project::DEFAULT_NAME.should_not be_empty
   end
 
 end

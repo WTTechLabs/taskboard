@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090707130233) do
+ActiveRecord::Schema.define(:version => 20090922100811) do
 
   create_table "cards", :force => true do |t|
     t.text     "name",                        :null => false
@@ -43,6 +43,12 @@ ActiveRecord::Schema.define(:version => 20090707130233) do
     t.datetime "date",       :null => false
     t.integer  "left",       :null => false
     t.integer  "card_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "projects", :force => true do |t|
+    t.text     "name",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -85,7 +91,10 @@ ActiveRecord::Schema.define(:version => 20090707130233) do
     t.text     "name",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "project_id"
   end
+
+  add_index "taskboards", ["project_id"], :name => "fk_taskboards_project_id"
 
   create_table "users", :force => true do |t|
     t.string   "username",        :null => false

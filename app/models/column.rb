@@ -21,6 +21,8 @@ class Column < ActiveRecord::Base
 
   acts_as_list :scope => :taskboard
 
+  DEFAULT_NAME = 'Brave new column'
+
   def clone taskboard_id = taskboard_id
     Column.new(:name => name, :position => position, :taskboard_id => taskboard_id)
   end
@@ -31,7 +33,4 @@ class Column < ActiveRecord::Base
     super(options)
   end
 
-  def self.default_name
-    'Brave new column'
-  end
 end

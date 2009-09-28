@@ -19,9 +19,13 @@ class Taskboard < ActiveRecord::Base
 
   validates_presence_of :name
 
+  belongs_to :project
+
   has_many :cards
   has_many :columns
   has_many :rows
+
+  DEFAULT_NAME = "Brand new taskboard"
 
   def clone
     clonned_taskboard = Taskboard.new(:name => name)

@@ -21,7 +21,7 @@ class TaskboardController < JuggernautSyncController
   before_filter :authorize_read_only, :except => ["show", "index", "get_taskboard", "load_burndown"]
 
   def index
-    @taskboards = Taskboard.find(:all, :order => 'name')
+    redirect_to :controller => 'project', :action => 'index'
   end
 
   def show
@@ -29,14 +29,15 @@ class TaskboardController < JuggernautSyncController
   end
 
   def add_taskboard
-    if params[:name].blank?
-      flash[:error] = "Taskboard name cannot be empty!"
+    if params[:project_id].blank?
+      flash[:error] = "You need to specify project id!"
       redirect_to :action => 'index'
     else
       taskboard = Taskboard.new
-      taskboard.name = params[:name]
-      taskboard.columns << Column.new(:name => Column.default_name)
-      taskboard.rows << Row.new(:name => Row.default_name)
+      taskboard.name = params[:name].blank? ? Taskboard::DEFAULT_NAME : params[:name]
+      taskboard.project_id = params[:project_id]
+      taskboard.columns << Column.new(:name => Column::DEFAULT_NAME)
+      taskboard.rows << Row.new(:name => Row::DEFAULT_NAME)
       taskboard.save!
       redirect_to :action => 'show', :id => taskboard.id
     end
@@ -54,7 +55,7 @@ class TaskboardController < JuggernautSyncController
       redirect_to :action => 'show', :id => clonned.id
     end
   end
-  
+
   def get_taskboard
     render :json => Taskboard.find(params[:id].to_i).to_json
   end
@@ -199,14 +200,14 @@ class TaskboardController < JuggernautSyncController
 
   private
 
-    def insert_column taskboard_id, name = Column.default_name, position = 1
+    def insert_column taskboard_id, name = Column::DEFAULT_NAME, position = 1
       column = Column.new(:name => name, :taskboard_id => taskboard_id)
       column.save!
       column.insert_at(position)
       return column
     end
 
-    def insert_row taskboard_id, name = Row.default_name, position = nil
+    def insert_row taskboard_id, name = Row::DEFAULT_NAME, position = nil
       position ||= Taskboard.find(taskboard_id).rows.size + 1
       row = Row.new(:name => name, :taskboard_id => taskboard_id)
       row.save!

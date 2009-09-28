@@ -1,0 +1,56 @@
+<%#
+Copyright (C) 2009 Cognifide
+
+This file is part of Taskboard.
+
+Taskboard is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Taskboard is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
+-%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>Taskboards</title>
+    <%= stylesheet_link_tag 'home' %>
+    <%= javascript_include_tag 'lib/jquery', 'lib/jquery-ui.min', 'utils', 'home' %>
+</head>
+
+<body id="home">
+
+<div id="user_meta">
+Hello <%= render :partial => "login/user_meta" %>
+</div>
+
+<h1>Taskboard</h1>
+
+<dl id="projects">
+	<%= render :partial => 'project', :collection => @projects %>
+	<% if session[:editor] -%>
+	<dd class="addProject">
+		<form action="/project/add" method="get">
+		<fieldset>
+			<label for="project_name">Add a new project</label>
+			<div class="inputs">
+			<input type="text" id="project_name" name="name" value="Enter some nice name for your new project" />
+			<input type="submit" value="Add"/>
+			</div>
+		</fieldset>
+		</form>
+	</dd>
+	<% end -%>
+</dl>
+
+
+<%= render :partial => 'taskboard/meta' %>
+</body>
+</html>

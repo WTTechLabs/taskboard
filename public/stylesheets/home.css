@@ -27,39 +27,178 @@ h1 {
 	background: url(/images/logo.png) no-repeat scroll 0 0;
 }
 
-#home ul.actions {
-	width: 681px;
-	margin: 50px auto;
+input[type=text] {
+	border: 1px solid #CCCCCC;
+	padding: 2px;
+	color: #999999;
 }
 
-	#home ul.actions > li {
+input[type=text]:focus {
+	color: #000000;
+}
+
+#home #user_meta {
+	position: absolute;
+	top: 5px; right: 5px;
+	font-size: 0.8em;
+}
+
+#home #user_meta .user_name {
+	font-weight: bold;
+}
+
+#projects {
+	width: 450px;
+	margin: 0 auto 20px;
+}
+
+#projects a {
+	text-decoration: none;
+	color: #000000;
+}
+
+#projects a:hover {
+	text-decoration: underline;
+}
+
+#projects dt {
+	background: transparent url(/images/section_opened.png) no-repeat scroll 3px 50%;
+	font-family: Futura,"Century Gothic","URW Gothic L",Helvetica,sans-serif;
+	font-size: 1.6em;
+	margin-top: 15px;
+	padding: 0 25px;
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+}
+
+	#projects dt.closed {
+		background-image: url(/images/section_closed.png);
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+	}
+
+	#projects dt.toggleable:hover {
+		background-color: #E4F7FF;;
+		cursor: pointer;
+	}
+
+#projects dd.addProject {
+	background: #E9FFE0 url(/images/plus.png) no-repeat 5px 10px;
+	border: 1px solid #CCCCCC;
+	padding-top: 5px;
+	margin-top: 15px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#projects dd.addProject label {
+	font-family: Futura,"Century Gothic","URW Gothic L",Helvetica,sans-serif;
+	font-size: 1.3em;
+}
+
+#projects dd.toggleable.addProject label:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#projects dd.closed.addProject {
+	border-color: #FFFFFF;
+	background-color: #FFFFFF;
+}
+
+#projects dd.closed.addProject:hover {
+	border-color: #CCCCCC;
+	background-color: #E9FFE0;
+}
+
+#projects dd.closed.addProject .inputs {
+	display: none;
+}
+
+#projects dd.addProject input[type=text] {
+	width: 335px;
+}
+
+#projects dt.toggleable.addProject:hover {
+	text-decoration: underline;
+}
+
+#projects dt .counter {
+	font-size: 0.8em;
+	color: #777777;
+}
+
+#projects dd {
+	padding: 5px 25px;
+	border-top: 1px solid #DDDDDD;
+}
+
+#projects dd ul li {
+	background: transparent url(/images/taskboard.png) no-repeat scroll 4px 50%;
+	padding: 3px 0 3px 25px;
+	position: relative;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+	#projects dd ul li ul.actions {
+		display: none;
+		position: absolute;
+		top: 3px;
+		right: 3px;
+	}
+
+	#projects dd ul li ul.actions li {
+		margin: 0; padding: 0;
+		background: none;
+		display: inline;
+	}
+
+#projects dd ul li:hover {
+	background-color: #E4F7FF;
+}
+
+#projects dd ul li.add {
+	background-color: #E9FFE0;
+}
+	#projects dd ul li:hover ul.actions {
+		display: inline;
+	}
+
+
+#projects dd ul li.addTaskboard {
+	background: #E9FFE0 url(/images/plus.png) no-repeat 3px 5px;
+	padding-bottom: 5px;
+	border: 1px solid #CCCCCC;
+	margin-top: 2px;
+}
+
+#projects dd ul li.closed.addTaskboard {
+	border: 1px solid #FFFFFF;
+	background-color: #FFFFFF;
+}
+
+#projects dd ul li.addTaskboard:hover {
+	border: 1px solid #CCCCCC;
+	background-color: #E9FFE0;
+}
+	#projects dd ul li.closed.addTaskboard .inputs {
+		display: none;
+	}
+
+	#projects .addTaskboard label {
+		font-size: 0.8em;
+	}
+
+	#projects .toggleable.addTaskboard label:hover {
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	#projects .addTaskboard input[type=text] {
 		width: 300px;
-		padding: 20px;
-		float: left;
-		border-right: 1px dashed #CCCCCC;
+		border: 1px solid #CCCCCC;
+		padding: 2px;
 	}
-
-	#home ul.actions > li:last-child {
-		border-right: none;
-	}
-
-	#home ul.actions > li h2 {
-		font-size: 1em;
-		font-weight: bold;
-		margin-bottom: 0.5em;
-	}
-	
-#home ul#taskboards li {
-	margin-bottom: 0.3em;
-}
-
-#home .error {
-    background-color: #CC0000;
-    color: #FFFFFF;
-    padding: 3px;
-    text-align: center;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-}
-
 

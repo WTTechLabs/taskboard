@@ -53,7 +53,7 @@ describe Column, "while working with database" do
   end
 
   it "should define default name" do
-    Column.default_name.should_not be_empty
+    Column::DEFAULT_NAME.should_not be_empty
   end
 
   it "should clone right poperties" do

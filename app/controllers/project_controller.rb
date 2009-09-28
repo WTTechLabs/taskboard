@@ -15,14 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+class ProjectController < ApplicationController
 
-describe JstestController do
-  integrate_views
-  
-  it "should show test results page" do
-    get 'index', {}, {:user_id => 1, :editor => true}
-    response.body.should include('<title>Testing JavaScript for Taskboard</title>')
+  before_filter :authorize_read_only, :except => ["index"]
+
+  def index
+    @projects = Project.find(:all, :order => "name")
   end
-  
+
+  def add
+    project = Project.new
+    project.name = params[:name].blank? ? Project::DEFAULT_NAME : params[:name]
+    project.save!
+    redirect_to :action => 'index'
+  end
+
 end

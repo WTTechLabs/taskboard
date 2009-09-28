@@ -48,9 +48,9 @@ describe Row, "while working with database" do
   end
 
   it "should define default name" do
-    Row.default_name.should_not be_empty
+    Row::DEFAULT_NAME.should_not be_empty
   end
-  
+
   it "should contain valid number of cards" do 
     row = rows(:first_row_in_big)
     row.should have(5).cards

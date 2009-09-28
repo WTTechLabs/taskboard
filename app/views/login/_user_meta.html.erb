@@ -16,15 +16,4 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 -%>
-<li>
-	<%= link_to truncate(h(taskboard.name), :length => 35), { :controller => 'taskboard', :action => 'show', :id => taskboard }, :title => "Open '#{h(taskboard.name)}' taskboard" %>
-	<% if session[:editor] -%>
-	<ul class="actions">
-		<li>
-			<% link_to({ :controller => 'taskboard', :action => 'clone_taskboard', :id => taskboard }, :title => "Create a copy of '#{h(taskboard.name)}' taskboard", :class => 'cloneTaskboard') do -%>
-			<img src="/images/taskboard_clone.png" alt="Create a copy of '<%= h(taskboard.name) %>' taskboard" />
-			<% end -%>
-		</li>
-	</ul>
-	<% end -%>
-</li>
+<strong class="user_name" title="You are logged in as '<%= session[:user].username %>' user"><%= session[:user].username %></strong> - <%= link_to "Logout", { :controller => "login", :action => "logout" }, :title => "Logout from Taskboard app" %>

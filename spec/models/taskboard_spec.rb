@@ -36,7 +36,11 @@ describe Taskboard do
         taskboard.should_not be_valid 
     }
   end
-  
+
+  it "should define default name" do
+    Taskboard::DEFAULT_NAME.should_not be_empty
+  end
+
   it "should generate burndown data for whole taskboard" do
     taskboard = taskboards(:big_taskboard)
     

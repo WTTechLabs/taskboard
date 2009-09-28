@@ -15,9 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 
-class JstestController < ApplicationController
+class Project < ActiveRecord::Base
 
-def index
-end
+  validates_presence_of :name
+
+  has_many :taskboards
+
+  DEFAULT_NAME = "Brand new project"
 
 end
