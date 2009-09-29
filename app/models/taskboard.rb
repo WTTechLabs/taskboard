@@ -28,7 +28,7 @@ class Taskboard < ActiveRecord::Base
   DEFAULT_NAME = "Brand new taskboard"
 
   def clone
-    clonned_taskboard = Taskboard.new(:name => name)
+    clonned_taskboard = Taskboard.new(:name => name, :project => project)
 
     columns_map = {}
     rows_map = {}

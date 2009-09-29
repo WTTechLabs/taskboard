@@ -67,6 +67,7 @@ describe Taskboard, "while cloning" do
 
     clonned.should_not eql(taskboard)
     clonned.name.should eql(taskboard.name)
+    clonned.project.should eql(taskboard.project)
     clonned.should have(6).cards
 
     first_column = columns(:first_column_in_big)
