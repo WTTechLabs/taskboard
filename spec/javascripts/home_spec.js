@@ -1,6 +1,11 @@
 require("spec_helper.js");
 require("../../public/javascripts/home.js");
 
+// mocking utils:
+String.prototype.trim = function(){ return "" }
+jQuery.fn.exists = function(){ return false };
+jQuery.fn.editable = function(){ return this };
+
 Screw.Unit(function(){
 
   describe("Home", function(){
@@ -66,12 +71,12 @@ Screw.Unit(function(){
 
       describe("clone action links", function(){
 
-        it("should toggle class 'add' on list element containing hovered clone icon", function(){
+        it("should toggle class 'clone' on list element containing hovered clone icon", function(){
           var icon = $(".cloneTaskboard").eq(0);
           icon.trigger('mouseenter');
-          expect(icon.closest(".taskboards > li")).to(match_selector, ".add");
+          expect(icon.closest(".taskboards > li")).to(match_selector, ".clone");
           icon.trigger('mouseleave');
-          expect(icon.closest(".taskboards > li")).to_not(match_selector, ".add");
+          expect(icon.closest(".taskboards > li")).to_not(match_selector, ".clone");
         });
 
       });
@@ -81,7 +86,6 @@ Screw.Unit(function(){
         it("should highlight text field when empty name is submitted", function(){
           var form = $(".addProject form"),
               text = $(".addProject form :text");
-          String.prototype.trim = function(){ return "" } // mock 'trim' so utils.js is not needed
           mock(window).should_receive("$").exactly("once").and_return(form);
           mock(form).should_receive("find").exactly("once").and_return(text);
           mock(text).should_receive("effect").with_arguments("highlight", { color: "#FF0000" }).exactly("once").and_return(text);

@@ -71,7 +71,7 @@ class TaskboardController < JuggernautSyncController
       send_error 'Taskboard name cannot be empty!'
     end
   end
-  
+
   def add_column
     column = insert_column params[:taskboard_id].to_i, params[:name]
     render :json => sync_add_column(column)

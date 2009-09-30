@@ -47,6 +47,82 @@ input[type=text]:focus {
 	font-weight: bold;
 }
 
+
+/* Generic action icons' styles */
+
+#projects ul.actions {
+	display: none;
+	position: absolute;
+	bottom: 5px;
+	right: 3px;
+	font-size: 11px;
+	color: #777777;
+}
+
+	#projects ul.actions li {
+		margin: 0; padding: 0;
+		background: none;
+		display: inline;
+		opacity: 0.6;
+	}
+
+	#projects ul.actions li:hover {
+		opacity: 1;
+	}
+
+		#projects ul.actions li img {
+			vertical-align: bottom;
+		}
+
+#projects li:hover ul.actions,
+#projects dt:hover ul.actions {
+	display: inline;
+}
+
+#projects dt ul.actions {
+	right: 8px;
+}
+
+/* Global actions */
+
+#projects .globalActions {
+	position: relative;
+	height: 25px;
+}
+
+#projects .globalActions ul.actions {
+	display: block;
+	bottom: 0;
+}
+
+#projects .globalActions ul.actions li {
+	float: left;
+	margin-left: 5px;
+}
+
+#projects .globalActions ul.actions li a {
+	display: block;
+	padding: 4px 4px 4px 18px;
+	background: transparent url(/images/expand_all.png) no-repeat 2px 50%;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#projects .globalActions ul.actions li a:hover {
+	background-color: #E4F7FF;;
+}
+
+#projects .globalActions ul.actions li a.expand {
+	background-image: url(/images/expand_all.png);
+}
+
+#projects .globalActions ul.actions li a.collapse {
+	background-image: url(/images/collapse_all.png);
+}
+
+
+/* Projects list */
+
 #projects {
 	width: 450px;
 	margin: 0 auto 20px;
@@ -61,16 +137,33 @@ input[type=text]:focus {
 	text-decoration: underline;
 }
 
+/* Project title */
+
 #projects dt {
 	background: transparent url(/images/section_opened.png) no-repeat scroll 3px 50%;
-	font-family: Futura,"Century Gothic","URW Gothic L",Helvetica,sans-serif;
-	font-size: 1.6em;
-	margin-top: 15px;
 	padding: 0 25px;
+	position: relative;
+	margin-top: 15px;
+	
 	-moz-border-radius: 5px 5px 0 0;
 	-webkit-border-top-left-radius: 5px;
 	-webkit-border-top-right-radius: 5px;
 }
+
+	#projects dt.first {
+		margin-top: 0;
+	}
+
+		#projects dt .name {
+			font-family: Futura,"Century Gothic","URW Gothic L",Helvetica,sans-serif;
+			font-size: 1.6em;
+		}
+
+		#projects dt .counter {
+			color: #777777;
+		}
+
+	/* JS enabled styles */
 
 	#projects dt.closed {
 		background-image: url(/images/section_closed.png);
@@ -79,126 +172,153 @@ input[type=text]:focus {
 	}
 
 	#projects dt.toggleable:hover {
-		background-color: #E4F7FF;;
+		background-color: #E4F7FF;
 		cursor: pointer;
 	}
 
-#projects dd.addProject {
-	background: #E9FFE0 url(/images/plus.png) no-repeat 5px 10px;
-	border: 1px solid #CCCCCC;
-	padding-top: 5px;
-	margin-top: 15px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-}
+	#projects dt.rename .name {
+		background-color: #B4EAFF;
+	}
 
-#projects dd.addProject label {
-	font-family: Futura,"Century Gothic","URW Gothic L",Helvetica,sans-serif;
-	font-size: 1.3em;
-}
+	/* Name editing form*/
+	
+	#projects dt .name form {
+		display: inline;
+	}
 
-#projects dd.toggleable.addProject label:hover {
-	text-decoration: underline;
-	cursor: pointer;
-}
+	#projects dt .name form input,
+	#projects dt .name form textarea {
+		font-size: 1em;
+		font-family: Futura,"Century Gothic","URW Gothic L",Helvetica,sans-serif;
+		padding: 0 5px;
+		max-width: 300px;
+	}
 
-#projects dd.closed.addProject {
-	border-color: #FFFFFF;
-	background-color: #FFFFFF;
-}
+/* Projects' taskboards */
 
-#projects dd.closed.addProject:hover {
-	border-color: #CCCCCC;
-	background-color: #E9FFE0;
-}
-
-#projects dd.closed.addProject .inputs {
-	display: none;
-}
-
-#projects dd.addProject input[type=text] {
-	width: 335px;
-}
-
-#projects dt.toggleable.addProject:hover {
-	text-decoration: underline;
-}
-
-#projects dt .counter {
-	font-size: 0.8em;
-	color: #777777;
-}
-
-#projects dd {
+#projects .taskboards {
 	padding: 5px 25px;
 	border-top: 1px solid #DDDDDD;
 }
 
-#projects dd ul li {
-	background: transparent url(/images/taskboard.png) no-repeat scroll 4px 50%;
-	padding: 3px 0 3px 25px;
-	position: relative;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-}
-
-	#projects dd ul li ul.actions {
-		display: none;
-		position: absolute;
-		top: 3px;
-		right: 3px;
+	#projects .taskboards > ul > li {
+		background: transparent url(/images/taskboard.png) no-repeat scroll 4px 50%;
+		padding: 3px 0 3px 25px;
+		position: relative;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
 	}
 
-	#projects dd ul li ul.actions li {
-		margin: 0; padding: 0;
-		background: none;
-		display: inline;
+	#projects .taskboards > ul > li:hover {
+		background-color: #E4F7FF;
 	}
 
-#projects dd ul li:hover {
-	background-color: #E4F7FF;
-}
-
-#projects dd ul li.add {
-	background-color: #E9FFE0;
-}
-	#projects dd ul li:hover ul.actions {
-		display: inline;
+	#projects .taskboards > ul > li.clone {
+		background-color: #E9FFE0;
 	}
 
+	/* Add taskboard section */
 
-#projects dd ul li.addTaskboard {
-	background: #E9FFE0 url(/images/plus.png) no-repeat 3px 5px;
-	padding-bottom: 5px;
+	#projects .taskboards .addTaskboard {
+		background: #E9FFE0;
+		padding: 0;
+		border: 1px solid #CCCCCC;
+		margin-top: 2px;
+	}
+
+			#projects .addTaskboard form {
+				padding: 3px;
+			}
+
+			#projects .addTaskboard label {
+				background:  url(/images/plus.png) no-repeat 0px 50%;
+				padding-left: 20px;
+				font-size: 0.8em;
+				display:block;
+			}
+
+			#projects .addTaskboard .inputs {
+				padding-left: 20px;
+			}
+
+			#projects .addTaskboard input[type=text] {
+				width: 300px;
+			}
+
+		/* JS enabled styles */
+
+		#projects .taskboards .closed.addTaskboard {
+			border: 1px solid #FFFFFF;
+			background-color: #FFFFFF;
+			opacity: 0.6;
+		}
+
+			#projects .taskboards .closed.addTaskboard .inputs {
+				display: none;
+			}
+
+			#projects .toggleable.addTaskboard label:hover {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+		/* :hover should override JS styles */
+
+		#projects .taskboards ul li.addTaskboard:hover {
+			border: 1px solid #CCCCCC;
+			background-color: #E9FFE0;
+			opacity: 1;
+		}
+
+/* Add project section */
+
+#projects .addProject {
+	background: #E9FFE0;
 	border: 1px solid #CCCCCC;
-	margin-top: 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 }
 
-#projects dd ul li.closed.addTaskboard {
-	border: 1px solid #FFFFFF;
-	background-color: #FFFFFF;
-}
-
-#projects dd ul li.addTaskboard:hover {
-	border: 1px solid #CCCCCC;
-	background-color: #E9FFE0;
-}
-	#projects dd ul li.closed.addTaskboard .inputs {
-		display: none;
+	#projects .addProject form {
+			padding: 5px;
 	}
 
-	#projects .addTaskboard label {
-		font-size: 0.8em;
+	#projects .addProject label {
+		font-family: Futura,"Century Gothic","URW Gothic L",Helvetica,sans-serif;
+		font-size: 1.3em;
+		background: url(/images/plus.png) no-repeat 0px 5px;
+		padding-left: 20px;
+		display:block;
 	}
 
-	#projects .toggleable.addTaskboard label:hover {
+	#projects .addProject .inputs {
+		padding-left: 20px;
+	}
+
+	#projects dd.addProject input[type=text] {
+		width: 335px;
+	}
+
+	/* JS enabled styles */
+
+	#projects .toggleable.addProject label:hover {
 		text-decoration: underline;
 		cursor: pointer;
 	}
 
-	#projects .addTaskboard input[type=text] {
-		width: 300px;
-		border: 1px solid #CCCCCC;
-		padding: 2px;
+	#projects .closed.addProject {
+		border-color: #FFFFFF;
+		background-color: #FFFFFF;
+		opacity: 0.6;
+	}
+
+	#projects .closed.addProject:hover {
+		border-color: #CCCCCC;
+		background-color: #E9FFE0;
+		opacity: 1;
+	}
+
+	#projects .closed.addProject .inputs {
+		display: none;
 	}
 

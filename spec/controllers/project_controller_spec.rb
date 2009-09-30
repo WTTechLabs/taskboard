@@ -68,4 +68,27 @@ describe ProjectController, "while adding a project" do
 
 end
 
+describe ProjectController, "while renaming project" do
+
+  it "should allow changing name of a project" do
+    project = Project.new(:name => "old name")
+    Project.should_receive(:find).with(3).and_return(project)
+    project.should_receive(:save!)
+    post_as_editor 'rename', :id => 3, :name => 'new name'
+    response.should be_success
+    response.body.decode_json["status"].should eql 'success'
+    project.name.should eql 'new name'
+  end
+
+  it "should not allow blank project name" do
+    project = Project.new(:name => "old name")
+    Project.should_receive(:find).with(3).and_return(project)
+    project.should_not_receive(:save!)
+    post_as_editor 'rename', :id => 3, :name => '    '
+    response.should be_success
+    response.body.decode_json["status"].should eql 'error'
+    project.name.should eql 'old name'
+  end
+
+end
 

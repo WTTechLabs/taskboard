@@ -90,9 +90,9 @@
 					|| $.editable.types['defaults'].reset;
 		var callback = settings.callback || function() { };
 
-                /* TASKBOARD: readyCallback for Taskboard */
-                var readyCallback = settings.readyCallback || function() { };
-                
+		/* TASKBOARD: readyCallback for Taskboard */
+		var readyCallback = settings.readyCallback || function() { };
+
 		/* add custom event if it does not exist */
 		if  (!$.isFunction($(this)[settings.event])) {
 			$.fn[settings.event] = function(fn){
@@ -226,8 +226,8 @@
 				/* add created form to self */
 				$(self).append(form);
 
-                                /* TASKBOARD: readyCallback called for Taskboard */
-                                readyCallback.apply(self, [settings]);
+				/* TASKBOARD: readyCallback called for Taskboard */
+				readyCallback.apply(self, [settings]);
 
 				/* attach 3rd party plugin if requested */
 				plugin.apply(form, [settings, self]);
@@ -291,7 +291,7 @@
 						  $(self).html(str);
 						  self.editing = false;
 						  callback.apply(self, [self.innerHTML, settings]);
-						  /* TODO: this is not dry */                              
+						  /* TODO: this is not dry */
 						  if (!$.trim($(self).html())) {
 							  $(self).html(settings.placeholder);
 						  }
@@ -318,7 +318,7 @@
 							  $(self).html(str);
 							  self.editing = false;
 							  callback.apply(self, [self.innerHTML, settings]);
-							  /* TODO: this is not dry */                              
+							  /* TODO: this is not dry */
 							  if (!$.trim($(self).html())) {
 								  $(self).html(settings.placeholder);
 							  }
@@ -338,7 +338,7 @@
 				if (!$.trim($(self).html())) {
 					$(self).html(settings.placeholder);
 				}
-			}            
+			}
 		});
 
 	};
@@ -348,7 +348,7 @@
 		types: {
 			defaults: {
 				element : function(settings, original) {
-					var input = $('<input type="hidden">');                
+					var input = $('<input type="hidden">');
 					$(this).append(input);
 					return(input);
 				},
@@ -371,7 +371,7 @@
 						/* otherwise use button with given string as text */
 						} else {
 							var submit = $('<button type="submit">');
-							submit.html(settings.submit);                            
+							submit.html(settings.submit);
 						}
 						$(this).append(submit);
 					}
@@ -389,9 +389,9 @@
 						$(cancel).click(function(event) {
 							//original.reset();
 							if ($.isFunction($.editable.types[settings.type].reset)) {
-								var reset = $.editable.types[settings.type].reset;                                                                
+								var reset = $.editable.types[settings.type].reset;
 							} else {
-								var reset = $.editable.types['defaults'].reset;                                
+								var reset = $.editable.types['defaults'].reset;
 							}
 							reset.apply(form, [settings, original]);
 							return false;

@@ -22,7 +22,7 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 <head>
     <title>Taskboards</title>
     <%= stylesheet_link_tag 'home' %>
-    <%= javascript_include_tag 'lib/jquery', 'lib/jquery-ui.min', 'utils', 'home' %>
+    <%= javascript_include_tag 'lib/jquery', 'lib/jquery-ui.min', 'utils', 'home', 'lib/jquery.jeditable' %>
 </head>
 
 <body id="home">
@@ -34,7 +34,6 @@ Hello <%= render :partial => "login/user_meta" %>
 <h1>Taskboard</h1>
 
 <dl id="projects">
-	<%= render :partial => 'project', :collection => @projects %>
 	<% if session[:editor] -%>
 	<dd class="addProject">
 		<form action="/project/add" method="get">
@@ -48,6 +47,13 @@ Hello <%= render :partial => "login/user_meta" %>
 		</form>
 	</dd>
 	<% end -%>
+	<dd class="globalActions">
+		<ul class="actions">
+			<li><a href="#expandAll" class="expand">expand all</a></li>
+			<li><a href="#collapseAll" class="collapse">collapse all</a></li>
+		</ul>
+	</dd>
+	<%= render :partial => 'project', :collection => @projects %>
 </dl>
 
 

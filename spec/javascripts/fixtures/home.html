@@ -10,14 +10,26 @@
 <body>
 
 <dl id="projects">
-  <dt>Dummy project</dt>
+  <dd class="addProject">
+    <form action="#add" method="get">
+    <fieldset>
+      <label for="project_name">Add a new project</label>
+      <div class="inputs">
+        <input type="text" id="project_name" name="name" value="Enter some nice name for your new project" />
+        <input type="submit" value="Add"/>
+      </div>
+    </fieldset>
+    </form>
+  </dd>
+
+  <dt id="project_83">Dummy project</dt>
   <dd>
   <ul class="taskboards">
   <li>
     <a href="#open">Brand new test taskboard</a>
     <ul class="actions">
     <li>
-      <a href="#clone" class="cloneTaskboard">Clone</a>
+      <a href="#clone" class="cloneTaskboard" rel="clone">Clone</a>
     </li>
     </ul>
   </li>
@@ -34,18 +46,6 @@
     </form>
   </li>
   </ul>
-  </dd>
-
-  <dd class="addProject">
-    <form action="#add" method="get">
-    <fieldset>
-      <label for="project_name">Add a new project</label>
-      <div class="inputs">
-        <input type="text" id="project_name" name="name" value="Enter some nice name for your new project" />
-        <input type="submit" value="Add"/>
-      </div>
-    </fieldset>
-    </form>
   </dd>
 </dl>
 

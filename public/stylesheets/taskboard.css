@@ -417,91 +417,50 @@
 
 .actions li {
 	width: 12px;
-        height: 12px;
-        text-indent: -9999px;
+	height: 12px;
+	text-indent: -9999px;
 }
 
 .big.actions li {
 	width: 16px;
-        height: 16px;
+	height: 16px;
 }
 
 .actions li a {
 	display: block;
 	width: 100%;
-        height: 100%;
-        background: transparent no-repeat 50% 50%;
+	height: 100%;
+	background: transparent no-repeat 50% 50%;
 }
 
 	.actions li .changeColor {
-        	background-image: url(/images/color_off.png);
+		background-image: url(/images/color_off.png);
 	}
 
 	.actions li .changeColor:hover {
-        	background-image: url(/images/color_on.png);
+		background-image: url(/images/color_on.png);
 	}
 
-        .actions li .deleteCard {
-        	background-image: url(/images/cross_off.png);
+	.actions li .deleteCard {
+		background-image: url(/images/cross_off.png);
 	}
 
 	.actions li .deleteCard:hover {
-        	background-image: url(/images/cross_on.png);
+		background-image: url(/images/cross_on.png);
 	}
 
-        .big.actions li .changeColor {
-        	background-image: url(/images/color_big_off.png);
+	.big.actions li .changeColor {
+		background-image: url(/images/color_big_off.png);
 	}
 
 	.big.actions li .changeColor:hover {
-        	background-image: url(/images/color_big_on.png);
+		background-image: url(/images/color_big_on.png);
 	}
 
 /* Form drop animation hack */
 .ui-effects-wrapper {
 	left: auto !important;
 	right: 0 !important;
-}
-
-#tooltip {
-	font-size: 11px;
-	position: absolute;
-	display: none;
-	padding: 10px;
-	width: 200px;
-	background: #FFF9CC;
-        background-repeat: no-repeat;
-        background-position: 10px 50%;
-	border: 1px solid #777777;
-        z-index: 1002;
-
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-}
-
-#tooltip .rightMiddle.tick {
-    position: absolute;
-    width: 11px; height: 100%;
-    left: -11px; top: 0;
-    display: block;
-    background: url(/images/tip-left.png) no-repeat 0 50%;
-}
-
-#tooltip .bottomLeft.tick {
-    position: absolute;
-    width: 100%; height: 11px;
-    left: 0; top: -11px;
-    display: block;
-    background: url(/images/tip-top.png) no-repeat 6px 0;
-}
-
-#tooltip strong { font-weight: bold; }
-#tooltip em { font-style: italic; }
-#tooltip p { margin-bottom: 0.5em; }
-
-#tooltip.warning {
-    padding-left: 36px;
-    background-image: url(/images/warning.png);
 }
 
 #loading {
@@ -514,7 +473,6 @@
 	left: 0;
 	opacity: 0.7;
 }
-
 
 #notifications {
 	position : fixed;
@@ -535,7 +493,6 @@
 #notifications li.success {
 	background-color : #44AA00;
 }
-
 
 .bigCard {
 	position: absolute;
@@ -573,10 +530,10 @@
 
 .bigCard #cardActions {
 	position: absolute;
-        width: auto;
-        margin: 10px;
-        top: 0;
-        right: 0;
+	width: auto;
+	margin: 10px;
+	top: 0;
+	right: 0;
 }
 
 .bigCard #notes h1,
@@ -673,10 +630,6 @@
 		color: #000000;
 	}
 
-
-
-
-
 /* Resizable
 ----------------------------------*/
 .ui-resizable { position: relative;}
@@ -699,7 +652,7 @@
 	background-color: #FFFFFF;
 	padding-left: 11px;
 	background: url(/images/tip.png) no-repeat;
-        z-index: 2000;
+	z-index: 2000;
 }
 
 #colorPicker ol {
@@ -756,3 +709,4 @@
 	border: 1px solid #CCC;
 
 }
+

@@ -30,4 +30,15 @@ class ProjectController < ApplicationController
     redirect_to :action => 'index'
   end
 
+  def rename
+    project = Project.find(params[:id].to_i)
+    if not params[:name].blank?
+      project.name = params[:name]
+      project.save!
+      render :json => { :status => 'success', :message => project.name }
+    else
+      render :json => { :status => 'error', :message => "Project's name cannot be empty" }
+    end
+  end
+
 end
