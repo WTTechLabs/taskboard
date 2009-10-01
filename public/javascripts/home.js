@@ -25,7 +25,12 @@ TASKBOARD.home = {
         var callbacks = TASKBOARD.home.callbacks;
 
         $("#projects > dt").addClass("toggleable")
-           .click(callbacks.clickProjectTitle);
+           .click(callbacks.clickProjectTitle)
+           .each(function(){
+                $(this).data("id", $(this).attr("id").match(/\d+/)[0]);
+            });
+
+        $("dt .name").editable(callbacks.renameProject, { event: 'rename', select: true, height: 'none' });
 
         $("#projects .globalActions")
             .find(".expand")
@@ -42,13 +47,6 @@ TASKBOARD.home = {
             .click(callbacks.clickRenameProject)
 
         $("form").submit(callbacks.submitForm);
-
-        $("dt").each(function(){
-            $(this).data("id", $(this).attr("id").match(/\d+/)[0]);
-        });
-
-        $("dt .name").editable(callbacks.renameProject, { event: 'rename', select: true, height: 'none' });
-
     },
     callbacks: {
         renameProject: function(value){
@@ -104,9 +102,9 @@ TASKBOARD.home = {
             var actionName = event.type === 'mouseenter' ? "(" + $(this).attr("rel") + ")" : "",
                 parentToToggle = $(this).parent().parent().parent();
             if(!parentToToggle.find("form").exists()){
-                $(this).parent().parent().parent().toggleClass($(this).attr("rel"), event.type === 'mouseenter')
-                    .find(".actionName").text(actionName);
+                parentToToggle.toggleClass($(this).attr("rel"), event.type === 'mouseenter')
             }
+            parentToToggle.find(".actionName").text(actionName);
         }
     }
 }

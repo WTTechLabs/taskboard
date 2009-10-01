@@ -213,6 +213,16 @@ input[type=text]:focus {
 		background-color: #E4F7FF;
 	}
 
+	#projects .taskboards > ul > li.empty {
+		background-image: none;
+		font-size: 0.8em;
+		font-style: italic;
+	}
+
+	#projects .taskboards > ul > li.empty:hover {
+		background-color: transparent;
+	}
+
 	#projects .taskboards > ul > li.clone {
 		background-color: #E9FFE0;
 	}

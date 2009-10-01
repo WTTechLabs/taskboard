@@ -30,7 +30,11 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 </dt>
 <dd class="taskboards">
 	<ul>
+	<% if project.taskboards.size > 0 -%>
 	<%= render :partial => 'taskboard/taskboard', :collection => project.taskboards.sort_by(&:name) %>
+	<% else -%>
+	<li class="empty">There are no taskboards in this project yet.</li>
+	<% end %>
 	<% if session[:editor] -%>
 	<li class="addTaskboard">
 		<form action="/taskboard/add_taskboard" method="get">
