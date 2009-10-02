@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2009 Cognifide
+ * 
+ * This file is part of Taskboard.
+ * 
+ * Taskboard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Taskboard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 require("spec_helper.js");
 require("../../public/javascripts/home.js");
 
@@ -105,20 +124,20 @@ Screw.Unit(function(){
         });
 
         it("should toggle class 'closed' and taskboards' list when project name is clicked", function(){
-          var dt = $("#projects > dt"),
-              dd = dt.next("dd");
-          expect(dt.hasClass("closed")).to(be_false);
-
+          var dt = $("#projects > dt").removeClass("closed"),
+              dd = dt.next("dd"),
+              toggleable = dd.find(".addTaskboard").addClass(".toggleable").removeClass("closed");
           $.fn.exists = mock_function($.fn.exists, "exists");
           $.fn.exists.should_be_invoked().exactly(1).and_return(false); // find("form").exists = false
 
           $.fn.next = mock_function($.fn.next, "next");
-          $.fn.next.should_be_invoked().with_arguments("dd").exactly('once').and_return(dd)
-          mock(dd).should_receive("toggle").with_arguments("blind").exactly('once');
+          $.fn.next.should_be_invoked().with_arguments("dd").exactly('once').and_return(dd);
+          mock(dd).should_receive("toggle").with_arguments("blind").exactly('once').and_return(dd);
 
           TASKBOARD.home.callbacks.clickProjectTitle.apply(dt[0]);
 
           expect(dt.hasClass("closed")).to(be_true);
+          expect(toggleable.hasClass("closed")).to(be_true);
         });
 
         it("should do nothing if rename form is opened in project name", function(){
@@ -158,12 +177,24 @@ Screw.Unit(function(){
 
         it("should collapse all projects", function(){
           var dt = $("#projects > dt").removeClass("closed"),
-              dd = dt.next("dd");
+              dd = dt.next("dd"),
+              toggleable = dd.find(".addTaskboard").addClass(".toggleable").removeClass("closed");
           $.fn.next = mock_function($.fn.next, "next");
           $.fn.next.should_be_invoked().with_arguments("dd").exactly('once').and_return(dd);
-          mock(dd).should_receive("hide").with_arguments("blind").exactly('once');
+          mock(dd).should_receive("hide").with_arguments("blind").exactly('once').and_return(dd);
           TASKBOARD.home.callbacks.clickCollapse.call();
           expect(dt.hasClass('closed')).to(be_true);
+          expect(toggleable.hasClass('closed')).to(be_true);
+        });
+
+      });
+
+      describe("#changeInput", function(){
+
+        it("should store a flag that value was changed", function(){
+          var input = $(".addProject :text").removeData("changed");
+          TASKBOARD.home.callbacks.changeInput.call(input);
+          expect(input.data("changed")).to(be_true);
         });
 
       });
@@ -189,12 +220,32 @@ Screw.Unit(function(){
           expect(submitted).to(be_false);
         });
 
+        it("should highlight text field when value was not changed", function(){
+          var form = $(".addProject form"),
+              text = $(".addProject form :text").removeData("changed"),
+              submitted = true;
+          $.fn.val = mock_function($.fn.val, "val");
+          $.fn.val.should_be_invoked().exactly('once').and_return('some value');
+
+          String.prototype.trim = mock_function();
+          String.prototype.trim.should_be_invoked().exactly('once').and_return('some value');
+
+          $.fn.effect = mock_function($.fn.effect, "effect");
+          $.fn.effect.should_be_invoked().with_arguments("highlight", { color: "#FF0000" }).exactly("once").and_return(text);
+          mock(text).should_receive("focus").exactly("once").and_return(text);
+
+          submitted = TASKBOARD.home.callbacks.submitForm.call(form[0]);
+          expect(submitted).to_not(be_undefined);
+          expect(submitted).to(be_false);
+        });
+
         it("should submit form when correct value is entered", function(){
           var form = $(".addProject form"),
+              text = $(".addProject form :text").data("changed", true)
               value = "correct value",
               submitted = true;
           $.fn.val = mock_function($.fn.val, "val");
-          $.fn.val.should_be_invoked().exactly('twice').and_return(value);
+          $.fn.val.should_be_invoked().exactly('once').and_return(value);
 
           String.prototype.trim = mock_function();
           String.prototype.trim.should_be_invoked().exactly('once').and_return(value);
@@ -303,7 +354,6 @@ Screw.Unit(function(){
           $("#projects > dt").click();
         });
 
-
         it("should bind click events to global expand/collapse actions", function(){
           TASKBOARD.home.callbacks.clickExpand = mock_function(TASKBOARD.home.callbacks.expandAll, "clickExpand");
           TASKBOARD.home.callbacks.clickExpand.should_be_invoked().exactly('once').and_return('nothing');
@@ -342,6 +392,24 @@ Screw.Unit(function(){
           TASKBOARD.home.init();
           $(".cloneTaskboard").mouseenter().mouseleave();
           $(".renameProject").mouseenter().mouseleave();
+        });
+
+        it("should bind change event to text inputs", function(){
+          TASKBOARD.home.callbacks.changeInput = mock_function(TASKBOARD.home.callbacks.changeInput, "changeInput");
+          TASKBOARD.home.callbacks.changeInput.should_be_invoked().exactly('twice').and_return('nothing');
+
+          TASKBOARD.home.init();
+          $(".addTaskboard :text").change();
+          $(".addProject :text").change();
+        });
+
+        it("should bind submit event to forms", function(){
+          TASKBOARD.home.callbacks.submitForm = mock_function(TASKBOARD.home.callbacks.submitForm, "submitForm");
+          TASKBOARD.home.callbacks.submitForm.should_be_invoked().exactly('twice').and_return('nothing');
+
+          TASKBOARD.home.init();
+          $(".addTaskboard form").submit();
+          $(".addProject form").submit();
         });
 
       });

@@ -46,7 +46,8 @@ TASKBOARD.home = {
         $(".renameProject").hover(callbacks.toggleAction, callbacks.toggleAction)
             .click(callbacks.clickRenameProject)
 
-        $("form").submit(callbacks.submitForm);
+        $("form").submit(callbacks.submitForm)
+           .find(":text").change(callbacks.changeInput);
     },
     callbacks: {
         renameProject: function(value){
@@ -74,7 +75,8 @@ TASKBOARD.home = {
         clickProjectTitle: function(){
             if(!$(this).find("form").exists()){
                 $(this).toggleClass("closed")
-                    .next("dd").toggle("blind");
+                    .next("dd").toggle("blind")
+                    .find(".toggleable").addClass("closed");
             }
         },
 
@@ -86,13 +88,18 @@ TASKBOARD.home = {
 
         clickCollapse: function(){
             $("#projects > dt:not(.closed)").addClass("closed")
-                .next("dd").hide("blind");
+                .next("dd").hide("blind")
+                    .find(".toggleable").addClass("closed");
             return false;
+        },
+
+        changeInput: function(){
+            $(this).data("changed", true);
         },
 
         submitForm: function(){
             var input = $(this).find(":text");
-            if(input.val().trim().length === 0 || input.val().match(/Enter some nice name for your new (project|taskboard)/)){;
+            if(input.val().trim().length === 0 || input.data("changed") !== true){;
                 input.effect("highlight", { color: "#FF0000" }).focus().select();
                 return false;
             }
