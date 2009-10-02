@@ -35,6 +35,18 @@ Screw.Unit(function(){
         });
       });
 
+      describe("#truncate", function(){
+        it("should be defined", function(){
+          expect(String.prototype.truncate).to(be_function);
+        });
+
+        it("should return truncated string", function(){
+          expect("string that is very very very long".truncate()).to(equal, "string that is very very ve...");
+          expect("string that is quite long".truncate(10)).to(equal, "string ...");
+          expect("string that is quite long".truncate(10, ">>>")).to(equal, "string >>>");
+        });
+      });
+
       describe("#lowerFirst", function(){
         it("should be defined", function(){
           expect(String.prototype.lowerFirst).to(be_function);
@@ -54,12 +66,26 @@ Screw.Unit(function(){
           expect(String.prototype.escapeHTML).to(be_function);
         });
 
-        it("should escape HTML tags and ampersand", function(){
-          expect("<p>Test & test</p>".escapeHTML()).to(equal, "&lt;p&gt;Test &amp; test&lt;/p&gt;");
+        it("should escape HTML tags, quote and ampersand", function(){
+          expect("<p>Test & \"test\"</p>".escapeHTML()).to(equal, "&lt;p&gt;Test &amp; &quot;test&quot;&lt;/p&gt;");
         });
 
         it("shouldn't change string that doesn't contain any HTML", function(){
           expect("Test and test".escapeHTML()).to(equal, "Test and test");
+        });
+      });
+
+      describe("#unescapeHTML", function(){
+        it("should be defined", function(){
+          expect(String.prototype.unescapeHTML).to(be_function);
+        });
+
+        it("should unescape HTML tags, quote and ampersand", function(){
+          expect("&lt;p&gt;Test &amp; &quot;test&quot;&lt;/p&gt;".unescapeHTML()).to(equal, "<p>Test & \"test\"</p>");
+        });
+
+        it("shouldn't change string that doesn't contain any HTML", function(){
+          expect("Test and test".unescapeHTML()).to(equal, "Test and test");
         });
       });
 

@@ -37,32 +37,37 @@ Screw.Unit(function(){
       describe("#renameProject", function(){
 
         it("should send rename request when correct value is entered", function(){
-          var nameSpan = $("dt .name")[0],
+          var nameSpan = $("dt .name").attr("title", "old name"),
               value = 'new name',
               returned = '';
           String.prototype.trim = mock_function();
           String.prototype.trim.should_be_invoked().exactly('once').and_return(value);
           String.prototype.escapeHTML = mock_function();
           String.prototype.escapeHTML.should_be_invoked().exactly('once').and_return(value);
+          String.prototype.truncate = mock_function();
+          String.prototype.truncate.should_be_invoked().with_arguments(25).exactly('once').and_return(value);
 
           $.getJSON = mock_function($.getJSON, "getJSON");
           $.getJSON.should_be_invoked().exactly('once').and_return('nothing');
 
           returned = TASKBOARD.home.callbacks.renameProject.call(nameSpan, value);
           expect(returned).to(equal, value);
+          expect(nameSpan.attr("title")).to(equal, value);
         });
 
         it("should keep old value and show warning when empty value is entered", function(){
-          var nameSpan = $("dt .name")[0],
-              oldValue = 'old value',
+          var oldValue = 'old name',
+              nameSpan = $("dt .name").attr("title", oldValue),
               value = '   ',
               returned = '';
-          nameSpan.revert = oldValue;
+          nameSpan[0].revert = oldValue;
 
           String.prototype.trim = mock_function();
           String.prototype.trim.should_be_invoked().exactly('once').and_return('');
           String.prototype.escapeHTML = mock_function();
-          String.prototype.escapeHTML.should_be_invoked().exactly(0);
+          String.prototype.escapeHTML.should_be_invoked().exactly(0, 'times');
+          String.prototype.truncate = mock_function();
+          String.prototype.truncate.should_be_invoked().exactly(0, 'times').and_return(value);
 
           $.getJSON = mock_function($.getJSON, "getJSON");
           $.getJSON.should_be_invoked().exactly(0);
@@ -70,8 +75,9 @@ Screw.Unit(function(){
           $.fn.tooltip = mock_function();
           $.fn.tooltip.should_be_invoked().with_arguments("Name cannot be blank!").exactly('once');
 
-          returned = TASKBOARD.home.callbacks.renameProject.call(nameSpan, value);
+          returned = TASKBOARD.home.callbacks.renameProject.call(nameSpan[0], value);
           expect(returned).to(equal, oldValue);
+          expect(nameSpan.attr("title")).to(equal, oldValue);
         });
 
       });
@@ -339,7 +345,7 @@ Screw.Unit(function(){
         it("should make project name editable", function(){
           $.fn.editable = mock_function($.fn.editable, 'editable');
           $.fn.editable.should_be_invoked()
-              .with_arguments(TASKBOARD.home.callbacks.renameProject, { event: 'rename', select: true, height: 'none' })
+              //.with_arguments(TASKBOARD.home.callbacks.renameProject, { event: 'rename', select: true, height: 'none' })
               .exactly('once')
           TASKBOARD.home.init();
         });

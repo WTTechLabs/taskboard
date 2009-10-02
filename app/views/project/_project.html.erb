@@ -16,7 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 -%>
-<dt id="project_<%= project.id %>" class="<%= project_counter == 0 ? 'first' : '' %>"><span class="name"><%= project.name %></span> <span class="counter">(<%= project.taskboards.size %>)</span>
+<dt id="project_<%= project.id %>" class="<%= project_counter == 0 ? 'first' : '' %>">
+	<span class="name" title="<%= h(project.name) %>"><%= truncate(h(project.name), :length => 25) %></span> <span class="counter">(<%= project.taskboards.size %>)</span>
 	<% if session[:editor] -%>
 	<ul class="actions">
 		<li class="actionName"></li>

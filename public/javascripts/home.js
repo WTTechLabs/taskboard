@@ -30,7 +30,8 @@ TASKBOARD.home = {
                 $(this).data("id", $(this).attr("id").match(/\d+/)[0]);
             });
 
-        $("dt .name").editable(callbacks.renameProject, { event: 'rename', select: true, height: 'none' });
+        $("dt .name").editable(callbacks.renameProject, { event: 'rename', select: true, height: 'none',
+            data: function(){ return $(this).attr("title").unescapeHTML(); } });
 
         $("#projects .globalActions")
             .find(".expand")
@@ -53,7 +54,9 @@ TASKBOARD.home = {
         renameProject: function(value){
             if(value.trim().length > 0) {
                 $.getJSON("/project/rename", { id: $(this).closest("dt").data("id"), name: value });
-                return value.escapeHTML();
+                $(this).attr("title", value);
+                value = value.escapeHTML();
+                return value.truncate(25);
             } else {
                 $(this).tooltip("Name cannot be blank!");
                 return this.revert;

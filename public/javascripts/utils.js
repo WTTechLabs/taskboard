@@ -29,18 +29,28 @@
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ''); };
 
 /*
+ * Returns truncated string.
+ * See: prototype.js: http://prototypejs.org
+ */
+String.prototype.truncate = function(length, truncation) {
+	length = length || 30;
+	truncation = truncation === undefined ? '...' : truncation;
+		return this.length > length ?
+			this.slice(0, length - truncation.length) + truncation : this;
+};
+
+/*
  * Returns the string with first letter in lower case
  */
 String.prototype.lowerFirst = function() { return this.length ? this.charAt(0).toLowerCase() + this.substring(1, this.length) : this; };
 
 
-/*
- * Returns the string transformed into one compatible with HTML class attribute.
- * All the whitespace characters are transformed into double underscores and all characters
- * that are not letters, numbers, underscores or dashes are transformed into single underscore.
- */
 String.prototype.escapeHTML = function() {
-	return this.replace(/&/g, "&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;");
+	return this.replace(/&/g, "&amp;").replace(/\"/g, "&quot;").replace(/>/g,"&gt;").replace(/</g,"&lt;");
+};
+
+String.prototype.unescapeHTML = function() {
+	return this.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&gt;/g,">").replace(/&lt;/g,"<");
 };
 
 /*
