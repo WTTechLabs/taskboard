@@ -72,8 +72,8 @@ Screw.Unit(function(){
           $.getJSON = mock_function($.getJSON, "getJSON");
           $.getJSON.should_be_invoked().exactly(0);
 
-          $.fn.tooltip = mock_function();
-          $.fn.tooltip.should_be_invoked().with_arguments("Name cannot be blank!").exactly('once');
+          $.fn.warningTooltip = mock_function();
+          $.fn.warningTooltip.should_be_invoked().with_arguments("Name cannot be blank!").exactly('once');
 
           returned = TASKBOARD.home.callbacks.renameProject.call(nameSpan[0], value);
           expect(returned).to(equal, oldValue);
@@ -221,6 +221,9 @@ Screw.Unit(function(){
           $.fn.effect.should_be_invoked().with_arguments("highlight", { color: "#FF0000" }).exactly("once").and_return(text);
           mock(text).should_receive("focus").exactly("once").and_return(text);
 
+          $.fn.warningTooltip = mock_function();
+          $.fn.warningTooltip.should_be_invoked().with_arguments("Name cannot be blank!").exactly('once');
+
           submitted = TASKBOARD.home.callbacks.submitForm.call(form[0]);
           expect(submitted).to_not(be_undefined);
           expect(submitted).to(be_false);
@@ -239,6 +242,9 @@ Screw.Unit(function(){
           $.fn.effect = mock_function($.fn.effect, "effect");
           $.fn.effect.should_be_invoked().with_arguments("highlight", { color: "#FF0000" }).exactly("once").and_return(text);
           mock(text).should_receive("focus").exactly("once").and_return(text);
+
+          $.fn.warningTooltip = mock_function();
+          $.fn.warningTooltip.should_be_invoked().exactly(0, 'times');
 
           submitted = TASKBOARD.home.callbacks.submitForm.call(form[0]);
           expect(submitted).to_not(be_undefined);

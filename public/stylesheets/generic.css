@@ -25,54 +25,54 @@ img,fieldset { border: none; }
 a { outline: 0; }
 
 body {
-	font-family: Trebuchet, Tahoma, Arial, sans-serif;
+    font-family: Trebuchet, Tahoma, Arial, sans-serif;
 }
 
 #taskboard_meta {
-	font-size:0.7em;
-	color:#777777;
-	text-align:right;
-	position:fixed;
-	bottom:0;
-	right:0;
-	padding: 5px;
+    font-size:0.7em;
+    color:#777777;
+    text-align:right;
+    position:fixed;
+    bottom:0;
+    right:0;
+    padding: 5px;
 }
 
 #taskboard_meta .version {
-	font-size:1.2em;
-	color: #555;
+    font-size:1.2em;
+    color: #555;
 }
 
 #tooltip {
-	font-size: 11px;
-	position: absolute;
-	display: none;
-	padding: 10px;
-	width: 200px;
-	background: #FFF9CC;
-	background-repeat: no-repeat;
-	background-position: 10px 50%;
-	border: 1px solid #777777;
-	z-index: 1002;
+    font-size: 11px;
+    position: absolute;
+    display: none;
+    padding: 10px;
+    width: 200px;
+    background: #FFF9CC;
+    background-repeat: no-repeat;
+    background-position: 10px 50%;
+    border: 1px solid #777777;
+    z-index: 1002;
 
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 #tooltip .rightMiddle.tick {
-	position: absolute;
-	width: 11px; height: 100%;
-	left: -11px; top: 0;
-	display: block;
-	background: url(/images/tip-left.png) no-repeat 0 50%;
+    position: absolute;
+    width: 11px; height: 100%;
+    left: -11px; top: 0;
+    display: block;
+    background: url(/images/tip-left.png) no-repeat 0 50%;
 }
 
 #tooltip .bottomLeft.tick {
-	position: absolute;
-	width: 100%; height: 11px;
-	left: 0; top: -11px;
-	display: block;
-	background: url(/images/tip-top.png) no-repeat 6px 0;
+    position: absolute;
+    width: 100%; height: 11px;
+    left: 0; top: -11px;
+    display: block;
+    background: url(/images/tip-top.png) no-repeat 6px 0;
 }
 
 #tooltip strong { font-weight: bold; }
@@ -80,7 +80,7 @@ body {
 #tooltip p { margin-bottom: 0.5em; }
 
 #tooltip.warning {
-	padding-left: 36px;
-	background-image: url(/images/warning.png);
+    padding-left: 36px;
+    background-image: url(/images/warning.png);
 }
 

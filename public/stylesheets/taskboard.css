@@ -20,520 +20,520 @@
 @import url(generic.css);
 
 #header {
-	position: fixed;
-	top:0;
-	left:0;
-	right:0;
-	z-index: 10;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index: 10;
 }
 
 #headerBar {
-	position: relative;
-	background-color:#457F9F;
-	color:#CCCCCC;
-	overflow: hidden;
-	clear: both;
+    position: relative;
+    background-color:#457F9F;
+    color:#CCCCCC;
+    overflow: hidden;
+    clear: both;
 }
 
 #header h1 {
-	float: left;
-	padding: 5px 10px;
+    float: left;
+    padding: 5px 10px;
 }
 
-	h1 a[rel='home'] {
-		font-size: 0.8em;
-		text-decoration: none;
-		color: #CCCCCC;
-	}
+    h1 a[rel='home'] {
+        font-size: 0.8em;
+        text-decoration: none;
+        color: #CCCCCC;
+    }
 
-		h1 a[rel='home']:hover {
-			border-bottom: 1px solid white;
-			color: white;
-		}
+        h1 a[rel='home']:hover {
+            border-bottom: 1px solid white;
+            color: white;
+        }
 
-	h1 span.title {
-		color: #ffffff;
-	}
+    h1 span.title {
+        color: #ffffff;
+    }
 
-	h1 span.title:hover {
-		background-color: #74AFCF;
-		cursor: text;
-	}
-		
-	h1 span.title form {
-		display: inline;
-	}
-	
-		h1 span.title form input {
-			border:1px solid #CCCCCC;
-			font-family:Trebuchet,Tahoma,Arial,sans-serif;
-			font-size:1em;
-			padding:0 5px 0 2px;
-		}
+    h1 span.title:hover {
+        background-color: #74AFCF;
+        cursor: text;
+    }
+        
+    h1 span.title form {
+        display: inline;
+    }
+    
+        h1 span.title form input {
+            border:1px solid #CCCCCC;
+            font-family:Trebuchet,Tahoma,Arial,sans-serif;
+            font-size:1em;
+            padding:0 5px 0 2px;
+        }
 
 #actions {
-	font-size: 0.8em;
-	padding: 0 10px;
-	float: right;
+    font-size: 0.8em;
+    padding: 0 10px;
+    float: right;
 }
 
-	#actions li {
-		float: left;
-		padding: 7px;
-	}
+    #actions li {
+        float: left;
+        padding: 7px;
+    }
 
-	#actions li.current {
-		border: 2px solid #457F9F;
-		border-bottom-color: #74AFCF;
-		background-color: #74AFCF; 
-		padding: 5px;
-		-moz-border-radius: 5px 5px 0 0;
-		-webkit-border-top-left-radius: 5px 5px;
-		-webkit-border-top-right-radius: 5px 5px;
-		}
+    #actions li.current {
+        border: 2px solid #457F9F;
+        border-bottom-color: #74AFCF;
+        background-color: #74AFCF; 
+        padding: 5px;
+        -moz-border-radius: 5px 5px 0 0;
+        -webkit-border-top-left-radius: 5px 5px;
+        -webkit-border-top-right-radius: 5px 5px;
+        }
 
-	#actions li a {
-		text-decoration: none;
-		color: #ffffff;
-	}
+    #actions li a {
+        text-decoration: none;
+        color: #ffffff;
+    }
 
-	#actions li a:hover {
-		border-bottom: 1px solid #ffffff;
-	}
+    #actions li a:hover {
+        border-bottom: 1px solid #ffffff;
+    }
 
 #formActions {
-	position: absolute;
-	margin-right: 20px;
-	right: 0;
+    position: absolute;
+    margin-right: 20px;
+    right: 0;
 }
 
-	#formActions fieldset {
-		background-color:#74AFCF;
-		padding: 7px 15px 15px;
-		width: 600px;
+    #formActions fieldset {
+        background-color:#74AFCF;
+        padding: 7px 15px 15px;
+        width: 600px;
 
-		-moz-border-radius: 0 0 5px 5px;
-		-webkit-border-bottom-left-radius: 5px 5px;
-		-webkit-border-bottom-right-radius: 5px 5px;
-	}
-	
-	#formActions fieldset span {
-		color: #FFFFFF;
-	}
+        -moz-border-radius: 0 0 5px 5px;
+        -webkit-border-bottom-left-radius: 5px 5px;
+        -webkit-border-bottom-right-radius: 5px 5px;
+    }
+    
+    #formActions fieldset span {
+        color: #FFFFFF;
+    }
 
-	#formActions fieldset#fieldsetAddColumn {
-		width: 450px;
-	}
-	
-		#formActions fieldset a.actionHideForm {
-			position: absolute;
-			top: 0;
-			right: 10px;
-		}
-	
-		#formActions fieldset label {
-			color: #FFFFFF;
-			font-size: 0.8em;
-			display:block;
-			margin-bottom: 3px; 
-		}
-	
-		#formActions fieldset input[type=text] {
-			width: 540px;
-			border: 1px solid #CCCCCC;
-			padding: 2px;
-		}
-	
-		#formActions fieldset#fieldsetAddColumn input[type=text] {
-			width: 390px;
-		}
+    #formActions fieldset#fieldsetAddColumn {
+        width: 450px;
+    }
+    
+        #formActions fieldset a.actionHideForm {
+            position: absolute;
+            top: 0;
+            right: 10px;
+        }
+    
+        #formActions fieldset label {
+            color: #FFFFFF;
+            font-size: 0.8em;
+            display:block;
+            margin-bottom: 3px; 
+        }
+    
+        #formActions fieldset input[type=text] {
+            width: 540px;
+            border: 1px solid #CCCCCC;
+            padding: 2px;
+        }
+    
+        #formActions fieldset#fieldsetAddColumn input[type=text] {
+            width: 390px;
+        }
 
 #taskboard {
-	clear:both;
+    clear:both;
 }
 
-	#taskboard .lane {
-		float: left;
-		margin-top: 55px;
-	}
+    #taskboard .lane {
+        float: left;
+        margin-top: 55px;
+    }
 
-	#taskboard #metaLane {
-		min-width: 15px;
-		margin-top: 80px;
-	}
+    #taskboard #metaLane {
+        min-width: 15px;
+        margin-top: 80px;
+    }
 
-		#taskboard .lane .row {
-			border-top: 1px dashed #CCCCCC;
-			padding: 5px;
-		}
+        #taskboard .lane .row {
+            border-top: 1px dashed #CCCCCC;
+            padding: 5px;
+        }
 
-		#taskboard #metaLane .row {
-			border-color: #FFFFFF;
-		}
+        #taskboard #metaLane .row {
+            border-color: #FFFFFF;
+        }
 
-	#taskboard .column {
-		border-right: 1px dashed #CCCCCC;
-		width: 210px;
-		position: relative;
-	}
+    #taskboard .column {
+        border-right: 1px dashed #CCCCCC;
+        width: 210px;
+        position: relative;
+    }
 
-	#taskboard .column.ui-resizable-resizing,
-	#taskboard .column.resizing {
-		border-color: #777777;
-	}
+    #taskboard .column.ui-resizable-resizing,
+    #taskboard .column.resizing {
+        border-color: #777777;
+    }
 
 
-	#taskboard .column.placeholder {
-		min-height: 100px;
-	}
+    #taskboard .column.placeholder {
+        min-height: 100px;
+    }
 
-	#taskboard .column.ui-sortable-helper {
-		border: none;
-	}
+    #taskboard .column.ui-sortable-helper {
+        border: none;
+    }
 
-		#taskboard .column.ui-sortable-helper a.deleteColumn {
-			display:none;
-		}
+        #taskboard .column.ui-sortable-helper a.deleteColumn {
+            display:none;
+        }
 
-		#taskboard .column.ui-sortable-helper .cards li span {
-			visibility:hidden;
-		}
+        #taskboard .column.ui-sortable-helper .cards li span {
+            visibility:hidden;
+        }
 
-		#taskboard .column h2 {
-			text-align: center;
-			margin: 0 5px 10px;
-		}
+        #taskboard .column h2 {
+            text-align: center;
+            margin: 0 5px 10px;
+        }
 
-		#taskboard .column h2:hover {
-			background-color: #FFFFD3;
-			cursor: text;
-		}
-		
-		#taskboard .column a.deleteColumn {
-			position: absolute;
-			top: -20px;
-			right: 0px;
-			margin: 3px;
-		}
+        #taskboard .column h2:hover {
+            background-color: #FFFFD3;
+            cursor: text;
+        }
+        
+        #taskboard .column a.deleteColumn {
+            position: absolute;
+            top: -20px;
+            right: 0px;
+            margin: 3px;
+        }
 
-			#taskboard .column ol.cards > li {
-				min-height: 10px;
-				margin-bottom: 5px;
-				border: 1px solid transparent;
-				padding: 5px 20px 5px 5px;
-				background-color: #F8E065;
-				position: relative;
-				overflow: hidden;
-				font-size: 0.8em;
-				-moz-border-radius: 5px;
-				-webkit-border-radius: 5px;
-			}
+            #taskboard .column ol.cards > li {
+                min-height: 10px;
+                margin-bottom: 5px;
+                border: 1px solid transparent;
+                padding: 5px 20px 5px 5px;
+                background-color: #F8E065;
+                position: relative;
+                overflow: hidden;
+                font-size: 0.8em;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+            }
 
-			#taskboard .column ol.cards > li:last-child {
-				margin-bottom: 0;
-			}
+            #taskboard .column ol.cards > li:last-child {
+                margin-bottom: 0;
+            }
 
-				#taskboard .column ol.cards li ul.actions {
-					display: none;
-					position: absolute;
-					top: 5px;
-					right: 5px;
-				}
+                #taskboard .column ol.cards li ul.actions {
+                    display: none;
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                }
 
-				#taskboard .column ol.cards li:hover ul.actions {
-					display: block;
-				}
+                #taskboard .column ol.cards li:hover ul.actions {
+                    display: block;
+                }
 
-					#taskboard .column ol.cards li ul.actions li {
-						min-height: auto;
-						margin-bottom: 2px;
-						border: none;
-						padding: 0;
-						background-color: transparent;
-						position: static;
-						line-height: 0;
-					}
+                    #taskboard .column ol.cards li ul.actions li {
+                        min-height: auto;
+                        margin-bottom: 2px;
+                        border: none;
+                        padding: 0;
+                        background-color: transparent;
+                        position: static;
+                        line-height: 0;
+                    }
 
-					#taskboard .column ol.cards li ul.actions li a {
-						display: block;
-					}
-				
-				#taskboard .column ol.cards li span.alias {
-					display:block;
-					margin-bottom: 5px;
-				}
+                    #taskboard .column ol.cards li ul.actions li a {
+                        display: block;
+                    }
+                
+                #taskboard .column ol.cards li span.alias {
+                    display:block;
+                    margin-bottom: 5px;
+                }
 
-				#taskboard .column ol.cards li ul.tags {
-					clear: both;
-					overflow: hidden;
-				}
+                #taskboard .column ol.cards li ul.tags {
+                    clear: both;
+                    overflow: hidden;
+                }
 
-					#taskboard .column ol.cards li ul.tags li {
-						float:left;
-						padding: 2px;
-						margin: 2px 2px 0 0;
-						border: 1px solid #CCCCCC;
-						background-color: #EEEEEE;
-						font-size: 0.8em;
-						-moz-border-radius: 5px;
-						-webkit-border-radius: 5px;
-					}
+                    #taskboard .column ol.cards li ul.tags li {
+                        float:left;
+                        padding: 2px;
+                        margin: 2px 2px 0 0;
+                        border: 1px solid #CCCCCC;
+                        background-color: #EEEEEE;
+                        font-size: 0.8em;
+                        -moz-border-radius: 5px;
+                        -webkit-border-radius: 5px;
+                    }
 
-				
-				#taskboard .column ol.cards li span.progress {
-					display:block;
-					font-size: 0.8em;
-					text-align: right;
-				}
+                
+                #taskboard .column ol.cards li span.progress {
+                    display:block;
+                    font-size: 0.8em;
+                    text-align: right;
+                }
 
-					#taskboard .column ol.cards li span.progress .hours {
-						font-size: 1.2em;
-						font-weight: bold;
-					}
+                    #taskboard .column ol.cards li span.progress .hours {
+                        font-size: 1.2em;
+                        font-weight: bold;
+                    }
 
-						#taskboard .column ol.cards li span.progress .hours form {
-							display: inline;
-						}
+                        #taskboard .column ol.cards li span.progress .hours form {
+                            display: inline;
+                        }
 
-							#taskboard .column ol.cards li span.progress .hours form input{
-								min-width: 30px;
-								text-align: right;
-							}
+                            #taskboard .column ol.cards li span.progress .hours form input{
+                                min-width: 30px;
+                                text-align: right;
+                            }
 
-			#taskboard .column ol.cards li.placeholder {
-				background-color: #FFFFFF;
-				border: 1px dashed #93853C;
-				color: #FFFFFF;
-			}
+            #taskboard .column ol.cards li.placeholder {
+                background-color: #FFFFFF;
+                border: 1px dashed #93853C;
+                color: #FFFFFF;
+            }
 
-			#taskboard .column ol.cards li.placeholder span,
-			#taskboard .column ol.cards li.placeholder ul {
-				visibility : hidden;
-			}
+            #taskboard .column ol.cards li.placeholder span,
+            #taskboard .column ol.cards li.placeholder ul {
+                visibility : hidden;
+            }
 
-			#taskboard .column ol.cards li.collapsed {
-				padding: 3px;
-				font-size: 0.6em;
-			}
+            #taskboard .column ol.cards li.collapsed {
+                padding: 3px;
+                font-size: 0.6em;
+            }
 
-				#taskboard .column ol.cards li.collapsed:hover ul.actions {
-					display: none;
-				}
+                #taskboard .column ol.cards li.collapsed:hover ul.actions {
+                    display: none;
+                }
 
-				#taskboard .column ol.cards li.collapsed span.alias {
-					display:inline;
-					margin-bottom: 0;
-				}
+                #taskboard .column ol.cards li.collapsed span.alias {
+                    display:inline;
+                    margin-bottom: 0;
+                }
 
-				#taskboard .column ol.cards li.collapsed span.progress,
-				#taskboard .column ol.cards li.collapsed ul.tags {
-					display:none;
-				}
+                #taskboard .column ol.cards li.collapsed span.progress,
+                #taskboard .column ol.cards li.collapsed ul.tags {
+                    display:none;
+                }
 
 #taskboard.collapsed .column ol.cards li {
-	padding: 3px;
-	font-size: 0.6em;
+    padding: 3px;
+    font-size: 0.6em;
 }
 
-	#taskboard.collapsed .column ol.cards li:hover ul.actions {
-		display: none;
-	}
+    #taskboard.collapsed .column ol.cards li:hover ul.actions {
+        display: none;
+    }
 
-	#taskboard.collapsed .column ol.cards li span.alias {
-		display:inline;
-		margin-bottom: 0;
-	}
+    #taskboard.collapsed .column ol.cards li span.alias {
+        display:inline;
+        margin-bottom: 0;
+    }
 
-	#taskboard.collapsed .column ol.cards li span.progress,
-	#taskboard.collapsed .column ol.cards li ul.tags {
-		display:none;
-	}
+    #taskboard.collapsed .column ol.cards li span.progress,
+    #taskboard.collapsed .column ol.cards li ul.tags {
+        display:none;
+    }
 
 /* zoom levels */
 
 /* zoom 0 - alias and name only in one line */
 
 #taskboard.zoom_0 .column ol.cards li {
-	padding: 3px;
-	font-size: 0.6em;
-	height: 1em;
+    padding: 3px;
+    font-size: 0.6em;
+    height: 1em;
 }
 
-	#taskboard.zoom_0 .column ol.cards li:hover ul.actions {
-		display: none;
-	}
+    #taskboard.zoom_0 .column ol.cards li:hover ul.actions {
+        display: none;
+    }
 
-	#taskboard.zoom_0 .column ol.cards li span.alias {
-		display:inline;
-		margin-bottom: 0;
-	}
+    #taskboard.zoom_0 .column ol.cards li span.alias {
+        display:inline;
+        margin-bottom: 0;
+    }
 
-	#taskboard.zoom_0 .column ol.cards li span.progress,
-	#taskboard.zoom_0 .column ol.cards li ul.tags {
-		display:none;
-	}
+    #taskboard.zoom_0 .column ol.cards li span.progress,
+    #taskboard.zoom_0 .column ol.cards li ul.tags {
+        display:none;
+    }
 
 /* zoom 1 - alias and name only */
 
 #taskboard.zoom_1 .column ol.cards li {
-	padding: 3px;
-	font-size: 0.6em;
+    padding: 3px;
+    font-size: 0.6em;
 }
 
-	#taskboard.zoom_1 .column ol.cards li:hover ul.actions {
-		display: none;
-	}
+    #taskboard.zoom_1 .column ol.cards li:hover ul.actions {
+        display: none;
+    }
 
-	#taskboard.zoom_1 .column ol.cards li span.alias {
-		display:inline;
-		margin-bottom: 0;
-	}
+    #taskboard.zoom_1 .column ol.cards li span.alias {
+        display:inline;
+        margin-bottom: 0;
+    }
 
-	#taskboard.zoom_1 .column ol.cards li span.progress,
-	#taskboard.zoom_1 .column ol.cards li ul.tags {
-		display:none;
-	}
+    #taskboard.zoom_1 .column ol.cards li span.progress,
+    #taskboard.zoom_1 .column ol.cards li ul.tags {
+        display:none;
+    }
 
 /* zoom 2 */
 
-	#taskboard.zoom_2 .column ol.cards li span.progress,
-	#taskboard.zoom_2 .column ol.cards li ul.tags {
-		display:none;
-	}
+    #taskboard.zoom_2 .column ol.cards li span.progress,
+    #taskboard.zoom_2 .column ol.cards li ul.tags {
+        display:none;
+    }
 
 /* zoom 3 */
 
-	#taskboard.zoom_3 .column ol.cards li ul.tags {
-		display:none;
-	}
+    #taskboard.zoom_3 .column ol.cards li ul.tags {
+        display:none;
+    }
 
 /* zoom 4 */
 
-	#taskboard.zoom_4 .column ol.cards li ul.tags {
-		height: 1.6em;
-	}
+    #taskboard.zoom_4 .column ol.cards li ul.tags {
+        height: 1.6em;
+    }
 
 /* Actions' icons */
 
 .actions li {
-	width: 12px;
-	height: 12px;
-	text-indent: -9999px;
+    width: 12px;
+    height: 12px;
+    text-indent: -9999px;
 }
 
 .big.actions li {
-	width: 16px;
-	height: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .actions li a {
-	display: block;
-	width: 100%;
-	height: 100%;
-	background: transparent no-repeat 50% 50%;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: transparent no-repeat 50% 50%;
 }
 
-	.actions li .changeColor {
-		background-image: url(/images/color_off.png);
-	}
+    .actions li .changeColor {
+        background-image: url(/images/color_off.png);
+    }
 
-	.actions li .changeColor:hover {
-		background-image: url(/images/color_on.png);
-	}
+    .actions li .changeColor:hover {
+        background-image: url(/images/color_on.png);
+    }
 
-	.actions li .deleteCard {
-		background-image: url(/images/cross_off.png);
-	}
+    .actions li .deleteCard {
+        background-image: url(/images/cross_off.png);
+    }
 
-	.actions li .deleteCard:hover {
-		background-image: url(/images/cross_on.png);
-	}
+    .actions li .deleteCard:hover {
+        background-image: url(/images/cross_on.png);
+    }
 
-	.big.actions li .changeColor {
-		background-image: url(/images/color_big_off.png);
-	}
+    .big.actions li .changeColor {
+        background-image: url(/images/color_big_off.png);
+    }
 
-	.big.actions li .changeColor:hover {
-		background-image: url(/images/color_big_on.png);
-	}
+    .big.actions li .changeColor:hover {
+        background-image: url(/images/color_big_on.png);
+    }
 
 /* Form drop animation hack */
 .ui-effects-wrapper {
-	left: auto !important;
-	right: 0 !important;
+    left: auto !important;
+    right: 0 !important;
 }
 
 #loading {
-	position: fixed;
-	z-index: 5;
-	width: 100%;
-	height: 100%;
-	background: #FFFFFF url(/images/loading.gif) no-repeat 50% 50%;
-	top: 0;
-	left: 0;
-	opacity: 0.7;
+    position: fixed;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF url(/images/loading.gif) no-repeat 50% 50%;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
 }
 
 #notifications {
-	position : fixed;
-	bottom : 0;
-	right : 0;
+    position : fixed;
+    bottom : 0;
+    right : 0;
 }
 
 #notifications li {
-	font-size: 0.8em;
-	margin: 3px;
-	background-color : #CCCCCC;
-	width: 200px;
-	padding: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
+    font-size: 0.8em;
+    margin: 3px;
+    background-color : #CCCCCC;
+    width: 200px;
+    padding: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }
 
 #notifications li.success {
-	background-color : #44AA00;
+    background-color : #44AA00;
 }
 
 .bigCard {
-	position: absolute;
-	top: 50px;
-	left: 50%;
-	margin-left: -400px;
-	padding: 20px 40px 20px 20px;
-	width: 740px;
-	clear:both;
-	overflow: hidden;
-	-moz-border-radius: 10px;
-	-webkit-border-radius : 10px;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    margin-left: -400px;
+    padding: 20px 40px 20px 20px;
+    width: 740px;
+    clear:both;
+    overflow: hidden;
+    -moz-border-radius: 10px;
+    -webkit-border-radius : 10px;
 }
 
 .bigCard dt {
-	float: left;
-	width: 200px;
-	clear: both;
-	font-weight: bold;
+    float: left;
+    width: 200px;
+    clear: both;
+    font-weight: bold;
 }
 
 .bigCard dd {
-	float: right;
-	width: 530px;
-	margin-bottom: 10px;
+    float: right;
+    width: 530px;
+    margin-bottom: 10px;
 }
 
 .bigCard .hovered {
-	background-color: #FFFFD3;
+    background-color: #FFFFD3;
 }
 
 .bigCard #cardActionsTitle {
-	display: none;
+    display: none;
 }
 
 .bigCard #cardActions {
-	position: absolute;
-	width: auto;
-	margin: 10px;
-	top: 0;
-	right: 0;
+    position: absolute;
+    width: auto;
+    margin: 10px;
+    top: 0;
+    right: 0;
 }
 
 .bigCard #notes h1,
@@ -541,8 +541,8 @@
 .bigCard #notes h3,
 .bigCard #notes h4,
 .bigCard #notes h5 {
-	font-weight: bold;
-	margin-bottom: 0.5em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
 }
 
 .bigCard #notes h1 { font-size: 1.5em; }
@@ -553,40 +553,38 @@
 .bigCard #notes h6 { font-size: 0.8em; }
 
 .bigCard #notes p {
-	margin-bottom: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .bigCard #notes ul,
 .bigCard #notes ol {
-	margin-bottom: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .bigCard #notes ul {
-	margin-left: 20px;
-	list-style: disc;
+    margin-left: 20px;
+    list-style: disc;
 }
 
 .bigCard #notes ol {
-	margin-left: 30px;
-	list-style: decimal;
+    margin-left: 30px;
+    list-style: decimal;
 }
 .bigCard #notes em {
-	font-style: italic;
+    font-style: italic;
 }
 
 .bigCard #notes strong {
-	font-weight: bold;
+    font-weight: bold;
 }
-
-
 
 .bigCard #name h1,
 .bigCard #name h2,
 .bigCard #name h3,
 .bigCard #name h4,
 .bigCard #name h5 {
-	font-weight: bold;
-	margin-bottom: 0.5em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
 }
 
 .bigCard #name h1 { font-size: 1.5em; }
@@ -597,38 +595,38 @@
 .bigCard #name h6 { font-size: 0.8em; }
 
 .bigCard #name p {
-	margin-bottom: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .bigCard #name em {
-	font-style: italic;
+    font-style: italic;
 }
 
 .bigCard #name strong {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .bigCard .tags li {
-	padding: 5px;
-	margin-right: 5px;
-	border: 1px solid #CCCCCC;
-	background-color: #EEEEEE;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	float: left;
+    padding: 5px;
+    margin-right: 5px;
+    border: 1px solid #CCCCCC;
+    background-color: #EEEEEE;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    float: left;
 }
 
-	.bigCard .tags li a {
-		padding-left: 5px;
-		margin-left: 3px;
-		border-left: 1px solid #000000;
-		text-decoration : none;
-		color: #777777;
-	}
+    .bigCard .tags li a {
+        padding-left: 5px;
+        margin-left: 3px;
+        border-left: 1px solid #000000;
+        text-decoration : none;
+        color: #777777;
+    }
 
-	.bigCard .tags li a:hover {
-		color: #000000;
-	}
+    .bigCard .tags li a:hover {
+        color: #000000;
+    }
 
 /* Resizable
 ----------------------------------*/
@@ -648,65 +646,64 @@
 /* color picker */
 
 #colorPicker {
-	position: absolute;
-	background-color: #FFFFFF;
-	padding-left: 11px;
-	background: url(/images/tip.png) no-repeat;
-	z-index: 2000;
+    position: absolute;
+    background-color: #FFFFFF;
+    padding-left: 11px;
+    background: url(/images/tip.png) no-repeat;
+    z-index: 2000;
 }
 
 #colorPicker ol {
-	border:1px solid #b7b7b7;
-	border-left: none;
-	overflow:hidden; /* for IE6 */
-	background-color: #F7F7F7;
-	padding: 2px;
+    border:1px solid #b7b7b7;
+    border-left: none;
+    overflow:hidden; /* for IE6 */
+    background-color: #F7F7F7;
+    padding: 2px;
 }
 
 #colorPicker .color {
-	background:url(/images/jquery/jquery.colorpicker.gif) no-repeat;
-	float:left;
-	width:16px;
-	height:16px;
-	cursor:pointer;
-	overflow:hidden; /* for IE6 */
-	border:1px solid #666666;
-	margin:1px;
+    background:url(/images/jquery/jquery.colorpicker.gif) no-repeat;
+    float:left;
+    width:16px;
+    height:16px;
+    cursor:pointer;
+    overflow:hidden; /* for IE6 */
+    border:1px solid #666666;
+    margin:1px;
 }
 
 #colorPicker .checkwht {
-	cursor:default;	
-	background-position:-16px 0;
+    cursor:default;    
+    background-position:-16px 0;
 }
 #colorPicker .checkblk {
-	cursor:default;	
-	background-position:-32px 0;
+    cursor:default;    
+    background-position:-32px 0;
 }
 
 #filterTags {
-	overflow: hidden;
-	clear: both;
+    overflow: hidden;
+    clear: both;
 }
 
 #filterTags li {
-	float:left;
+    float:left;
 }
 
 #filterTags li a {
-	display: block;
-	padding: 3px;
-	background-color: #CCCCCC;
-	border: 1px solid #555555;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	margin: 2px;
-	text-decoration: none;
-	color: #000000;
+    display: block;
+    padding: 3px;
+    background-color: #CCCCCC;
+    border: 1px solid #555555;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    margin: 2px;
+    text-decoration: none;
+    color: #000000;
 }
 
 #filterTags li.current a {
-	background-color: #EEE;
-	border: 1px solid #CCC;
-
+    background-color: #EEE;
+    border: 1px solid #CCC;
 }
 

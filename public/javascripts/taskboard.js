@@ -174,25 +174,25 @@ TASKBOARD.builder.options = {
 TASKBOARD.builder.strings = {
 	columnHeaderTitle : "Double-click to edit",
 
-        tagsTooltip: "You can use '<strong>,</strong>' to add multiple tags<br/>e.g.: <strong>exempli, gratia</strong>",
+	tagsTooltip: "You can use '<strong>,</strong>' to add multiple tags<br/>e.g.: <strong>exempli, gratia</strong>",
 
-        notesTooltip: "<p>You can use Markdown syntax:</p>" +
-                     "<p># This is an H1<br/> ### This is an H3, etc...</p>"+
-                     "<p>**<strong>bold text</strong>** <em>_italic text_</em></p>"+
-                     "<p>* first list item<br/>* second list item</p>" +
-                     "<p>1. first ordered list item<br/>2. second ordered list item</p>" +
-                     "<p>Remember to put empty line to start new paragraph.</p>"+
-                     "Learn more from <a rel='external' href='http://daringfireball.net/projects/markdown/basics'>official Markdown syntax guide</a>."
+	notesTooltip: "<p>You can use Markdown syntax:</p>" +
+				  "<p># This is an H1<br/> ### This is an H3, etc...</p>"+
+				  "<p>**<strong>bold text</strong>** <em>_italic text_</em></p>"+
+				  "<p>* first list item<br/>* second list item</p>" +
+				  "<p>1. first ordered list item<br/>2. second ordered list item</p>" +
+				  "<p>Remember to put empty line to start new paragraph.</p>"+
+				  "Learn more from <a rel='external' href='http://daringfireball.net/projects/markdown/basics'>official Markdown syntax guide</a>."
 };
 
 TASKBOARD.builder.actions = {
 	changeColorAction : function(){
-            return $.tag("a", "Change the color", { className : "changeColor", title : "Change the color", href : "#" });
+		return $.tag("a", "Change the color", { className : "changeColor", title : "Change the color", href : "#" });
 	},
 
-        deleteCardAction : function(){
-            return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete card", href : "#" });
-        }
+	deleteCardAction : function(){
+		return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete card", href : "#" });
+	}
 };
 
 /*
@@ -247,7 +247,7 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 			.bind("click", function(ev){ 
 				ev.preventDefault();
 				if($(this).parent().find("ol.cards").children().length !== 0){
-                                        $(this).warningTooltip("You cannot delete a column that is not empty!");
+					$(this).warningTooltip("You cannot delete a column that is not empty!");
 				} else if ($("#taskboard .column").length == 1) {
 					$(this).warningTooltip("You cannot delete last column!");
 				}else {
@@ -375,7 +375,7 @@ TASKBOARD.builder.buildCardFromJSON = function(card){
 
 		cardLi.find(".changeColor").click(function(ev){
 				var card = $(this).closest(".cards > li");
-                                TASKBOARD.openColorPicker(card, $(this).offset().top - 8, $(this).offset().left + 12);
+				TASKBOARD.openColorPicker(card, $(this).offset().top - 8, $(this).offset().left + 12);
 				ev.preventDefault();
 				ev.stopPropagation();
 			});
@@ -385,14 +385,14 @@ TASKBOARD.builder.buildCardFromJSON = function(card){
 
 TASKBOARD.builder.buildBigCard = function(card){
 	var cardDl = "";
-        cardDl += $.tag("dt", "Actions", { id: "cardActionsTitle"});
+	cardDl += $.tag("dt", "Actions", { id: "cardActionsTitle"});
 
-        if(TASKBOARD.editor){
-            var actions = $.tag("li", TASKBOARD.builder.actions.changeColorAction());
-            actions = $.tag("ul", actions, { className: "big actions"});
-            cardDl += $.tag("dd", actions, { id: "cardActions"});
-        }
-        
+	if(TASKBOARD.editor){
+		var actions = $.tag("li", TASKBOARD.builder.actions.changeColorAction());
+		actions = $.tag("ul", actions, { className: "big actions"});
+		cardDl += $.tag("dd", actions, { id: "cardActions"});
+	}
+
 	if(card.issue_no) {
 		cardDl +=  $.tag("dt", "Issue");
 		cardDl +=  $.tag("dd", card.issue_no.escapeHTML());
@@ -426,8 +426,8 @@ TASKBOARD.builder.buildBigCard = function(card){
 		tagsForm = $.tag("form", tagsForm, { id : 'tagsForm' });
 		tagsForm = $.tag("dd", tagsForm);
 		cardDl += tagsForm;
-        }
-        
+	}
+
 	cardDl += $.tag("dt", "Hours left");
 	cardDl += $.tag("dd", card.hours_left, { id : "progress" });
 
@@ -437,10 +437,10 @@ TASKBOARD.builder.buildBigCard = function(card){
 
 	// edit-mode-only
 	if(TASKBOARD.editor){
-                bigCard.find(".changeColor").click(function(ev){
-                    TASKBOARD.openColorPicker(bigCard, $(this).offset().top - 5, $(this).offset().left + 12);
-                    ev.preventDefault();
-                    ev.stopPropagation();
+		bigCard.find(".changeColor").click(function(ev){
+			TASKBOARD.openColorPicker(bigCard, $(this).offset().top - 5, $(this).offset().left + 12);
+			ev.preventDefault();
+			ev.stopPropagation();
 		});
 
 		bigCard.find('#tagsForm').submit(function(ev){
@@ -479,8 +479,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			ev.preventDefault();
 		}).find(":text").click(function() { $(this).val(""); });
 
-                bigCard.find('#inputTags').helpTooltip(TASKBOARD.builder.strings.tagsTooltip);
-
+		bigCard.find('#inputTags').helpTooltip(TASKBOARD.builder.strings.tagsTooltip);
 
 		bigCard.find('#name')
 			.editable(function(value, settings){
@@ -491,8 +490,8 @@ TASKBOARD.builder.buildBigCard = function(card){
 				}, { height: 'none', width: '100%',
 					 submit : 'Save', cancel : 'Cancel', onblur : 'ignore',
 					 data : function(){ return $(this).closest('dl').data('data').name; },
-                                         readyCallback: function(){ $(this).removeClass("hovered"); }
-                                     })
+					 readyCallback: function(){ $(this).removeClass("hovered"); }
+			})
 			.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered");})
 			.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
@@ -504,10 +503,10 @@ TASKBOARD.builder.buildBigCard = function(card){
 				}, { height: '200px', width: '100%',
 					 type : 'textarea', submit : 'Save', cancel : 'Cancel', onblur : 'ignore',
 					 data : function(){ return $(this).closest('dl').data('data').notes; },
-                                         readyCallback : function(){
-                                             $(this).removeClass("hovered").find("textarea").helpTooltip(TASKBOARD.builder.strings.notesTooltip);
-                                         }
-                                     })
+					 readyCallback : function(){
+						$(this).removeClass("hovered").find("textarea").helpTooltip(TASKBOARD.builder.strings.notesTooltip);
+					}
+			})
 			.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered"); })
 			.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
@@ -524,10 +523,8 @@ TASKBOARD.builder.buildBigCard = function(card){
 				return this.revert;
 			}
 		}, { type : 'textselect', onblur : 'ignore', submit : 'Save', cancel : 'Cancel',
-                    readyCallback: function(){
-                        $(this).removeClass("hovered");
-                    }
-                })
+			readyCallback: function(){ $(this).removeClass("hovered"); }
+		})
 		.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered"); })
 		.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
@@ -786,7 +783,7 @@ TASKBOARD.api = {
 		card = card.card;
 		var cardElements = $('#card_' + card.id).add("#bigCard_" + card.id);
 		cardElements.css({ backgroundColor : card.color });
-                cardElements.data('data').color = card.color;
+		cardElements.data('data').color = card.color;
 	}
 };
 
@@ -885,16 +882,16 @@ TASKBOARD.loadFromJSON = function(taskboard){
 	document.title = taskboard.name.escapeHTML() + " - Taskboard"; 
 	if(TASKBOARD.editor){
 		title.editable(function(value, settings){
-                        if(value.trim().length > 0) {
-                            TASKBOARD.remote.api.renameTaskboard(value);
-                            TASKBOARD.data.name = value;
-                            return value.escapeHTML();
-                        } else {
-                            $(this).warningTooltip("Name cannot be blank!");
-                            return this.revert;
-                        }
-                    }, { event : "dblclick", data : function(){ return TASKBOARD.data.name; } })
-                    .attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
+			if(value.trim().length > 0) {
+				TASKBOARD.remote.api.renameTaskboard(value);
+				TASKBOARD.data.name = value;
+				return value.escapeHTML();
+			} else {
+				$(this).warningTooltip("Name cannot be blank!");
+				return this.revert;
+			}
+			}, { event : "dblclick", data : function(){ return TASKBOARD.data.name; } })
+		.attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
 	}
 	$("#header h1").append(" ").append(title);
 
@@ -996,7 +993,7 @@ TASKBOARD.openCard = function(card){
 	var bigCard = TASKBOARD.builder.buildBigCard(card);
 	bigCard.appendTo($('body')).hide()
 		.openOverlay({ zIndex: 1001 });
-        
+
 	TASKBOARD.remote.get.cardBurndown(card.id, function(data){
 		var burndown = $("<dd id='cardBurndown'></dd>");
 		burndown.css({ width: '550px', height: '300px' });
@@ -1006,18 +1003,18 @@ TASKBOARD.openCard = function(card){
 };
 
 TASKBOARD.openColorPicker = function(card, top, left){
-    $.colorPicker({
-            click : function(color){
-                    $(card).css({ backgroundColor : color});
-                    $(card).data('data').color = color;
-                    TASKBOARD.remote.api.changeCardColor($(card).data('data').id, color);
-             },
-             colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
-             columns: 5,
-             top : top,
-             left : left,
-             defaultColor : $(card).data('data').color
-    });
+	$.colorPicker({
+		click : function(color){
+			$(card).css({ backgroundColor : color});
+			$(card).data('data').color = color;
+			TASKBOARD.remote.api.changeCardColor($(card).data('data').id, color);
+		},
+		colors : ['#F8E065', '#FAA919', '#12C2D9', '#FF5A00', '#35B44B'],
+		columns: 5,
+		top : top,
+		left : left,
+		defaultColor : $(card).data('data').color
+	});
 }
 
 $(document).ready(function() {
@@ -1292,7 +1289,6 @@ $.notify = function(msg, options){
 		setTimeout(function(){ notification.fadeOut(); }, settings.timeout);
 	}
 };
-
 
 /* TODO: clean up */
 $.each(["initialized", "connect", "connected", "errorConnecting", "disconnected", "reconnect", "noFlash"], function(){

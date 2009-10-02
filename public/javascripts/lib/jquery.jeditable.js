@@ -172,7 +172,7 @@
 					if ('inherit' == settings.style) {
 						form.attr('style', $(self).attr('style'));
 						/* IE needs the second line or display wont be inherited */
-						form.css('display', $(self).css('display'));                
+						form.css('display', $(self).css('display'));
 					} else {
 						form.attr('style', settings.style);
 					}
@@ -401,7 +401,7 @@
 			},
 			text: {
 				element : function(settings, original) {
-					var input = $('<input>');
+					var input = $('<input type="text">');
 					if (settings.width  != 'none') { input.width(settings.width);  }
 					if (settings.height != 'none') { input.height(settings.height); }
 					/* https://bugzilla.mozilla.org/show_bug.cgi?id=236791 */

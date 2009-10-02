@@ -58,7 +58,7 @@ TASKBOARD.home = {
                 value = value.escapeHTML();
                 return value.truncate(25);
             } else {
-                $(this).tooltip("Name cannot be blank!");
+                $(this).warningTooltip("Name cannot be blank!");
                 return this.revert;
             }
         },
@@ -104,6 +104,9 @@ TASKBOARD.home = {
             var input = $(this).find(":text");
             if(input.val().trim().length === 0 || input.data("changed") !== true){;
                 input.effect("highlight", { color: "#FF0000" }).focus().select();
+                if(input.data("changed")){
+                    input.warningTooltip("Name cannot be blank!");
+                }
                 return false;
             }
         },
