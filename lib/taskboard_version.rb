@@ -1,1 +1,1 @@
-TASKBOARD_VERSION = "09.10.05.done (completed stories)"
+TASKBOARD_VERSION = "09.11.dev (in development)"
