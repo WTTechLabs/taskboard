@@ -437,14 +437,14 @@ TASKBOARD.builder.buildBigCard = function(card){
 
 	// edit-mode-only
 	if(TASKBOARD.editor){
-                var deleteTagCallback = function(){
-                    var tag = $(this).parent().find(".tag").text();
-                    TASKBOARD.remote.api.removeTag(card.id, tag);
-		    var index = card.tag_list.indexOf(tag);
-                    card.tag_list.splice(index, 1);
-                    TASKBOARD.api.updateCard({ card: card });
-		    TASKBOARD.remote.api.removeTag(card.id, tag);
-		    $(this).parent().remove();
+		var deleteTagCallback = function(){
+			var tag = $(this).parent().find(".tag").text();
+			TASKBOARD.remote.api.removeTag(card.id, tag);
+			var index = card.tag_list.indexOf(tag);
+			card.tag_list.splice(index, 1);
+			TASKBOARD.api.updateCard({ card: card });
+			TASKBOARD.remote.api.removeTag(card.id, tag);
+			$(this).parent().remove();
                 };
 
 		bigCard.find(".changeColor").click(function(ev){
@@ -476,14 +476,14 @@ TASKBOARD.builder.buildBigCard = function(card){
 				var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" }) +
 							$.tag("a", "X", { className : "deleteTag", href : "#" });
 				$("#tags ul").append($.tag("li", tagLi));
-                                $("#tags .deleteTag").bind('click', deleteTagCallback);
+				$("#tags .deleteTag").bind('click', deleteTagCallback);
                                 /*
 				$("#tags .deleteTag").bind('click',function(){
 					var tag = $(this).parent().find(".tag").text();
 					TASKBOARD.remote.api.removeTag(card.id, tag);
 					var index = card.tag_list.indexOf(tag);
-                                        card.tag_list.splice(index, 1);
-                                        TASKBOARD.api.updateCard({ card: card });
+					card.tag_list.splice(index, 1);
+					TASKBOARD.api.updateCard({ card: card });
 					TASKBOARD.remote.api.removeTag(card.id, tag);
 					$(this).parent().remove();
 				});*/
@@ -540,7 +540,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 		.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered"); })
 		.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
-                bigCard.find('#tags .deleteTag').bind('click', deleteTagCallback);
+		bigCard.find('#tags .deleteTag').bind('click', deleteTagCallback);
 
 		/* bigCard.find('#tags .deleteTag').bind('click',function(){
 			var tag = $(this).parent().find(".tag").text();
