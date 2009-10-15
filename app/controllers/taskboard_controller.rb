@@ -39,7 +39,7 @@ class TaskboardController < JuggernautSyncController
       taskboard.columns << Column.new(:name => Column::DEFAULT_NAME)
       taskboard.rows << Row.new(:name => Row::DEFAULT_NAME)
       taskboard.save!
-      redirect_to :action => 'show', :id => taskboard.id
+      redirect_to :controller => 'project', :action => 'index'
     end
   end
 
@@ -52,7 +52,7 @@ class TaskboardController < JuggernautSyncController
       clonned = taskboard.clone
       clonned.name = 'Copy of ' + taskboard.name
       clonned.save!
-      redirect_to :action => 'show', :id => clonned.id
+      redirect_to :controller => 'project', :action => 'index'
     end
   end
 
