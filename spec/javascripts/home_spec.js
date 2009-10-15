@@ -20,6 +20,8 @@
 require("spec_helper.js");
 require("../../public/javascripts/home.js");
 
+$(function(){ $(document).unbind('ready.home'); });
+
 Screw.Unit(function(){
 
   describe("TASKBOARD.home", function(){
@@ -37,18 +39,15 @@ Screw.Unit(function(){
       describe("#renameProject", function(){
 
         it("should send rename request when correct value is entered", function(){
+
           var nameSpan = $("dt .name").attr("title", "old name"),
               value = 'new name',
               returned = '';
-          String.prototype.trim = mock_function();
-          String.prototype.trim.should_be_invoked().exactly('once').and_return(value);
-          String.prototype.escapeHTML = mock_function();
-          String.prototype.escapeHTML.should_be_invoked().exactly('once').and_return(value);
-          String.prototype.truncate = mock_function();
-          String.prototype.truncate.should_be_invoked().with_arguments(25).exactly('once').and_return(value);
 
-          $.getJSON = mock_function($.getJSON, "getJSON");
-          $.getJSON.should_be_invoked().exactly('once').and_return('nothing');
+          Smok(String.prototype).expects('trim').returns(value);
+          Smok(String.prototype).expects('escapeHTML').returns(value);
+          Smok(String.prototype).expects('truncate').with_args(25).returns(value);
+          Smok($).expects('getJSON');
 
           returned = TASKBOARD.home.callbacks.renameProject.call(nameSpan, value);
           expect(returned).to(equal, value);
@@ -62,18 +61,12 @@ Screw.Unit(function(){
               returned = '';
           nameSpan[0].revert = oldValue;
 
-          String.prototype.trim = mock_function();
-          String.prototype.trim.should_be_invoked().exactly('once').and_return('');
-          String.prototype.escapeHTML = mock_function();
-          String.prototype.escapeHTML.should_be_invoked().exactly(0, 'times');
-          String.prototype.truncate = mock_function();
-          String.prototype.truncate.should_be_invoked().exactly(0, 'times').and_return(value);
+          Smok(String.prototype).expects('trim').returns('');
+          Smok(String.prototype).expects('escapeHTML').exactly(0, 'times');
+          Smok(String.prototype).expects('truncate').exactly(0, 'times');
+          Smok($).expects('getJSON').exactly(0, 'times');
 
-          $.getJSON = mock_function($.getJSON, "getJSON");
-          $.getJSON.should_be_invoked().exactly(0);
-
-          $.fn.warningTooltip = mock_function();
-          $.fn.warningTooltip.should_be_invoked().with_arguments("Name cannot be blank!").exactly('once');
+          $(nameSpan[0]).expects('warningTooltip').with_args("Name cannot be blank!");
 
           returned = TASKBOARD.home.callbacks.renameProject.call(nameSpan[0], value);
           expect(returned).to(equal, oldValue);
@@ -87,10 +80,7 @@ Screw.Unit(function(){
         it("should remove class 'rename' from containing element and trigger 'rename' event", function(){
           var icon = $(".renameProject"),
               dt = icon.closest("dt").addClass("rename");
-          renameCallback = mock_function();
-          renameCallback.should_be_invoked().exactly('once');
-          dt.find(".name").bind('rename', renameCallback);
-
+          dt.find(".name").expects('trigger').with_args('rename');
           TASKBOARD.home.callbacks.clickRenameProject.call(icon, $.Event('click'));
           expect(dt.hasClass('rename')).to(be_false);
         });
@@ -108,13 +98,9 @@ Screw.Unit(function(){
 
         it("should toggle class 'closed' and focus in text field", function(){
           var label = $(".addTaskboard label"),
-              toggleable = $(".addTaskboard").addClass("toggleable"),
+              toggleable = $(".addTaskboard").addClass("toggleable").removeClass("closed"),
               text = toggleable.find(":text");
-          expect(toggleable.hasClass("closed")).to(be_false);
-
-          $.fn.find = mock_function($.fn.find, "find")
-          $.fn.find.should_be_invoked().with_arguments(":text").exactly('once').and_return(text);
-          mock(text).should_receive("focus").exactly('once');
+          text.expects("focus");
 
           TASKBOARD.home.callbacks.clickAdd.apply(label[0]);
 
@@ -133,12 +119,8 @@ Screw.Unit(function(){
           var dt = $("#projects > dt").removeClass("closed"),
               dd = dt.next("dd"),
               toggleable = dd.find(".addTaskboard").addClass(".toggleable").removeClass("closed");
-          $.fn.exists = mock_function($.fn.exists, "exists");
-          $.fn.exists.should_be_invoked().exactly(1).and_return(false); // find("form").exists = false
-
-          $.fn.next = mock_function($.fn.next, "next");
-          $.fn.next.should_be_invoked().with_arguments("dd").exactly('once').and_return(dd);
-          mock(dd).should_receive("toggle").with_arguments("blind").exactly('once').and_return(dd);
+          dt.find("form").expects("exists").returns(false);
+          dd.expects("toggle").with_args("blind");
 
           TASKBOARD.home.callbacks.clickProjectTitle.apply(dt[0]);
 
@@ -147,16 +129,10 @@ Screw.Unit(function(){
         });
 
         it("should do nothing if rename form is opened in project name", function(){
-          var dt = $("#projects > dt"),
+          var dt = $("#projects > dt").removeClass("closed"),
               dd = dt.next("dd");
-          expect(dt.hasClass("closed")).to(be_false);
-
-          $.fn.exists = mock_function($.fn.exists, "exists");
-          $.fn.exists.should_be_invoked().exactly(1).and_return(true); // find("form").exists = true
-
-          $.fn.next = mock_function($.fn.next, "next");
-          $.fn.next.should_be_invoked().with_arguments("dd").exactly(0)
-          mock(dd).should_receive("toggle").with_arguments("blind").exactly(0);
+          dt.find("form").expects("exists").returns(true);
+          dd.expects("toggle").with_args("blind").exactly(0, 'times');
 
           TASKBOARD.home.callbacks.clickProjectTitle.apply(dt[0]);
 
@@ -170,9 +146,7 @@ Screw.Unit(function(){
         it("should expand all projects", function(){
           var dt = $("#projects > dt").addClass("closed"),
               dd = dt.next("dd");
-          $.fn.next = mock_function($.fn.next, "next");
-          $.fn.next.should_be_invoked().with_arguments("dd").exactly('once').and_return(dd);
-          mock(dd).should_receive("show").with_arguments("blind").exactly('once');
+          dd.expects("show").with_args("blind");
           TASKBOARD.home.callbacks.clickExpand.call();
           expect(dt.hasClass('closed')).to(be_false);
         });
@@ -185,9 +159,7 @@ Screw.Unit(function(){
           var dt = $("#projects > dt").removeClass("closed"),
               dd = dt.next("dd"),
               toggleable = dd.find(".addTaskboard").addClass(".toggleable").removeClass("closed");
-          $.fn.next = mock_function($.fn.next, "next");
-          $.fn.next.should_be_invoked().with_arguments("dd").exactly('once').and_return(dd);
-          mock(dd).should_receive("hide").with_arguments("blind").exactly('once').and_return(dd);
+          dd.expects("hide").with_args("blind");
           TASKBOARD.home.callbacks.clickCollapse.call();
           expect(dt.hasClass('closed')).to(be_true);
           expect(toggleable.hasClass('closed')).to(be_true);
@@ -211,18 +183,11 @@ Screw.Unit(function(){
           var form = $(".addProject form"),
               text = $(".addProject form :text"),
               submitted = true;
-          $.fn.val = mock_function($.fn.val, "val");
-          $.fn.val.should_be_invoked().exactly('once').and_return('');
-
-          String.prototype.trim = mock_function();
-          String.prototype.trim.should_be_invoked().exactly('once').and_return('');
-
-          $.fn.effect = mock_function($.fn.effect, "effect");
-          $.fn.effect.should_be_invoked().with_arguments("highlight", { color: "#FF0000" }).exactly("once").and_return(text);
-          mock(text).should_receive("focus").exactly("once").and_return(text);
-
-          $.fn.warningTooltip = mock_function();
-          $.fn.warningTooltip.should_be_invoked().with_arguments("Name cannot be blank!").exactly('once');
+          text.expects("val").returns("");
+          Smok(String.prototype).expects("trim").returns("");
+          text.expects("effect").with_args("highlight", { color: "#FF0000" });
+          text.expects("focus");
+          text.expects('warningTooltip').with_args("Name cannot be blank!");
 
           submitted = TASKBOARD.home.callbacks.submitForm.call(form[0]);
           expect(submitted).to_not(be_undefined);
@@ -233,18 +198,11 @@ Screw.Unit(function(){
           var form = $(".addProject form"),
               text = $(".addProject form :text").removeData("changed"),
               submitted = true;
-          $.fn.val = mock_function($.fn.val, "val");
-          $.fn.val.should_be_invoked().exactly('once').and_return('some value');
-
-          String.prototype.trim = mock_function();
-          String.prototype.trim.should_be_invoked().exactly('once').and_return('some value');
-
-          $.fn.effect = mock_function($.fn.effect, "effect");
-          $.fn.effect.should_be_invoked().with_arguments("highlight", { color: "#FF0000" }).exactly("once").and_return(text);
-          mock(text).should_receive("focus").exactly("once").and_return(text);
-
-          $.fn.warningTooltip = mock_function();
-          $.fn.warningTooltip.should_be_invoked().exactly(0, 'times');
+          text.expects("val").returns('some value');
+          Smok(String.prototype).expects("trim").returns('some value');
+          text.expects("effect").with_args("highlight", { color: "#FF0000" });
+          text.expects("focus");
+          text.expects('warningTooltip').exactly(0, 'times');
 
           submitted = TASKBOARD.home.callbacks.submitForm.call(form[0]);
           expect(submitted).to_not(be_undefined);
@@ -256,14 +214,9 @@ Screw.Unit(function(){
               text = $(".addProject form :text").data("changed", true)
               value = "correct value",
               submitted = true;
-          $.fn.val = mock_function($.fn.val, "val");
-          $.fn.val.should_be_invoked().exactly('once').and_return(value);
-
-          String.prototype.trim = mock_function();
-          String.prototype.trim.should_be_invoked().exactly('once').and_return(value);
-
-          $.fn.effect = mock_function($.fn.effect, "effect");
-          $.fn.effect.should_be_invoked().exactly(0);
+          text.expects("val").returns(value);
+          Smok(String.prototype).expects("trim").returns(value);
+          text.expects("effect").exactly(0, 'times');
 
           submitted = TASKBOARD.home.callbacks.submitForm.call(form[0]);
           expect(submitted).to(be_undefined);
@@ -278,8 +231,7 @@ Screw.Unit(function(){
               rel = icon.attr("rel"),
               parent = icon.parent().parent().parent().removeClass(rel),
               actionName = parent.find(".actionName").text("");
-          $.fn.exists = mock_function($.fn.exists, "exists");
-          $.fn.exists.should_be_invoked().exactly(1).and_return(false); // find("form").exists = false
+          parent.find("form").expects("exists").returns(false);
 
           TASKBOARD.home.callbacks.toggleAction.call(icon, $.Event("mouseenter"));
           expect(parent.hasClass(rel)).to(be_true);
@@ -291,8 +243,7 @@ Screw.Unit(function(){
               rel = icon.attr("rel"),
               parent = icon.parent().parent().parent().addClass(rel),
               actionName = parent.find(".actionName").text("(" + rel + ")");
-          $.fn.exists = mock_function($.fn.exists, "exists");
-          $.fn.exists.should_be_invoked().exactly(1).and_return(false); // find("form").exists = false
+          parent.find("form").expects("exists").returns(false);
 
           TASKBOARD.home.callbacks.toggleAction.call(icon, $.Event("mouseleave"));
           expect(parent.hasClass(rel)).to(be_false);
@@ -304,8 +255,7 @@ Screw.Unit(function(){
               rel = icon.attr("rel"),
               parent = icon.parent().parent().parent().removeClass(rel),
               actionName = parent.find(".actionName").text("");
-          $.fn.exists = mock_function($.fn.exists, "exists");
-          $.fn.exists.should_be_invoked().exactly(1).and_return(true); // find("form").exists = false
+          parent.find("form").expects("exists").returns(true);
 
           TASKBOARD.home.callbacks.toggleAction.call(icon, $.Event("mouseenter"));
           expect(parent.hasClass(rel)).to(be_false);
@@ -349,10 +299,8 @@ Screw.Unit(function(){
 
       describe("while initializing plugins", function(){
         it("should make project name editable", function(){
-          $.fn.editable = mock_function($.fn.editable, 'editable');
-          $.fn.editable.should_be_invoked()
-              //.with_arguments(TASKBOARD.home.callbacks.renameProject, { event: 'rename', select: true, height: 'none' })
-              .exactly('once')
+          $("dt .name").expects("editable")
+//          .with_args(TASKBOARD.home.callbacks.renameProject, { event: 'rename', select: true, height: 'none' });
           TASKBOARD.home.init();
         });
       });
@@ -360,37 +308,28 @@ Screw.Unit(function(){
       describe("while initializing events", function(){
 
         it("should bind click event to projects' title elements", function(){
-          TASKBOARD.home.callbacks.clickProjectTitle = mock_function(TASKBOARD.home.callbacks.clickProjectTitle, "clickProjectTitle");
-          TASKBOARD.home.callbacks.clickProjectTitle.should_be_invoked().exactly('once').and_return('nothing');
+          Smok(TASKBOARD.home.callbacks).expects('clickProjectTitle');
           TASKBOARD.home.init();
           $("#projects > dt").click();
         });
 
         it("should bind click events to global expand/collapse actions", function(){
-          TASKBOARD.home.callbacks.clickExpand = mock_function(TASKBOARD.home.callbacks.expandAll, "clickExpand");
-          TASKBOARD.home.callbacks.clickExpand.should_be_invoked().exactly('once').and_return('nothing');
-          
-          TASKBOARD.home.callbacks.clickCollapse = mock_function(TASKBOARD.home.callbacks.collapseAll, "clickCollapse");
-          TASKBOARD.home.callbacks.clickCollapse.should_be_invoked().exactly('once').and_return('nothing');
-          
+          Smok(TASKBOARD.home.callbacks).expects('clickExpand');
+          Smok(TASKBOARD.home.callbacks).expects('clickCollapse');
           TASKBOARD.home.init();
           $(".globalActions .expand").click();
           $(".globalActions .collapse").click();
         });
 
         it("should bind click events to add form labels", function(){
-          TASKBOARD.home.callbacks.clickAdd = mock_function(TASKBOARD.home.callbacks.expandAll, "clickAdd");
-          TASKBOARD.home.callbacks.clickAdd.should_be_invoked().exactly('twice').and_return('nothing');
-
+          Smok(TASKBOARD.home.callbacks).expects('clickAdd').exactly(2, 'times');
           TASKBOARD.home.init();
           $(".addTaskboard label").click();
           $(".addProject label").click();
         });
 
         it("should bind click events to rename project icon", function(){
-          TASKBOARD.home.callbacks.clickRenameProject = mock_function(TASKBOARD.home.callbacks.clickRenameProject, "clickRenameProject");
-          TASKBOARD.home.callbacks.clickRenameProject.should_be_invoked().exactly('once').and_return('nothing');
-
+          Smok(TASKBOARD.home.callbacks).expects('clickRenameProject');
           TASKBOARD.home.init();
           var event = $.Event("click");
           event.stopPropagation(); // make sure clicking doesn't propagate to parent element
@@ -398,27 +337,21 @@ Screw.Unit(function(){
         });
 
         it("should bind hover events to icons", function(){
-          TASKBOARD.home.callbacks.toggleAction = mock_function(TASKBOARD.home.callbacks.toggleAction, "toggleAction");
-          TASKBOARD.home.callbacks.toggleAction.should_be_invoked().exactly(4, 'times').and_return('nothing');
-
+          Smok(TASKBOARD.home.callbacks).expects('toggleAction').exactly(4, 'times');
           TASKBOARD.home.init();
           $(".cloneTaskboard").mouseenter().mouseleave();
           $(".renameProject").mouseenter().mouseleave();
         });
 
         it("should bind change event to text inputs", function(){
-          TASKBOARD.home.callbacks.changeInput = mock_function(TASKBOARD.home.callbacks.changeInput, "changeInput");
-          TASKBOARD.home.callbacks.changeInput.should_be_invoked().exactly('twice').and_return('nothing');
-
+          Smok(TASKBOARD.home.callbacks).expects('changeInput').exactly(2, 'times');
           TASKBOARD.home.init();
           $(".addTaskboard :text").change();
           $(".addProject :text").change();
         });
 
         it("should bind submit event to forms", function(){
-          TASKBOARD.home.callbacks.submitForm = mock_function(TASKBOARD.home.callbacks.submitForm, "submitForm");
-          TASKBOARD.home.callbacks.submitForm.should_be_invoked().exactly('twice').and_return('nothing');
-
+          Smok(TASKBOARD.home.callbacks).expects('submitForm').exactly(2, 'times').returns(false);;
           TASKBOARD.home.init();
           $(".addTaskboard form").submit();
           $(".addProject form").submit();

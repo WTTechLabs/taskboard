@@ -122,7 +122,7 @@ TASKBOARD.home = {
     }
 }
 
-$(document).ready(TASKBOARD.home.init);
+$(document).bind('ready.home', TASKBOARD.home.init);
 
 })();
 
