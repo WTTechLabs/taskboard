@@ -45,6 +45,8 @@ load(PLUGIN_PREFIX + "/lib/smoke.core.js");
 load(PLUGIN_PREFIX + "/lib/smoke.mock.js");
 load(PLUGIN_PREFIX + "/lib/smoke.stub.js");
 load(PLUGIN_PREFIX + "/lib/screw.mocking.js");
+load(PLUGIN_PREFIX + "/lib/smok.js");
+load(PLUGIN_PREFIX + "/lib/screw.smok.js");
 load(PLUGIN_PREFIX + "/lib/consoleReportForRake.js");
 
 print("Running " + BlueRidge.specFile + " with fixture '" + BlueRidge.fixtureFile + "'...");
