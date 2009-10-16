@@ -39,7 +39,6 @@ Screw.Unit(function(){
       describe("#renameProject", function(){
 
         it("should send rename request when correct value is entered", function(){
-
           var nameSpan = $("dt .name").attr("title", "old name"),
               value = 'new name',
               returned = '';
@@ -71,6 +70,21 @@ Screw.Unit(function(){
           returned = TASKBOARD.home.callbacks.renameProject.call(nameSpan[0], value);
           expect(returned).to(equal, oldValue);
           expect(nameSpan.attr("title")).to(equal, oldValue);
+        });
+
+      });
+
+      describe("#renameProjectFinished", function(){
+
+        it("should move renamed project to correct position", function(){
+          var dt = $("dt"),
+              nameSpan = dt.find(".name"),
+              dd = dt.next("dd");
+          dt.expects("sortIn");
+          dd.expects("insertAfter").with_args(dt);
+          dt.expects("scrollTo");
+          dt.add(dd).expects("effect").with_args("highlight", {}, "slow");
+          TASKBOARD.home.callbacks.renameProjectFinished.call(nameSpan);
         });
 
       });

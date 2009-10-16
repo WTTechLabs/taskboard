@@ -31,7 +31,8 @@ TASKBOARD.home = {
             });
 
         $("dt .name").editable(callbacks.renameProject, { event: 'rename', select: true, height: 'none',
-            data: function(){ return $(this).attr("title").unescapeHTML(); } });
+            data: function(){ return $(this).attr("title").unescapeHTML(); },
+            callback: callbacks.renameProjectFinished });
 
         $("#projects .globalActions")
             .find(".expand")
@@ -61,6 +62,19 @@ TASKBOARD.home = {
                 $(this).warningTooltip("Name cannot be blank!");
                 return this.revert;
             }
+        },
+
+        renameProjectFinished: function(){
+            var dt = $(this).closest("dt"),
+                dd = dt.next("dd");
+            dt.sortIn("dt", function(e){ return $(e).find(".name").attr("title") }, { insertAfterElements: "dt + dd" });
+            if(!$("#projects dt:eq(0)").hasClass("first")){
+                $("#projects dt.first").removeClass("first");
+                $("#projects dt:eq(0)").addClass("first");
+            }
+            dd.insertAfter(dt);
+            dt.scrollTo();
+            dt.add(dd).effect("highlight", {}, "slow");
         },
 
         clickRenameProject: function(event){
