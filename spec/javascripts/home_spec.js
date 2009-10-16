@@ -83,6 +83,7 @@ Screw.Unit(function(){
           dt.expects("sortIn");
           dd.expects("insertAfter").with_args(dt);
           dt.expects("scrollTo");
+          dd.expects("filter").with_args(":visible");
           dt.add(dd).expects("effect").with_args("highlight", {}, "slow");
           TASKBOARD.home.callbacks.renameProjectFinished.call(nameSpan);
         });
