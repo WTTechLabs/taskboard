@@ -67,7 +67,13 @@ TASKBOARD.home = {
         renameProjectFinished: function(){
             var dt = $(this).closest("dt"),
                 dd = dt.next("dd");
-            dt.sortIn("dt", function(e){ return $(e).find(".name").attr("title") }, { insertAfterElements: "dt + dd" });
+            dt.sortIn("dt", function(e){ return $(e).find(".name").attr("title") }, {
+                insertAfterElements: "dt + dd",
+                compareFunction: function(a, b){
+                    a = a.toLowerCase(); b = b.toLowerCase();
+                    return a < b ? -1 : ( a > b ? 1 : 0 );
+                }
+            });
             if(!$("#projects dt:eq(0)").hasClass("first")){
                 $("#projects dt.first").removeClass("first");
                 $("#projects dt:eq(0)").addClass("first");
