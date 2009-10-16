@@ -55,7 +55,15 @@ require(BLUE_RIDGE_LIB_PREFIX + "jquery-1.3.2.js", function(){
         require(BLUE_RIDGE_LIB_PREFIX + "smoke.mock.js", function(){
          require(BLUE_RIDGE_LIB_PREFIX + "smoke.stub.js", function(){
           require(BLUE_RIDGE_LIB_PREFIX + "screw.mocking.js",function(){
+
+          require(BLUE_RIDGE_LIB_PREFIX + "smok.js",function(){
+          require(BLUE_RIDGE_LIB_PREFIX + "screw.smok.js",function(){
+
            require(BlueRidge.deriveSpecNameFromCurrentFile());
+
+          });
+          });
+
           });
          });
         });

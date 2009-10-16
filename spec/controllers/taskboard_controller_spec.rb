@@ -40,13 +40,8 @@ describe TaskboardController, "while creating new taskboard" do
   it "should add taskboard with default name if name not given" do
     taskboard = Taskboard.new
     Taskboard.should_receive(:new).and_return(taskboard)
-    taskboard.should_receive(:save!)
     post_as_editor 'add_taskboard', :project_id => projects(:test_project).id
-    response.should redirect_to :action => 'show'
     taskboard.name.should eql Taskboard::DEFAULT_NAME
-    taskboard.project.should eql projects(:test_project)
-    taskboard.should have(1).column
-    taskboard.should have(1).row
   end
 
   it "should allow adding new taskboards" do
@@ -54,7 +49,7 @@ describe TaskboardController, "while creating new taskboard" do
     Taskboard.should_receive(:new).and_return(taskboard)
     taskboard.should_receive(:save!)
     post_as_editor 'add_taskboard', :project_id => projects(:test_project).id, :name => 'new taskboard!'
-    response.should redirect_to :action => 'show'
+    response.should redirect_to :controller => 'project', :action => 'index'
     taskboard.name.should eql 'new taskboard!'
     taskboard.project.should eql projects(:test_project)
     taskboard.should have(1).column
@@ -75,7 +70,7 @@ describe TaskboardController, "while creating new taskboard" do
     taskboard.should_receive(:clone).and_return(clonned)
     clonned.should_receive(:save!)
     post_as_editor 'clone_taskboard', :id => '2'
-    response.should redirect_to :action => 'show', :id => 10
+    response.should redirect_to :controller => 'project', :action => 'index'
     clonned.name.should eql 'Copy of Some name'
   end
 
