@@ -80,7 +80,7 @@ TASKBOARD.home = {
             }
             dd.insertAfter(dt);
             dt.scrollTo();
-            dt.add(dd).effect("highlight", {}, "slow");
+            dt.add(dd.filter(":visible")).effect("highlight", {}, "slow");
         },
 
         clickRenameProject: function(event){
