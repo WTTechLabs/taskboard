@@ -277,12 +277,12 @@ $.fn.sortIn = function( elements, sortValueCallback, options ){
     options = $.extend({
         insertBeforeElements: elements,
         insertAfterElements: elements,
-        callback: function(){}
+        compareFunction : undefined
     }, options);
 
     var currentPosition = elements.index(this),
         sortValue = sortValueCallback.call(this, this),
-        valueArray = $.map(elements, sortValueCallback).sort(),
+        valueArray = $.map(elements, sortValueCallback).sort(options.compareFunction),
         newPosition = $.inArray(sortValue, valueArray);
 
     if(newPosition == currentPosition) return this;
@@ -291,7 +291,6 @@ $.fn.sortIn = function( elements, sortValueCallback, options ){
     } else {
         this.insertAfter( $(options.insertAfterElements).eq(newPosition) );
     }
-    options.callback.call(this);
     return this;
 }
 
