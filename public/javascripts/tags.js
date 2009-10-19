@@ -82,8 +82,10 @@ TASKBOARD.tags = {
 	},
 
     importSelection : function(selected) {
-        $("#filterTags li").removeClass("current");
-        $("#filterTags a[href='#/" + selected + "']").parent().toggleClass("current");
+        $("#filterTags li").each(function(){
+            var current = $(this).is(":has(a[href$='" + selected + "'])");
+            $(this).toggleClass('current', current);
+        });
         this.updateCardSelection();
     }
 };
