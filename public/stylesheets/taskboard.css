@@ -614,6 +614,7 @@
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     float: left;
+    margin: 2px;
 }
 
     .bigCard .tags li a {
