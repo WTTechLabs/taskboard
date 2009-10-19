@@ -437,6 +437,16 @@ TASKBOARD.builder.buildBigCard = function(card){
 
 	// edit-mode-only
 	if(TASKBOARD.editor){
+		var deleteTagCallback = function(){
+			var tag = $(this).parent().find(".tag").text();
+			TASKBOARD.remote.api.removeTag(card.id, tag);
+			var index = card.tag_list.indexOf(tag);
+			card.tag_list.splice(index, 1);
+			TASKBOARD.api.updateCard({ card: card });
+			TASKBOARD.remote.api.removeTag(card.id, tag);
+			$(this).parent().remove();
+		};
+
 		bigCard.find(".changeColor").click(function(ev){
 			TASKBOARD.openColorPicker(bigCard, $(this).offset().top - 5, $(this).offset().left + 12);
 			ev.preventDefault();
@@ -444,8 +454,8 @@ TASKBOARD.builder.buildBigCard = function(card){
 		});
 
 		bigCard.find('#tagsForm').submit(function(ev){
-			var cardTags = $.map(card.tag_list, function(n){ return n.toUpperCase() });			
-			var tags = $(this).find(':text').val();			
+			var cardTags = $.map(card.tag_list, function(n){ return n.toUpperCase() });
+			var tags = $(this).find(':text').val();
 			// remove empty and already added tags
 			tags = $.map(tags.split(','), function(n){ return (n.trim() && ($.inArray(n.trim().toUpperCase(),cardTags) < 0)) ? n.trim() : null; });
 			var uniqueTags = []
@@ -466,15 +476,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 				var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" }) +
 							$.tag("a", "X", { className : "deleteTag", href : "#" });
 				$("#tags ul").append($.tag("li", tagLi));
-				$("#tags .deleteTag").bind('click',function(){
-					var tag = $(this).parent().find(".tag").text();
-					TASKBOARD.remote.api.removeTag(card.id, tag);
-					var index = card.tag_list.indexOf(tag);
-					card.tag_list.splice(index, index);
-					TASKBOARD.api.updateCard({ card: card });
-					TASKBOARD.remote.api.removeTag(card.id, tag);
-					$(this).parent().remove();
-				});
+				$("#tags .deleteTag").bind('click', deleteTagCallback);
 			});
 			ev.preventDefault();
 		}).find(":text").click(function() { $(this).val(""); });
@@ -528,14 +530,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 		.bind("mouseenter.editable", function(){ if($(this).find("form").length){ return; } $(this).addClass("hovered"); })
 		.bind("mouseleave.editable", function(){ $(this).removeClass("hovered"); });
 
-		bigCard.find('#tags .deleteTag').bind('click',function(){
-			var tag = $(this).parent().find(".tag").text();
-			var index = card.tag_list.indexOf(tag);
-			card.tag_list.splice(index, index);
-			TASKBOARD.api.updateCard({ card: card });
-			TASKBOARD.remote.api.removeTag(card.id, tag);
-			$(this).parent().remove();
-		});
+		bigCard.find('#tags .deleteTag').bind('click', deleteTagCallback);
 	}
 
 	bigCard.data('data',card);
