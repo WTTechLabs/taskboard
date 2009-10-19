@@ -852,6 +852,7 @@ TASKBOARD.init = function(){
 	$("#filterTags a").live("click", function(){
 		$(this).parent().toggleClass("current");
 		TASKBOARD.tags.updateCardSelection();
+        TASKBOARD.url.silentUpdate($(this).parent().hasClass("current") ? $(this).attr('href').substring(2) : "");
 		return false;
 	});
 
@@ -919,6 +920,7 @@ TASKBOARD.loadFromJSON = function(taskboard){
 	TASKBOARD.utils.expandTaskboard();
 	TASKBOARD.form.updateColumnSelect();
 	TASKBOARD.tags.updateTagsList();
+    TASKBOARD.url.init();
 };
 
 TASKBOARD.burndown = {};
@@ -1029,76 +1031,11 @@ $(document).ready(function() {
 	});
 });
 
-TASKBOARD.tags = {
-	tagList : {},
-
-	add : function(tag){
-		var tagObject = this.tagList[tag];
-		if(tagObject) {
-			tagObject.count++;
-			return tagObject;
-		} else {
-			tagObject = { tag : tag, className : "tagged_as_" + tag.toClassName(), count : 1 };
-			this.tagList[tag] = tagObject;
-			return tagObject;
-		}
-	},
-	
-	rebuildTagList : function(){
-		this.tagList = {};
-		$("#taskboard .cards > li").each(function(){
-			$.each($(this).data("data").tag_list, function(i, tag){
-				TASKBOARD.tags.add(tag);
-			});
-		});
-	},
-	
-	updateTagsList : function(){
-		this.rebuildTagList();
-		
-		var tagsLinks = "";
-		var className = $("#filterTags a[href='#notags']").parent().hasClass("current") ? "current" : "";
-		tagsLinks += $.tag("li", $.tag("a", "No tags", { href : "#notags", title : "Highlight cards with no tags" }),
-							 { className : className } );
-		
-		$.each(this.tagList, function(){
-			className = $("#filterTags a[href='#" + this.className + "']").parent().hasClass("current") ? "current" : "";
-			tagsLinks += $.tag("li", $.tag("a", this.tag, { href : "#" + this.className, title: "Highlight cards tagged as '" + this.tag + "'" }),
-								 { className : className });
-		});
-		$("#filterTags").html(tagsLinks);
-	},
-	
-	updateCardSelection : function(){
-		var cardSelectors = [];
-		
-		$("#filterTags .current a").each(function(){
-		
-			var cardSelector = "";
-			if($(this).attr('href') === '#notags'){
-				cardSelector = ":not([class*='tagged_as_'])";
-			} else {
-				cardSelector = $(this).attr('href').replace("#", ".");
-			}
-			
-			cardSelectors.push(cardSelector);
-		});
-		
-		var filtered = $("#taskboard .cards > li").css("opacity", null);
-		$.each(cardSelectors, function(){
-			filtered = filtered.not("#taskboard .cards > li" + this);
-		});
-		if($("#filterTags .current a").length){
-			filtered.css("opacity", 0.2);
-		}
-	}
-};
-
 // TODO: refactor and make more generic plugin
 $.fn.openOverlay = function(css){
 	var self = this;
 	$('body').append('<div id="overlay"></div>');
-		$("#overlay").css({ 
+		$("#overlay").css({
 			height: '100%',
 			width : '100%',
 			position: 'fixed',
