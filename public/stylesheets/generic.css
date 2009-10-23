@@ -69,56 +69,64 @@ body {
     background-image: url(/images/warning.png);
 }
 
+/* Footer */
+
 #footer {
     bottom: 0; right: 0; left: 0;
     font-size:0.8em;
     color:#777777;
-    text-align:right;
     padding: 5px;
     border-top: 1px solid #CCCCCC;
+    overflow: hidden;
+    clear: both;
 }
 
-#footer a {
-    color: #6699BB;
-    text-decoration: none;
-    border-bottom: 1px solid #AAAAAA;
+#taskboard_meta {
+    float: right;
 }
 
-#footer a:hover {
-    color: #333333;
-    text-decoration: none;
-    border-bottom: 1px solid #555555;
-    background-color: #DDEEFF;
-}
+    #taskboard_meta a {
+        color: #6699BB;
+        text-decoration: none;
+        border-bottom: 1px solid #AAAAAA;
+    }
 
-#footer .madeby { font-size:1.1em; }
+    #taskboard_meta a:hover {
+        color: #333333;
+        border-color: #555555;
+        background-color: #DDEEFF;
+    }
 
-#footer .version { font-size:0.9em; line-height: 1.6em; }
-#footer .version .number { color: #555555; }
+    #taskboard_meta .madeby {
+        font-size:1.1em;
+    }
 
-#footer li {
-  display: inline;
-}
+    #taskboard_meta .version {
+        font-size:0.9em;
+        line-height: 1.6em;
+    }
 
-#footer li::after {
-  content: " |";
-}
+        #taskboard_meta .version .number {
+            color: #555555;
+        }
 
-#footer li:last-child::after {
-  content: "";
-}
+    #taskboard_meta li {
+        display: inline;
+    }
 
-#footer #cognifide_logo {
+    #taskboard_meta li::after { content: " |"; }
+    #taskboard_meta li:last-child::after { content: ""; }
+
+#cognifide_logo {
     display: block;
     width: 121px;
     height: 50px;
     text-indent: -9999px;
-    text-align: left;
     background: url(../images/cognifide_logo.png) no-repeat scroll 0 0;
     float: right;
     border: 0;
-    margin-left: 10px;
+    margin-right: 10px;
 }
 
-    #footer #cognifide_logo:hover { background-position: -121px 0; }
+    #cognifide_logo:hover { background-position: -121px 0; }
 
