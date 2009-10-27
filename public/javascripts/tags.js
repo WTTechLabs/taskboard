@@ -61,14 +61,12 @@ TASKBOARD.tags = {
 		var cardSelectors = [];
 
 		$("#filterTags .current a").each(function(){
-
 			var cardSelector = "";
 			if($(this).attr('href') === '#/notags'){
 				cardSelector = ":not([class*='tagged_as_'])";
 			} else {
 				cardSelector = $(this).attr('href').replace("#/", ".");
 			}
-
 			cardSelectors.push(cardSelector);
 		});
 
@@ -81,11 +79,24 @@ TASKBOARD.tags = {
 		}
 	},
 
-    importSelection : function(selected) {
-        $("#filterTags li").each(function(){
-            var current = $(this).is(":has(a[href$='" + selected + "'])");
-            $(this).toggleClass('current', current);
+    importSelection : function(selected, noTagsSelected) {
+        var selectedTags = selected.split(",");
+        $("#filterTags li a[href!='#/notags']").each(function(){
+            var current = $.inArray($(this).text(), selectedTags) >= 0;
+            $(this).parent().toggleClass('current', current);
         });
+        $("#filterTags li a[href='#/notags']")
+            .parent().toggleClass('current', noTagsSelected);
         this.updateCardSelection();
+    },
+
+    exportSelection : function() {
+        var tags = "";
+         $("#filterTags li[class='current'] a[href!='#/notags']").each(function(){
+            tags += $(this).text() + ",";
+        });
+        // get riddle of last coma
+        if (tags.length > 0) tags = tags.substr(0, tags.length - 1);
+        return(tags);
     }
 };

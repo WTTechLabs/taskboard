@@ -19,36 +19,56 @@
 
 TASKBOARD.url = {
 
+    // list of supported url parameters
+    parametersNames: ["tags","no_tags"],
+
     // indicates whether to interecept changes in url or not
     interceptUrlChanges: true,
 
     // initializes TASKBOARD.url module
     init : function() {
-        var requestedUrlValue = $.address.value();
-
-        // perform action indicated by url when page is reloaded
-        if (requestedUrlValue != "/") {
-            this.onChange(requestedUrlValue.substring(1));
-        }
+        // check what has been requested on init
+        var parameters = {};
+        $.each(this.parametersNames, function() {
+            parameters[this] = $.address.parameter(this);
+        });
+        this.onChange(parameters);
 
         // connect to event
         $.address.change(function(event) {
             if (TASKBOARD.url.interceptUrlChanges) {
-                TASKBOARD.url.onChange(event.value.substring(1));
+                TASKBOARD.url.onChange(event.parameters);
             }
         });
     },
 
+    // to be invoked when url changes (only the value part)
+    // i.e.: parameters.tags, parameters.other_propery_name
+    onChange : function(parameters) {
+        TASKBOARD.tags.importSelection(
+            parameters.tags ? parameters.tags : "",
+            parameters.no_tags || parameters.no_tags.lebgth == 0 ? parameters.no_tags != "false" : false);
+    },
+
     // silent update of url - no event will be risen (onChange)
-    silentUpdate : function(urlValue) {
+    silentUpdate : function(parameterName, parameterValue) {
+        var urlValue = "";
+        $.each(this.parametersNames, function() {
+            var value = (this == parameterName) ? parameterValue : $.address.parameter(this);
+            if(value) urlValue += this + "=" + value + "&";
+        });
         this.interceptUrlChanges = false;
-        $.address.value(urlValue);
+        $.address.value(urlValue.length==0 ? "" : "?" + urlValue.substr(0,urlValue.length-1));
         this.interceptUrlChanges = true;
     },
 
-    // to be invoked when url changes (only the value part)
-    onChange : function(urlValue) {
-        TASKBOARD.tags.importSelection(urlValue);
+    // updates url with new tags selection
+    updateSelectedTags : function(tagsSelection) {
+        this.silentUpdate("tags", tagsSelection);
+    },
+
+    // updates url with no tags selection
+    updateNoTags : function(toggled) {
+        this.silentUpdate("no_tags", toggled);
     }
-    
 };

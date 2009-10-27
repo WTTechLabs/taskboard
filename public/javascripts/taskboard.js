@@ -852,7 +852,12 @@ TASKBOARD.init = function(){
 	$("#filterTags a").live("click", function(){
 		$(this).parent().toggleClass("current");
 		TASKBOARD.tags.updateCardSelection();
-        TASKBOARD.url.silentUpdate($(this).parent().hasClass("current") ? $(this).attr('href').substring(2) : "");
+        if($(this).attr("href")=="#/notags"){
+            TASKBOARD.url.updateNoTags($(this).parent().hasClass("current"));
+        }
+        else{
+            TASKBOARD.url.updateSelectedTags(TASKBOARD.tags.exportSelection());
+        }
 		return false;
 	});
 
