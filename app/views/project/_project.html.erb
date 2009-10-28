@@ -32,7 +32,8 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 <dd class="taskboards">
 	<ul>
 	<% if project.taskboards.size > 0 -%>
-	<%= render :partial => 'taskboard/taskboard', :collection => project.taskboards.sort_by(&:name) %>
+	<!-- render :partial => 'taskboard/taskboard', :collection => project.taskboards.sort_by(&:name) -->
+        <%= render :partial => 'taskboard/taskboard', :collection => project.taskboards.sort_by{|t| t.name.downcase} %>
 	<% else -%>
 	<li class="empty">There are no taskboards in this project yet.</li>
 	<% end %>
