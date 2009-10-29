@@ -852,7 +852,7 @@ TASKBOARD.init = function(){
 	$("#filterTags a").live("click", function(){
 		$(this).parent().toggleClass("current");
 		TASKBOARD.tags.updateCardSelection();
-        if($(this).attr("href")=="#/notags"){
+        if($(this).attr("href")=="#/?no_tags="){
             TASKBOARD.url.updateNoTags($(this).parent().hasClass("current"));
         }
         else{

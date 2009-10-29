@@ -20,7 +20,7 @@
 TASKBOARD.url = {
 
     // list of supported url parameters
-    parametersNames: ["tags","no_tags"],
+    parametersNames: ["selected_tags","no_tags"],
 
     // indicates whether to interecept changes in url or not
     interceptUrlChanges: true,
@@ -29,7 +29,7 @@ TASKBOARD.url = {
     init : function() {
         // check what has been requested on init
         var parameters = {};
-        $.each(this.parametersNames, function() {
+        $.each($.address.parameterNames(), function() {
             parameters[this] = $.address.parameter(this);
         });
         this.onChange(parameters);
@@ -46,29 +46,31 @@ TASKBOARD.url = {
     // i.e.: parameters.tags, parameters.other_propery_name
     onChange : function(parameters) {
         TASKBOARD.tags.importSelection(
-            parameters.tags ? parameters.tags : "",
-            parameters.no_tags || parameters.no_tags.lebgth == 0 ? parameters.no_tags != "false" : false);
+            parameters.selected_tags ? parameters.selected_tags : "",
+            parameters.no_tags !== undefined ? parameters.no_tags != "false" : false);
     },
 
     // silent update of url - no event will be risen (onChange)
     silentUpdate : function(parameterName, parameterValue) {
         var urlValue = "";
+        // build new url using new value for given parameter and current values
+        // for other parameters
         $.each(this.parametersNames, function() {
             var value = (this == parameterName) ? parameterValue : $.address.parameter(this);
-            if(value) urlValue += this + "=" + value + "&";
+            if (value !== undefined) urlValue += this + "=" + value + "&";
         });
         this.interceptUrlChanges = false;
-        $.address.value(urlValue.length==0 ? "" : "?" + urlValue.substr(0,urlValue.length-1));
+        $.address.value(urlValue.length == 0 ? "" : "?" + urlValue.substr(0,urlValue.length-1));
         this.interceptUrlChanges = true;
     },
 
     // updates url with new tags selection
     updateSelectedTags : function(tagsSelection) {
-        this.silentUpdate("tags", tagsSelection);
+        this.silentUpdate("selected_tags", tagsSelection ? tagsSelection : undefined);
     },
 
     // updates url with no tags selection
     updateNoTags : function(toggled) {
-        this.silentUpdate("no_tags", toggled);
+        this.silentUpdate("no_tags", toggled ? "" : undefined);
     }
 };
