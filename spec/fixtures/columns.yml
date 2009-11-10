@@ -11,3 +11,90 @@ third_column_in_big:
   position: 3
   taskboard: big_taskboard
 
+
+# Demo Project > Kanban board
+##############################
+
+kanban_backlog_column:
+  name: 'Backlog'
+  position: 1
+  taskboard: kanban_taskboard
+
+kanban_selected_column:
+  name: 'Selected (4)'
+  position: 2
+  taskboard: kanban_taskboard
+
+kanban_development_column:
+  name: 'Development (3)'
+  position: 3
+  taskboard: kanban_taskboard
+
+kanban_done_column:
+  name: 'Done (4)'
+  position: 4
+  taskboard: kanban_taskboard
+
+kanban_production_column:
+  name: 'In production :)'
+  position: 5
+  taskboard: kanban_taskboard
+
+
+# Demo Project > Scrum board
+#############################
+
+scrum_story_column:
+  name: 'Story'
+  position: 1
+  taskboard: scrum_taskboard
+
+scrum_todo_column:
+  name: 'ToDo'
+  position: 2
+  taskboard: scrum_taskboard
+
+scrum_blocked_column:
+  name: 'Blocked'
+  position: 3
+  taskboard: scrum_taskboard
+
+scrum_development_column:
+  name: 'In Development'
+  position: 4
+  taskboard: scrum_taskboard
+
+scrum_test_column:
+  name: 'Testing'
+  position: 5
+  taskboard: scrum_taskboard
+
+scrum_done_column:
+  name: 'Done'
+  position: 6
+  taskboard: scrum_taskboard
+
+
+# Demo Project > Demo board
+############################
+
+demo_tips_column:
+  name: 'Tips'
+  position: 1
+  taskboard: demo_taskboard
+
+demo_adding_cards_column:
+  name: 'Adding Cards'
+  position: 2
+  taskboard: demo_taskboard
+
+demo_fun_with_cards_column:
+  name: 'Fun with cards'
+  position: 3
+  taskboard: demo_taskboard
+
+demo_edit_column:
+  name: 'Double-click to edit details'
+  position: 4
+  taskboard: demo_taskboard
+
