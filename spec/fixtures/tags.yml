@@ -1,0 +1,49 @@
+# Demo Project > Demo taskboard
+################################
+
+awesome_tag:
+  name: 'awesome'
+
+amazing_tag:
+  name: 'amazing'
+
+cool_tag:
+  name: 'cool'
+
+smile_tag:
+  name: ':)'
+
+
+# Demo Project > Kanban taskboard
+##################################
+
+bob_tag:
+  name: 'Bob'
+
+joe_tag:
+  name: 'Joe'
+
+tom_tag:
+  name: 'Tom'
+
+check_tag:
+  name: 'Check me!'
+
+merged_tag:
+  name: 'merged'
+
+# Demo Project > Kanban taskboard
+##################################
+
+needs_design_tag:
+  name: 'designs needed'
+
+needs_feedback_tag:
+  name: 'feedback needed'
+
+story_points_5_tag:
+  name: '5 SP'
+
+story_points_3_tag:
+  name: '3 SP'
+

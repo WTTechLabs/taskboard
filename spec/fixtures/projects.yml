@@ -1,3 +1,6 @@
 test_project:
   name: "Test Project"
 
+demo_project:
+  name: "Demo Project"
+
