@@ -1,5 +1,5 @@
 every 1.day, :at => '00:01 am' do
-  command "cd #{RAILS_ROOT} && rake db:migrate:reset RAILS_ENV=test"
+  command "cd #{RAILS_ROOT} && RAILS_ENV=test rake db:migrate:reset"
 end
 
 # Use this file to easily define all of your cron jobs.
