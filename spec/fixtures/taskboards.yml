@@ -7,3 +7,16 @@ empty_taskboard:
   name: "Empty taskboard (no rows, columns, cards)"
   project: test_project
 
+# Demo taskboards
+
+kanban_taskboard:
+  name: "Kanban Board"
+  project: demo_project
+
+scrum_taskboard:
+  name: "Scrum Sprint Board"
+  project: demo_project
+
+demo_taskboard:
+  name: "Demo Board"
+  project: demo_project
