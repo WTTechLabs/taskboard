@@ -22,3 +22,115 @@ done:
   date: <%= 6.days.ago.to_s :db %>
   left: 0
   card: first_card_in_big
+
+
+# Demo Project > Demo taskboard
+################################
+
+demo_hours_card_2days_hours:
+  date: <%= 2.days.ago.to_s :db %>
+  left: 5
+  card: demo_fun_hours_card
+
+demo_hours_card_1day_hours:
+  date: <%= 1.day.ago.to_s :db %>
+  left: 3
+  card: demo_fun_hours_card
+
+# Demo Project > Scrum board
+##############################
+
+# User story
+# -----------
+
+# 3 days ago
+
+scrum_animations_card_3days_hours:
+  date: <%= 3.day.ago.to_s :db %>
+  left: 8
+  card: scrum_todo_animations_card
+
+scrum_help_card_3days_hours:
+  date: <%= 3.day.ago.to_s :db %>
+  left: 5
+  card: scrum_todo_help_card
+
+scrum_icons_card_3days_hours:
+  date: <%= 3.day.ago.to_s :db %>
+  left: 3
+  card: scrum_blocked_icons_card
+
+scrum_font_card_3days_hours:
+  date: <%= 3.day.ago.to_s :db %>
+  left: 2
+  card: scrum_development_font_card
+
+scrum_background_card_3days_hours:
+  date: <%= 3.day.ago.to_s :db %>
+  left: 3
+  card: scrum_test_background_card
+
+# 2 days ago
+
+scrum_font_card_2days_hours:
+  date: <%= 2.days.ago.to_s :db %>
+  left: 1
+  card: scrum_development_font_card
+
+# 1 day ago
+
+scrum_background_card_1day_hours:
+  date: <%= 1.day.ago.to_s :db %>
+  left: 0
+  card: scrum_test_background_card
+
+
+# Owner story
+# ------------
+
+# 3 days ago
+
+scrum_amazing_card_3days_hours:
+  date: <%= 3.days.ago.to_s :db %>
+  left: 8
+  card: scrum_blocked_amazing_card
+
+scrum_fast_card_3days_hours:
+  date: <%= 3.days.ago.to_s :db %>
+  left: 8
+  card: scrum_development_fast_card
+
+scrum_intuitive_card_3days_hours:
+  date: <%= 3.days.ago.to_s :db %>
+  left: 12
+  card: scrum_development_intuitive_card
+
+scrum_real_card_3days_hours:
+  date: <%= 3.days.ago.to_s :db %>
+  left: 5
+  card: scrum_done_real_card
+
+# 2 days ago
+
+scrum_fast_card_2days_hours:
+  date: <%= 2.days.ago.to_s :db %>
+  left: 3
+  card: scrum_development_fast_card
+
+scrum_intuitive_card_2days_hours:
+  date: <%= 2.days.ago.to_s :db %>
+  left: 8
+  card: scrum_development_intuitive_card
+
+# 1 day ago
+
+scrum_intuitive_card_1day_hours:
+  date: <%= 1.day.ago.to_s :db %>
+  left: 2
+  card: scrum_development_intuitive_card
+
+scrum_real_card_1day_hours:
+  date: <%= 1.day.ago.to_s :db %>
+  left: 0
+  card: scrum_done_real_card
+
