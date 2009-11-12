@@ -110,6 +110,29 @@ demo_fun_hours_card:
 
 demo_fun_open_card:
   name: 'Double-click on a card to open a details pop-up'
+  notes: |
+           You can put some *notes* on a **card** using a [Markdown](http://daringfireball.net/projects/markdown/) syntax
+
+           ### Lists:
+
+           * unordered
+           * lists
+
+           1. ordered
+           2. lists
+
+           ### Code:
+
+           Short `code samples` or longer sections:
+
+               function dummy(){
+                   return;
+               }
+
+           ### Links:
+
+           * [Markdown basics](http://daringfireball.net/projects/markdown/basics)
+           * [Markdown syntax](http://daringfireball.net/projects/markdown/syntax)
   taskboard: demo_taskboard
   column: demo_fun_with_cards_column
   row: demo_first_row
