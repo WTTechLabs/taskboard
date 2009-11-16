@@ -19,7 +19,9 @@
 
 (function($) {
     $(document).ready(function(){
-       $("input#login").tooltip("type \"viewer\"", { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" }).focus();
-       $("input#password").tooltip("type \"viewer_password\" and click login button", { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" });
+       var login_message = "type \"editor\" or \"viewer\"";
+       var password_message = "type \"editor_password\" for editor or \"viewer_password\" for viewer";
+       $("input#login").tooltip(login_message, { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" }).focus();
+       $("input#password").tooltip(password_message, { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" });
     });
 })(jQuery)
