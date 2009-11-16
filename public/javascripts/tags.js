@@ -65,7 +65,6 @@ TASKBOARD.tags = {
 			if($(this).attr('href') === '#/?no_tags='){
 				cardSelector = ":not([class*='tagged_as_'])";
 			} else {
-				//cardSelector = $(this).attr('href').replace("#/", ".");
                 cardSelector = ".tagged_as_" + $(this).text();
 			}
 			cardSelectors.push(cardSelector);
