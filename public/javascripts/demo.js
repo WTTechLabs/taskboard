@@ -19,8 +19,8 @@
 
 (function($) {
     $(document).ready(function(){
-       var login_message = "type \"editor\" or \"viewer\"";
-       var password_message = "type \"editor_password\" for editor or \"viewer_password\" for viewer";
+       var login_message = "Type <strong>editor</strong> or <strong>viewer</strong>.";
+       var password_message = "Type <strong>password</strong> and click <strong>Login</strong>.";
        $("input#login").tooltip(login_message, { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" }).focus();
        $("input#password").tooltip(password_message, { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" });
     });
