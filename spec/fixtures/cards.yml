@@ -1,50 +1,4 @@
-first_card_in_big:
-  name: 'First card on big taskboard'
-  url: 'http://example.com'
-  issue_no: 'ISSUE-1410'
-  notes: '*First card* notes'
-  color: '#12C2D9'
-  taskboard: big_taskboard
-  column: first_column_in_big
-  row: first_row_in_big
-  position: 1
-
-second_card_in_big:
-  name: 'Second card on big taskboard'
-  taskboard: big_taskboard
-  column: first_column_in_big
-  row: first_row_in_big
-  position: 2
-
-third_card_in_big:
-  name: 'Third card on big taskboard'
-  taskboard: big_taskboard
-  column: first_column_in_big
-  row: first_row_in_big
-  position: 3
-
-fourth_card_in_big:
-  name: '4th card on big taskboard'
-  taskboard: big_taskboard
-  column: first_column_in_big
-  row: second_row_in_big
-  position: 1
-
-fifth_card_in_big:
-  name: '5th card on big taskboard'
-  taskboard: big_taskboard
-  column: second_column_in_big
-  row: first_row_in_big
-  position: 1
-
-sixth_card_in_big:
-  name: '6th card on big taskboard'
-  taskboard: big_taskboard
-  column: second_column_in_big
-  row: first_row_in_big
-  position: 2
-
-# Demo Project > Demo board
+# Sample Project > Demo board
 ############################
 
 # 'Tips' column
@@ -156,7 +110,7 @@ demo_fun_rows_card:
 
 
 
-# Demo Project > Kanban board
+# Sample Project > Kanban board
 ##############################
 
 # 'Backlog' column
@@ -276,7 +230,7 @@ kanban_production_documentation_card:
 
 
 
-# Demo Project > Scrum board
+# Sample Project > Scrum board
 ##############################
 
 # User story

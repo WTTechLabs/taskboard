@@ -1,18 +1,4 @@
-first_column_in_big:
-  name: 'First column in big taskboard'
-  position: 1
-  taskboard: big_taskboard
-second_column_in_big:
-  name: 'Second column in big taskboard'
-  position: 2
-  taskboard: big_taskboard
-third_column_in_big:
-  name: 'Third column in big taskboard'
-  position: 3
-  taskboard: big_taskboard
-
-
-# Demo Project > Kanban board
+# Sample Project > Kanban board
 ##############################
 
 kanban_backlog_column:
@@ -41,7 +27,7 @@ kanban_production_column:
   taskboard: kanban_taskboard
 
 
-# Demo Project > Scrum board
+# Sample Project > Scrum board
 #############################
 
 scrum_story_column:
@@ -75,7 +61,7 @@ scrum_done_column:
   taskboard: scrum_taskboard
 
 
-# Demo Project > Demo board
+# Sample Project > Demo board
 ############################
 
 demo_tips_column:

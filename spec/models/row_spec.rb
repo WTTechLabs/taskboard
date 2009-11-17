@@ -24,7 +24,7 @@ describe Row do
     @valid_attributes = {
       :name => 'TODO',
       :position => 1,
-      :taskboard_id => taskboards(:big_taskboard).id
+      :taskboard_id => taskboards(:scrum_taskboard).id
     }
   end
 
@@ -34,17 +34,20 @@ describe Row do
 end
 
 describe Row, "while working with database" do
-  fixtures :taskboards, :rows, :cards
+  fixtures :taskboards, :columns, :rows, :cards
 
   it "should have non-empty collection of rows" do
     Row.find(:all).should_not be_empty
   end
   
   it "should allow inserting new row at given position" do
-    row = Row.create!(:name => 'new row', :taskboard_id => taskboards(:big_taskboard).id)
+    @taskboard = taskboards(:scrum_taskboard)
+    @row_1 = rows(:scrum_user_row)
+    @row_2 = rows(:scrum_owner_row)
+    row = Row.create!(:name => 'new row', :taskboard => @taskboard)
     row.insert_at(2)
-    row.higher_item.should eql(rows(:first_row_in_big))
-    row.lower_item.should eql(rows(:second_row_in_big))
+    row.higher_item.should eql(@row_1)
+    row.lower_item.should eql(@row_2)
   end
 
   it "should define default name" do
@@ -52,12 +55,18 @@ describe Row, "while working with database" do
   end
 
   it "should contain valid number of cards" do 
-    row = rows(:first_row_in_big)
-    row.should have(5).cards
+    row = rows(:demo_first_row)
+    row.should have_at_least(1).card
+  end
+
+  it "should get cards in given row" do
+    column = columns(:scrum_todo_column)
+    row = rows(:scrum_owner_row)
+    row.cards.in_column(column).length.should < row.cards.length
   end
 
   it "should clone name and position" do
-    row = rows(:first_row_in_big)
+    row = rows(:demo_first_row)
     clonned = row.clone
 
     clonned.class.should be(Row)
