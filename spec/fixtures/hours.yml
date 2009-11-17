@@ -1,30 +1,4 @@
-todo:
-  date: <%= 11.days.ago.to_s :db %>
-  left: 30
-  card: first_card_in_big
-started:
-  date: <%= 10.days.ago.to_s :db %>
-  left: 25
-  card: first_card_in_big
-blocked:
-  date: <%= 9.days.ago.to_s :db %>
-  left: 28
-  card: first_card_in_big
-code_complete:
-  date: <%= 8.days.ago.to_s :db %>
-  left: 19
-  card: first_card_in_big
-tested:
-  date: <%= 7.days.ago.to_s :db %>
-  left: 9
-  card: first_card_in_big
-done:
-  date: <%= 6.days.ago.to_s :db %>
-  left: 0
-  card: first_card_in_big
-
-
-# Demo Project > Demo taskboard
+# Sample Project > Demo taskboard
 ################################
 
 demo_hours_card_2days_hours:
@@ -37,7 +11,7 @@ demo_hours_card_1day_hours:
   left: 3
   card: demo_fun_hours_card
 
-# Demo Project > Scrum board
+# Sample Project > Scrum board
 ##############################
 
 # User story

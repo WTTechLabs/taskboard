@@ -1,4 +1,4 @@
-# Demo Project > Demo taskboard
+# Sample Project > Demo taskboard
 ################################
 
 awesome_tag:
@@ -14,7 +14,7 @@ smile_tag:
   name: ':)'
 
 
-# Demo Project > Kanban taskboard
+# Sample Project > Kanban taskboard
 ##################################
 
 bob_tag:
@@ -32,7 +32,8 @@ check_tag:
 merged_tag:
   name: 'merged'
 
-# Demo Project > Kanban taskboard
+
+# Sample Project > Scrum taskboard
 ##################################
 
 needs_design_tag:

@@ -42,13 +42,13 @@ describe Taskboard do
   end
 
   it "should generate burndown data for whole taskboard" do
-    taskboard = taskboards(:big_taskboard)
+    taskboard = taskboards(:demo_taskboard)
     
-    cards_burndown = cards(:first_card_in_big).burndown.sort.map{|x| x[1] }
+    cards_burndown = cards(:demo_fun_hours_card).burndown.sort.map{|x| x[1] }
     taskboard.burndown.sort.map{|x| x[1] }.should eql(cards_burndown)
     
     taskboard.cards.first.update_hours(3)
-    cards_burndown.push(3)
+    cards_burndown[cards_burndown.length - 1] += 3
     taskboard.burndown.sort.map{|x| x[1] }.should eql(cards_burndown)
     
     taskboard.cards.last.update_hours(2)
@@ -62,43 +62,55 @@ describe Taskboard, "while cloning" do
   fixtures :taskboards, :cards, :columns
 
   it "should initialize right properties and perform cloning on cards" do
-    taskboard = taskboards(:big_taskboard)
+    taskboard = taskboards(:scrum_taskboard)
     clonned = taskboard.clone
 
     clonned.should_not eql(taskboard)
     clonned.name.should eql(taskboard.name)
     clonned.project.should eql(taskboard.project)
-    clonned.should have(6).cards
+    clonned.should have(taskboard.cards.size).cards
 
-    first_column = columns(:first_column_in_big)
-    first_clonned_column = clonned.columns.first
-    first_clonned_column.position.should eql(first_column.position)
+    taskboard.rows.each_with_index do |row, row_index|
+      clonned_row = clonned.rows[row_index]
 
-    first_card = cards(:sixth_card_in_big)
-    first_clonned_card = clonned.columns[1].cards[1]
+      clonned_row.name.should eql row.name
+      clonned_row.position.should eql row.position
+      clonned_row.should have(row.cards.size).cards
+    end
 
-    first_clonned_card.should_not eql(first_card)
-    first_clonned_card.name.should eql(first_card.name)
-    first_clonned_card.url.should eql(first_card.url)
-    first_clonned_card.issue_no.should eql(first_card.issue_no)
-    first_clonned_card.position.should eql(first_card.position)
+    taskboard.columns.each_with_index do |column, column_index|
+      clonned_column = clonned.columns[column_index]
 
-    first_clonned_card.taskboard_id.should_not eql(first_card.taskboard_id)
-    first_clonned_card.column_id.should_not eql(first_card.column_id)
-    first_clonned_card.row_id.should_not eql(first_card.row_id)
+      clonned_column.name.should eql column.name
+      clonned_column.position.should eql column.position
+      clonned_column.should have(column.cards.size).cards
 
-    first_clonned_card.taskboard_id.should eql(clonned.id)
-    first_clonned_card.column_id.should eql(clonned.columns[1].id)
-    first_clonned_card.row_id.should eql(clonned.rows.first.id)
+      taskboard.rows.each_with_index do |row, row_index|
+        clonned_row = clonned.rows[row_index]
 
-    # check cards order
-    positions = Hash[*clonned.cards.collect { |card| [card.name, card.position] }.flatten]
-    positions['First card on big taskboard'].should eql(1)
-    positions['Second card on big taskboard'].should eql(2)
-    positions['Third card on big taskboard'].should eql(3)
-    positions['4th card on big taskboard'].should eql(1)
-    positions['5th card on big taskboard'].should eql(1)
-    positions['6th card on big taskboard'].should eql(2)
+        cards = column.cards.in_row(row)
+        clonned_cards = clonned_column.cards.in_row(clonned_row)
+
+        cards.each_with_index do |card, card_index|
+          clonned_card = clonned_cards[card_index]
+
+          clonned_card.should_not eql card
+          clonned_card.name.should eql card.name
+          clonned_card.url.should eql card.url
+          clonned_card.issue_no.should eql card.issue_no
+          clonned_card.position.should eql card.position
+
+          clonned_card.taskboard.should_not eql card.taskboard
+          clonned_card.column.should_not eql card.column
+          clonned_card.row_id.should_not eql card.row
+
+          clonned_card.taskboard.should eql clonned
+          clonned_card.column.should eql clonned_column
+          clonned_card.row.should eql clonned_row
+        end
+      end
+    end
+
   end
 
 end
@@ -107,13 +119,18 @@ describe Taskboard, "while working with database" do
   fixtures :taskboards, :cards, :columns
 
   it "should have fixed number of cards assigned" do
-    taskboard = taskboards(:big_taskboard)
-    taskboard.should have(6).cards
+    taskboard = taskboards(:scrum_taskboard)
+    taskboard.should have_at_least(1).card
   end
 
-  it "should have valid number of columns (i.e. columns) assigned" do
-    taskboard = taskboards(:big_taskboard)
-    taskboard.should have(3).columns
+  it "should have fixed number of cards assigned" do
+    taskboard = taskboards(:scrum_taskboard)
+    taskboard.should have_at_least(1).card
+  end
+
+  it "should have valid number of rows assigned" do
+    taskboard = taskboards(:scrum_taskboard)
+    taskboard.should have_at_least(1).row
   end
 
 end
@@ -122,7 +139,7 @@ describe Taskboard, "while serializing to json" do
   fixtures :taskboards, :cards, :columns, :rows
 
   before(:each) do
-    @taskboard = taskboards(:big_taskboard)	
+    @taskboard = taskboards(:scrum_taskboard)
   end
 
   it "should not include any dates" do
@@ -131,22 +148,21 @@ describe Taskboard, "while serializing to json" do
   end
   
   it "should include belonging columns with cards" do
-    @taskboard.to_json.should include(columns(:first_column_in_big).name)
-    @taskboard.to_json.should include(columns(:second_column_in_big).name)
-    @taskboard.to_json.should include(columns(:third_column_in_big).name)
-    @taskboard.to_json.should include(cards(:first_card_in_big).name)
-    @taskboard.to_json.should include(cards(:sixth_card_in_big).name)
+    @taskboard.columns.each do |column|
+      @taskboard.to_json.should include(column.name)
+    end
   end
 
   it "should include belonging rows" do
-    @taskboard.to_json.should include(rows(:first_row_in_big).name)
-    @taskboard.to_json.should include(rows(:second_row_in_big).name)
+    @taskboard.rows.each do |row|
+      @taskboard.to_json.should include(row.name)
+    end
   end
 
   it "should include cards with urls" do
-    taskboard = taskboards(:big_taskboard)
+    taskboard = taskboards(:scrum_taskboard)
 
-    card = cards(:first_card_in_big)
+    card = cards(:scrum_story_user_card)
 
     taskboard.to_json.should include_text('"name": "' + taskboard.name + '"')
     taskboard.to_json.should include_text('"url": "' + card.url + '"')
@@ -169,19 +185,11 @@ describe Taskboard, "while serializing to json" do
   end
 
   it "should include cards with hours left" do
-    taskboards(:big_taskboard).to_json.should include_text('hours_left')
+    taskboards(:scrum_taskboard).to_json.should include_text('hours_left')
   end
 
   it "should include cards with hours updated date" do
-    taskboards(:big_taskboard).to_json.should include_text('hours_left_updated')
+    taskboards(:scrum_taskboard).to_json.should include_text('hours_left_updated')
   end
 
-  it "should include cards with urls" do
-    taskboard = taskboards(:big_taskboard)
-    card = cards(:first_card_in_big)
-    
-    taskboard.to_json.should include_text('"name": "' + taskboard.name + '"')
-    taskboard.to_json.should include_text('"url": "' + card.url + '"')
-  end
-  
 end

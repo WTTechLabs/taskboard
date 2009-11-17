@@ -17,7 +17,12 @@
 
 class Column < ActiveRecord::Base
   belongs_to :taskboard
-  has_many :cards
+
+  has_many :cards do
+    def in_row(row)
+      find(:all, :conditions => ["row_id = ?", row.id], :order => "position")
+    end
+  end
 
   acts_as_list :scope => :taskboard
 

@@ -1,22 +1,15 @@
-# taskboard with some columns, 2 rows and many cards
-big_taskboard:
-  name: "Many cards inside"
-  project: test_project
-
-empty_taskboard:
-  name: "Empty taskboard (no rows, columns, cards)"
-  project: test_project
-
-# Demo taskboards
+# Sample taskboards
+####################
 
 kanban_taskboard:
   name: "Kanban Board"
-  project: demo_project
+  project: sample_project
 
 scrum_taskboard:
   name: "Scrum Sprint Board"
-  project: demo_project
+  project: sample_project
 
 demo_taskboard:
-  name: "Demo Board"
-  project: demo_project
+  name: "Demo: Taskboard Features"
+  project: sample_project
+

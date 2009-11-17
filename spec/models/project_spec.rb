@@ -32,8 +32,8 @@ describe Project do
   end
 
   it "should have correct number of taskboards assigned" do
-    project = projects(:test_project)
-    project.should have(2).taskboards
+    project = projects(:sample_project)
+    project.should have_at_least(1).taskboard
   end
 
   it "should define default project's name" do
