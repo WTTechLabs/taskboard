@@ -17,8 +17,9 @@
 
 class TaskboardController < JuggernautSyncController
   include ApplicationHelper
-  
+
   before_filter :authorize_read_only, :except => ["show", "index", "get_taskboard", "load_burndown"]
+  before_filter :check_demo_restrictions, :only => [:add_taskboard, :clone_taskboard]
 
   def index
     redirect_to :controller => 'project', :action => 'index'

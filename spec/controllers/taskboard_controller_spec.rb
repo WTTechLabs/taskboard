@@ -66,7 +66,7 @@ describe TaskboardController, "while creating new taskboard" do
     taskboard = Taskboard.new(:name => "Some name")
     clonned = Taskboard.new
     clonned.id = 10
-    Taskboard.should_receive(:find).with(2).and_return(taskboard)
+    Taskboard.should_receive(:find).with(2).twice.and_return(taskboard)
     taskboard.should_receive(:clone).and_return(clonned)
     clonned.should_receive(:save!)
     post_as_editor 'clone_taskboard', :id => '2'
@@ -427,4 +427,28 @@ describe TaskboardController, "while adding new card" do
     response.should be_success
     response.body.decode_json["status"].should eql 'error'    
   end
+end
+
+describe TaskboardController, "while checking demo restrictions" do
+
+  it "should not add more than 5 taskboards to a single project" do
+    Taskboard.should_receive(:count).and_return(5)
+    controller.should_not_receive(:add_taskboard)
+
+    post_as_editor 'add_taskboard', :project_id => 12, :name => 'new taskboard!'
+    response.should redirect_to :controller => 'project', :action => 'index'
+    flash[:error].should_not be_blank
+  end
+
+  it "should not clone more than 5 taskboards to a single project" do
+    dummy = Taskboard.new(:project_id => 17)
+    Taskboard.should_receive(:find).and_return(dummy)
+    Taskboard.should_receive(:count).and_return(5)
+    controller.should_not_receive(:clone_taskboard)
+
+    post_as_editor 'clone_taskboard', :id => '2'
+    response.should redirect_to :controller => 'project', :action => 'index'
+    flash[:error].should_not be_blank
+  end
+
 end

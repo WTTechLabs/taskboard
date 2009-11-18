@@ -92,3 +92,15 @@ describe ProjectController, "while renaming project" do
 
 end
 
+describe ProjectController, "while checking demo restrictions" do
+
+  it "should not add more than 5 projects" do
+    Project.should_receive(:count).and_return(5)
+    controller.should_not_receive(:add)
+
+    post_as_editor 'add', :name => 'Testing new project!'
+    response.should redirect_to :controller => 'project', :action => 'index'
+    flash[:error].should_not be_blank
+  end
+
+end

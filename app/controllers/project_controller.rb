@@ -18,6 +18,7 @@
 class ProjectController < ApplicationController
 
   before_filter :authorize_read_only, :except => ["index"]
+  before_filter :check_demo_restrictions, :only => [:add]
 
   def index
     @projects = Project.find(:all, :order => "name")

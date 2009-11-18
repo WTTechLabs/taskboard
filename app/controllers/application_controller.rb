@@ -55,4 +55,26 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  def check_demo_restrictions
+    path = request.path_parameters
+    if path["controller"] == "project" and Project.count >= 5
+      flash[:error] = "You cannot add more than 5 projects in this demo!"
+      redirect_to :controller => 'project', :action => 'index'
+    elsif path["controller"] = "taskboard"
+      if not request.parameters["project_id"].blank? # user is trying to add new taskboard
+        project_id = request.parameters["project_id"]
+      elsif not request.parameters["id"].blank? # user is trying to clone a taskboard
+        project_id = Taskboard.find(request.parameters["id"].to_i).project_id
+      end
+      if project_id
+        taskboards = Taskboard.count(:conditions => ["project_id = ?", project_id])
+        if taskboards >= 5
+          flash[:error] = "You cannot add more than 5 taskboards to a project in this demo!"
+          redirect_to :controller => 'project', :action => 'index'
+        end
+      end
+    end
+  end
+
 end

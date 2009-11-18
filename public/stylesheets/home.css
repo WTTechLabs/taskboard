@@ -331,3 +331,17 @@ input[type=text]:focus {
 	#projects .closed.addProject .inputs {
 		display: none;
 	}
+
+/* Demo notice and messages */
+
+#error {
+	width: 430px;
+	padding: 10px;
+	margin: 0 auto 10px;
+	background-color: #FF9999;
+	border: 1px solid #FF5555;
+	font-size: 0.8em;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+

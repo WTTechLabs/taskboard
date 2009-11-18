@@ -37,6 +37,9 @@ Hello <%= render :partial => "login/user_meta" %>
 </div>
 
 <h1>Taskboard</h1>
+<% if flash[:error] -%>
+<div id="error"><%= flash[:error] %></div>
+<% end -%>
 <dl id="projects">
 	<% if session[:editor] -%>
 	<dd class="addProject">
