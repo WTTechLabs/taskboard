@@ -130,3 +130,7 @@ body {
 
     #cognifide_logo:hover { background-position: -121px 0; }
 
+#demo_notice {
+    float:left;
+}
+
