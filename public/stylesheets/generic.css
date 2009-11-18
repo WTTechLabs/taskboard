@@ -81,6 +81,18 @@ body {
     clear: both;
 }
 
+    #footer a {
+        color: #6699BB;
+        text-decoration: none;
+        border-bottom: 1px solid #AAAAAA;
+    }
+
+    #footer a:hover {
+        color: #333333;
+        border-color: #555555;
+        background-color: #DDEEFF;
+    }
+
 #taskboard_meta {
     float: right;
 }
@@ -117,7 +129,7 @@ body {
     #taskboard_meta li::after { content: " |"; }
     #taskboard_meta li:last-child::after { content: ""; }
 
-#cognifide_logo {
+#footer #cognifide_logo {
     display: block;
     width: 121px;
     height: 50px;
@@ -128,9 +140,12 @@ body {
     margin-right: 10px;
 }
 
-    #cognifide_logo:hover { background-position: -121px 0; }
+    #footer #cognifide_logo:hover { background-position: -121px 0; }
 
 #demo_notice {
     float:left;
 }
 
+#demo_notice .ie {
+    color: #000000;
+}
