@@ -1,10 +1,34 @@
-first_row_in_big:
-  name: 'First row in big taskboard'
-  position: 1
-  taskboard: big_taskboard
+# Sample Project > Kanban board
+##############################
 
-second_row_in_big:
-  name: 'Second row in big taskboard'
+kanban_row:
+  name: 'Row'
+  position: 1
+  taskboard: kanban_taskboard
+
+# Sample Project > Scrum board
+#############################
+
+scrum_user_row:
+  name: 'User Story Row'
+  position: 1
+  taskboard: scrum_taskboard
+
+scrum_owner_row:
+  name: 'Owner Story Row'
   position: 2
-  taskboard: big_taskboard
+  taskboard: scrum_taskboard
+
+# Sample Project > Demo board
+############################
+
+demo_first_row:
+  name: 'First row'
+  position: 1
+  taskboard: demo_taskboard
+
+demo_second_row:
+  name: 'Second row'
+  position: 2
+  taskboard: demo_taskboard
 

@@ -1,0 +1,126 @@
+# Sample Project > Demo taskboard
+################################
+
+demo_awesome_tagging:
+  tag: awesome_tag
+  taggable: demo_fun_tags_card
+  taggable_type: 'Card'
+
+demo_amazing_tagging:
+  tag: amazing_tag
+  taggable: demo_fun_tags_card
+  taggable_type: 'Card'
+
+demo_cool_tagging:
+  tag: cool_tag
+  taggable: demo_fun_tags_card
+  taggable_type: 'Card'
+
+demo_smile_tagging:
+  tag: smile_tag
+  taggable: demo_fun_tags_card
+  taggable_type: 'Card'
+
+
+# Sample Project > Kanban taskboard
+##################################
+
+kanban_development_tom_tagging:
+  tag: tom_tag
+  taggable: kanban_development_documentation_card
+  taggable_type: 'Card'
+
+kanban_development_bob_tagging:
+  tag: bob_tag
+  taggable: kanban_development_amazing_card
+  taggable_type: 'Card'
+
+kanban_development_check_bob_tagging:
+  tag: check_tag
+  taggable: kanban_development_amazing_card
+  taggable_type: 'Card'
+
+kanban_development_joe_tagging:
+  tag: joe_tag
+  taggable: kanban_development_bug_card
+  taggable_type: 'Card'
+
+kanban_development_check_joe_tagging:
+  tag: check_tag
+  taggable: kanban_development_bug_card
+  taggable_type: 'Card'
+
+kanban_done_joe_tagging:
+  tag: joe_tag
+  taggable: kanban_done_bug_card
+  taggable_type: 'Card'
+
+kanban_done_bob_tagging:
+  tag: bob_tag
+  taggable: kanban_done_amazing_card
+  taggable_type: 'Card'
+
+kanban_done_merged_bob_tagging:
+  tag: merged_tag
+  taggable: kanban_done_amazing_card
+  taggable_type: 'Card'
+
+kanban_production_bob_tagging:
+  tag: bob_tag
+  taggable: kanban_production_real_card
+  taggable_type: 'Card'
+
+kanban_production_tom_tagging:
+  tag: tom_tag
+  taggable: kanban_production_documentation_card
+  taggable_type: 'Card'
+
+
+# Sample Project > Scrum taskboard
+#################################
+
+scrum_story_3_points_tagging:
+  tag: story_points_3_tag
+  taggable: scrum_story_user_card
+  taggable_type: 'Card'
+
+scrum_story_5_points_tagging:
+  tag: story_points_5_tag
+  taggable: scrum_story_owner_card
+  taggable_type: 'Card'
+
+scrum_blocked_desing_tagging:
+  tag: needs_design_tag
+  taggable: scrum_blocked_icons_card
+  taggable_type: 'Card'
+
+scrum_blocked_amazing_tagging:
+  tag: needs_feedback_tag
+  taggable: scrum_blocked_amazing_card
+  taggable_type: 'Card'
+
+scrum_development_bob_tagging:
+  tag: bob_tag
+  taggable: scrum_development_font_card
+  taggable_type: 'Card'
+
+scrum_test_bob_tagging:
+  tag: bob_tag
+  taggable: scrum_test_background_card
+  taggable_type: 'Card'
+
+scrum_development_joe_tagging:
+  tag: joe_tag
+  taggable: scrum_development_fast_card
+  taggable_type: 'Card'
+
+scrum_development_tom_tagging:
+  tag: tom_tag
+  taggable: scrum_development_intuitive_card
+  taggable_type: 'Card'
+
+scrum_done_tom_tagging:
+  tag: tom_tag
+  taggable: scrum_done_real_card
+  taggable_type: 'Card'
+

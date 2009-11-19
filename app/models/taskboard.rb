@@ -22,8 +22,8 @@ class Taskboard < ActiveRecord::Base
   belongs_to :project
 
   has_many :cards
-  has_many :columns
-  has_many :rows
+  has_many :columns, :order => "position"
+  has_many :rows, :order => "position"
 
   DEFAULT_NAME = "Brand new taskboard"
 

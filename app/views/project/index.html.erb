@@ -22,7 +22,12 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 <head>
     <title>Taskboards</title>
     <%= stylesheet_link_tag 'home' %>
-    <%= javascript_include_tag 'lib/jquery', 'lib/jquery-ui.min', 'utils', 'home', 'lib/jquery.jeditable' %>
+    <%= javascript_include_tag 'lib/jquery', 'lib/jquery-ui.min', 'utils', 'home', 'lib/jquery.jeditable', 'footer' %>
+    <script type="text/javascript">
+      $(function(){
+          $("#projects").addClass("minHeightWrapper");
+      });
+    </script>
 </head>
 
 <body id="home">
@@ -32,7 +37,6 @@ Hello <%= render :partial => "login/user_meta" %>
 </div>
 
 <h1>Taskboard</h1>
-
 <dl id="projects">
 	<% if session[:editor] -%>
 	<dd class="addProject">
@@ -55,8 +59,6 @@ Hello <%= render :partial => "login/user_meta" %>
 	</dd>
 	<%= render :partial => 'project', :collection => @projects %>
 </dl>
-
-
-<%= render :partial => 'taskboard/meta' %>
+<%= render :partial => 'footer' %>
 </body>
 </html>
