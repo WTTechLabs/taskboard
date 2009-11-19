@@ -24,7 +24,7 @@ describe Column do
     @valid_attributes = {
       :name => 'TODO',
       :position => 1,
-      :taskboard_id => taskboards(:big_taskboard).id
+      :taskboard => taskboards(:scrum_taskboard)
     }
   end
 
@@ -34,22 +34,31 @@ describe Column do
 end
 
 describe Column, "while working with database" do
-  fixtures :taskboards, :columns, :cards
+  fixtures :taskboards, :columns, :rows, :cards
 
   it "should have non-empty collection of columns" do
     Column.find(:all).should_not be_empty
   end
-  
+
   it "should contain valid number of cards" do 
-    column = columns(:first_column_in_big)
-    column.should have(4).cards
+    column = columns(:scrum_todo_column)
+    column.should have_at_least(1).card
+  end
+
+  it "should get cards in given row" do
+    column = columns(:scrum_todo_column)
+    row = rows(:scrum_owner_row)
+    column.cards.in_row(row).length.should < column.cards.length
   end
 
   it "should allow inserting new column at given position" do
-    column = Column.create!(:name => 'very new column', :taskboard_id => taskboards(:big_taskboard).id)
+    @taskboard = taskboards(:scrum_taskboard)
+    @column_1 = columns(:scrum_story_column)
+    @column_2 = columns(:scrum_todo_column)
+    column = Column.create!(:name => 'very new column', :taskboard => @taskboard)
     column.insert_at(2)
-    column.higher_item.should eql(columns(:first_column_in_big))
-    column.lower_item.should eql(columns(:second_column_in_big))
+    column.higher_item.should eql(@column_1)
+    column.lower_item.should eql(@column_2)
   end
 
   it "should define default name" do
@@ -57,7 +66,7 @@ describe Column, "while working with database" do
   end
 
   it "should clone right poperties" do
-    column = columns(:third_column_in_big)
+    column = columns(:scrum_todo_column)
     clonned = column.clone
 
     clonned.class.should be(Column)
@@ -80,7 +89,7 @@ describe Column, "while serializing to json" do
   fixtures :columns, :cards
 
   before(:each) do
-    @column = columns(:first_column_in_big)	
+    @column = columns(:scrum_todo_column)
   end
 
   it "should not include any dates" do
@@ -93,9 +102,9 @@ describe Column, "while serializing to json" do
   end
 
   it "should include belonging cards" do
-    @column.to_json.should include(cards(:first_card_in_big).name)
-    @column.to_json.should include(cards(:second_card_in_big).name)
-    @column.to_json.should_not include(cards(:fifth_card_in_big).name)
+    @column.cards.each do |card|
+      @column.to_json.should include(card.name)
+    end
   end
 
   it "should include cards with tag list" do

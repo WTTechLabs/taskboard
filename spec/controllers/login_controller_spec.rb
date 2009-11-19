@@ -23,11 +23,11 @@ describe LoginController do
   fixtures :users
   
   before(:each) do
-    @editor = users(:editor)
-    @editor.password = "editor_password"
+    @test_editor = users(:test_editor)
+    @test_editor.password = "editor_password"
     
-    @viewer = users(:viewer)
-    @viewer.password = "viewer_password"    
+    @test_viewer = users(:test_viewer)
+    @test_viewer.password = "viewer_password"
     
     @controller.instance_eval { flash.extend(DisableFlashSweeping) }
   end
@@ -35,25 +35,25 @@ describe LoginController do
   it "should redirect to last reqest after successfull login" do
     
     uri = "http://test.host/taskboard/show"
-    post :login, {:login => @editor.username, :password => @editor.password}, {:original_uri => uri}
+    post :login, {:login => @test_editor.username, :password => @test_editor.password}, {:original_uri => uri}
     response.should redirect_to(uri)
-    session[:user_id].should eql(@editor.id)
+    session[:user_id].should eql(@test_editor.id)
   end
 
   it "should store editor role in session if user has edit rights" do
-    post :login, {:login => @editor.username, :password => @editor.password}
+    post :login, {:login => @test_editor.username, :password => @test_editor.password}
     response.should be_redirect
     session[:editor].should be(true)
   end
 
   it "shouldn't store editor role in session if user doesn't have edit rights" do
-    post :login, {:login => @viewer.username, :password => @viewer.password }
+    post :login, {:login => @test_viewer.username, :password => @test_viewer.password }
     response.should be_redirect
     session[:editor].should_not be(true)
   end
 
   it "should show message when login is not correct" do
-    post :login, {:login => 'wrong_username', :password => @editor.password}
+    post :login, {:login => 'wrong_username', :password => @test_editor.password}
     response.should_not be_redirect
     flash[:notice].should eql("Wrong user name or password!") 
   end

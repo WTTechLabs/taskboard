@@ -267,4 +267,31 @@ $.tag = function(tagName, content, attrs){
 	return tagArray.join("");
 }
 
+$.fn.scrollTo = function(){
+  $('html, body').animate({ scrollTop: this.offset().top }, 500);
+  return this;
+}
+
+$.fn.sortIn = function( elements, sortValueCallback, options ){
+    if(typeof elements == 'string') elements = $(elements);
+    options = $.extend({
+        insertBeforeElements: elements,
+        insertAfterElements: elements,
+        compareFunction : undefined
+    }, options);
+
+    var currentPosition = elements.index(this),
+        sortValue = sortValueCallback.call(this, this),
+        valueArray = $.map(elements, sortValueCallback).sort(options.compareFunction),
+        newPosition = $.inArray(sortValue, valueArray);
+
+    if(newPosition == currentPosition) return this;
+    if(newPosition < currentPosition){
+        this.insertBefore( $(options.insertBeforeElements).eq(newPosition) );
+    } else {
+        this.insertAfter( $(options.insertAfterElements).eq(newPosition) );
+    }
+    return this;
+}
+
 })(jQuery); // just to make sure $ was a jQuery
