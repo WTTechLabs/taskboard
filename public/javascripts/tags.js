@@ -96,7 +96,6 @@ TASKBOARD.tags = {
             tags += $(this).text() + ",";
         });
         // get riddle of last coma
-        if (tags.length > 0) tags = tags.substr(0, tags.length - 1);
-        return(tags);
+        return (tags.length > 0 ? tags.substr(0, tags.length - 1) : "");
     }
 };
