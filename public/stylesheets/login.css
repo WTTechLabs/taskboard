@@ -27,10 +27,6 @@ h1 {
     background: url(/images/logo.png) no-repeat scroll 0 0;
 }
 
-#login {
-    overflow: hidden;
-}
-
 fieldset {
     margin: 0;
     padding: 15px;
