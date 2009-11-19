@@ -411,7 +411,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 	$.each(card.tag_list, function(){
 		var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" });
 		if(TASKBOARD.editor){
-			tagLi += $.tag("a", "X", { className : "deleteTag", href : "#" });
+			tagLi += $.tag("span", "X", { className : "deleteTag" });
 		}
 		tagsUl += $.tag("li", tagLi);
 	});
@@ -474,7 +474,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			$("#tags ul").html("");
 			$.each(card.tag_list, function(){
 				var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" }) +
-							$.tag("a", "X", { className : "deleteTag", href : "#" });
+							$.tag("span", "X", { className : "deleteTag" });
 				$("#tags ul").append($.tag("li", tagLi));
 				$("#tags .deleteTag").bind('click', deleteTagCallback);
 			});
@@ -762,7 +762,7 @@ TASKBOARD.api = {
 		card = card.card;
 		var newCard = TASKBOARD.builder.buildCardFromJSON(card);
 		$('#card_' + card.id).before(newCard).remove();
-		newCard.effect('highlight', {}, 1000);
+		//newCard.effect('highlight', {}, 1000);
 		TASKBOARD.tags.updateTagsList();
 		TASKBOARD.tags.updateCardSelection();
 	},

@@ -50,7 +50,7 @@ TASKBOARD.tags = {
 							 { className : className } );
 
 		$.each(this.tagList, function(){
-			className = $("#filterTags a[href='#/" + this.className + "']").parent().hasClass("current") ? "current" : "";
+			className = $("#filterTags a[href='#/?selected_tags=" + this.tag + "']").parent().hasClass("current") ? "current" : "";
 			tagsLinks += $.tag("li", $.tag("a", this.tag, { href : "#/?selected_tags=" + this.tag, title: "Highlight cards tagged as '" + this.tag + "'" }),
 								 { className : className });
 		});
@@ -65,7 +65,7 @@ TASKBOARD.tags = {
 			if($(this).attr('href') === '#/?no_tags='){
 				cardSelector = ":not([class*='tagged_as_'])";
 			} else {
-                cardSelector = ".tagged_as_" + $(this).text();
+                cardSelector = ".tagged_as_" + $(this).text().toClassName();
 			}
 			cardSelectors.push(cardSelector);
 		});
