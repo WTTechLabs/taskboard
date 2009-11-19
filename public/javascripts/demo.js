@@ -19,9 +19,10 @@
 
 (function($) {
     $(document).ready(function(){
-       var login_message = "Type <strong>editor</strong> or <strong>viewer</strong>.";
-       var password_message = "Type <strong>password</strong> and click <strong>Login</strong>.";
-       $("input#login").tooltip(login_message, { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" }).focus();
-       $("input#password").tooltip(password_message, { showEvent: 'focus', hideEvent: 'blur', timeout: false, position: "rightMiddle" });
+       var login_message = "Type <strong>editor</strong> or <strong>viewer</strong>.",
+           password_message = "Type <strong>password</strong> and click <strong>Login</strong>.";
+       $("#login").helpTooltip(login_message).focus();
+       $("#password").helpTooltip(password_message);
     });
-})(jQuery)
+}(jQuery))
+
