@@ -191,7 +191,8 @@
         border: none;
     }
 
-        #taskboard .column.ui-sortable-helper a.deleteColumn {
+        #taskboard .column.ui-sortable-helper a.deleteColumn,
+        #taskboard .column.ui-sortable-helper a.deleteAllCardsFromColumn {
             display:none;
         }
 
@@ -213,6 +214,12 @@
             position: absolute;
             top: -20px;
             right: 0px;
+            margin: 3px;
+        }
+        #taskboard .column a.deleteAllCardsFromColumn {
+            position: absolute;
+            top: -20px;
+            right: 10px;
             margin: 3px;
         }
 

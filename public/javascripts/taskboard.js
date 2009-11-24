@@ -191,7 +191,7 @@ TASKBOARD.builder.actions = {
 	},
 
 	deleteCardAction : function(){
-		return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete card", href : "#" });
+		return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete all cards from column", href : "#" });
 	}
 };
 
@@ -207,6 +207,9 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 		var deleteAction = $.tag("a", "<img src='/images/cross_off.png' alt='Delete column'/>",
 								 { className : 'deleteColumn', title : 'Delete column', href : '#' });
 		columnLi += deleteAction;
+                var deleteCardsFromColumnAction = $.tag("a", "<img src='/images/cross_off.png' alt='Delete all cards from column'/>",
+								 { className : 'deleteAllCardsFromColumn', title : 'Delete column', href : '#' });
+		columnLi += deleteCardsFromColumnAction;
 	}
 	columnLi += header;
 	columnLi = $.tag("li", columnLi, { id : 'column_' + column.id, className :'lane column' });
@@ -253,6 +256,20 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 				}else {
 					TASKBOARD.remote.api.deleteColumn($(this).parent().data('data').id);
 					$(this).parent().fadeOut(1000, function(){ $(this).remove(); } );
+				}
+			})
+		.children().rollover();
+
+		columnLi.find(".deleteAllCardsFromColumn")
+			.bind("click", function(ev){
+				ev.preventDefault();
+				if($(this).parent().find("ol.cards").children().length == 0){
+					$(this).warningTooltip("Column have no cards!");
+				}else {
+                                        if(confirm("Are you sure to delete all cards?")){
+                                            TASKBOARD.remote.api.deleteAllCardsFromColumn($(this).parent().data('data').id);
+                                            $(this).parent().find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
+                                        }
 				}
 			})
 		.children().rollover();
@@ -733,6 +750,10 @@ TASKBOARD.api = {
 		columnLi.fadeOut(1000, function(){$(this).remove();} );
 		TASKBOARD.form.updateColumnSelect();
 		TASKBOARD.utils.expandTaskboard();
+	},
+
+        deleteAllCardsFromColumn : function(column){
+                alert("Delete cards from column");
 	},
 
 	deleteRow : function(row){
@@ -1254,7 +1275,7 @@ window.sync = {
 };
 
 $.each(['renameTaskboard',
-		'addColumn', 'renameColumn', 'moveColumn', 'deleteColumn',
+		'addColumn', 'renameColumn', 'moveColumn', 'deleteColumn', 'deleteAllCardsFromColumn',
 		'addRow', 'deleteRow',
 		'addCards','moveCard','updateCardHours','changeCardColor','deleteCard', 'renameCard', 'updateCard'],
 		function(){
