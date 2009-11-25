@@ -865,7 +865,7 @@ TASKBOARD.init = function(){
 	$(".actionShowBurndown").bind("click", this.showBurndown);
 
 	$("#formActions img").rollover();
-	$("#formActions .actionHideForm").click(function(){ TASKBOARD.form.close(); $("#actions li").removeClass("current"); });
+	$("#formActions .actionHideForm").click(function(){ TASKBOARD.form.close(); $("#actions li").removeClass("current"); return false;});
 	$("#formActions").hide();
 	$("#formActions").submit(TASKBOARD.form.submit);
 };
