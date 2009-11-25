@@ -411,7 +411,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 	$.each(card.tag_list, function(){
 		var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" });
 		if(TASKBOARD.editor){
-			tagLi += $.tag("a", "X", { className : "deleteTag", href : "#" });
+			tagLi += $.tag("a", "X", { className : "deleteTag" });
 		}
 		tagsUl += $.tag("li", tagLi);
 	});
@@ -437,7 +437,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 
 	// edit-mode-only
 	if(TASKBOARD.editor){
-		var deleteTagCallback = function(){
+		var deleteTagCallback = function(ev){
 			var tag = $(this).parent().find(".tag").text();
 			TASKBOARD.remote.api.removeTag(card.id, tag);
 			var index = card.tag_list.indexOf(tag);
@@ -445,6 +445,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			TASKBOARD.api.updateCard({ card: card });
 			TASKBOARD.remote.api.removeTag(card.id, tag);
 			$(this).parent().remove();
+            ev.preventDefault();
 		};
 
 		bigCard.find(".changeColor").click(function(ev){
@@ -474,7 +475,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			$("#tags ul").html("");
 			$.each(card.tag_list, function(){
 				var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" }) +
-							$.tag("a", "X", { className : "deleteTag", href : "#" });
+							$.tag("a", "X", { className : "deleteTag" });
 				$("#tags ul").append($.tag("li", tagLi));
 				$("#tags .deleteTag").bind('click', deleteTagCallback);
 			});
@@ -762,7 +763,7 @@ TASKBOARD.api = {
 		card = card.card;
 		var newCard = TASKBOARD.builder.buildCardFromJSON(card);
 		$('#card_' + card.id).before(newCard).remove();
-		newCard.effect('highlight', {}, 1000);
+		//newCard.effect('highlight', {}, 1000);
 		TASKBOARD.tags.updateTagsList();
 		TASKBOARD.tags.updateCardSelection();
 	},
@@ -852,7 +853,12 @@ TASKBOARD.init = function(){
 	$("#filterTags a").live("click", function(){
 		$(this).parent().toggleClass("current");
 		TASKBOARD.tags.updateCardSelection();
-        TASKBOARD.url.silentUpdate($(this).parent().hasClass("current") ? $(this).attr('href').substring(2) : "");
+        if($(this).attr("href")=="#/?no_tags="){
+            TASKBOARD.url.updateNoTags($(this).parent().hasClass("current"));
+        }
+        else{
+            TASKBOARD.url.updateSelectedTags(TASKBOARD.tags.exportSelection());
+        }
 		return false;
 	});
 
