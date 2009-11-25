@@ -183,6 +183,13 @@ describe TaskboardController, "while showing single taskboard page" do
       response.should be_success
       response.body.decode_json["status"].should eql 'success'
     end
+
+    it "should allow clean column" do
+      
+      post_as_editor 'clean_column', :id => '56'
+      response.should be_success
+      response.body.decode_json["status"].should eql 'success'
+    end
     
     it "should allow column reordering" do
       column = Column.new(:taskboard_id => 43, :name => 'Column  to be moved', :position => 6)
