@@ -17,6 +17,8 @@
  * along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
  */
 
+var TASKBOARD = TASKBOARD || {};
+
 TASKBOARD.url = {
 
     // list of supported url parameters
@@ -43,7 +45,7 @@ TASKBOARD.url = {
     },
 
     // to be invoked when url changes (only the value part)
-    // i.e.: parameters.tags, parameters.other_propery_name
+    // i.e.: parameters.selected_tags, parameters.other_propery_name
     onChange : function(parameters) {
         TASKBOARD.tags.importSelection(
             parameters.selected_tags ? parameters.selected_tags : "",
@@ -60,7 +62,7 @@ TASKBOARD.url = {
             if (value !== undefined) urlValue += this + "=" + value + "&";
         });
         this.interceptUrlChanges = false;
-        $.address.value(urlValue.length == 0 ? "" : "?" + urlValue.substr(0,urlValue.length-1));
+        $.address.value(urlValue ? "?" + urlValue.substr(0,urlValue.length-1) : "");
         this.interceptUrlChanges = true;
     },
 
