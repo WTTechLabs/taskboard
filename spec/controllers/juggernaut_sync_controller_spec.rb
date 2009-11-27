@@ -66,6 +66,15 @@ describe JuggernautSyncController, "while dealing with column actions" do
     controller.sync_delete_column(column).should include("success")
   end
 
+# cleanColumn
+  it "should synchronize cleaning a column" do
+    column = Column.new
+    column.taskboard_id = 122
+    Juggernaut.should_receive(:send_to_channels).with(/sync\.cleanColumn.*/, [122])
+
+    controller.sync_clean_column(column).should include("success")
+  end
+
 end
 
 describe JuggernautSyncController, "while dealing with row actions" do

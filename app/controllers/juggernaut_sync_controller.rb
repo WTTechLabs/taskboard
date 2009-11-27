@@ -75,6 +75,12 @@ class JuggernautSyncController < ApplicationController
     sync_column_action column, 'deleteColumn', options
   end
 
+  def sync_clean_column column, params = {}
+    options = { :message => "Clean a '#{column.name}' column" }.update params
+
+    sync_column_action column, 'cleanColumn', options
+  end
+
   # Row actions
   def sync_row_action row, action, params = {}
     options = { :message => "Action '#{action}' called on a '#{row.name}' row",

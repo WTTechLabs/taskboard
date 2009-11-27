@@ -757,7 +757,9 @@ TASKBOARD.api = {
 	},
 
         cleanColumn : function(column){
-                alert("Delete cards from column");
+		column = column.column;
+                var columnLi = $('#column_' + column.id);
+                columnLi.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
 	},
 
 	deleteRow : function(row){

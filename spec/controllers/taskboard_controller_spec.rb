@@ -185,12 +185,15 @@ describe TaskboardController, "while showing single taskboard page" do
     end
 
     it "should allow clean column" do
-      
-      post_as_editor 'clean_column', :id => '56'
+      column = columns(:demo_fun_with_cards_column)
+      column_id = column.id
+      controller.should_receive(:sync_clean_column).with(column).and_return("{ status: 'success' }")
+      post_as_editor 'clean_column', :id => column.id
       response.should be_success
       response.body.decode_json["status"].should eql 'success'
+      Column.find(column_id).cards.should eql []
     end
-    
+
     it "should allow column reordering" do
       column = Column.new(:taskboard_id => 43, :name => 'Column  to be moved', :position => 6)
       Column.should_receive(:find).with(13).and_return(column)
