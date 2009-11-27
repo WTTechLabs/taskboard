@@ -194,13 +194,13 @@ TASKBOARD.builder.actions = {
 		return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete card", href : "#" });
 	},
 
-        deleteColumn :function(){
-                return $.tag("a", "Delete column", { className : 'deleteColumn', title : 'Delete column', href : '#' });
-        },
+	deleteColumn :function(){
+		return $.tag("a", "Delete column", { className : 'deleteColumn', title : 'Delete column', href : '#' });
+	},
 
-        cleanColumn : function(){
-                return $.tag("a", "Delete all cards from column", { className : 'cleanColumn', title : 'Delete all cards from column', href : '#' });
-        }
+	cleanColumn : function(){
+		return $.tag("a", "Delete all cards from column", { className : 'cleanColumn', title : 'Delete all cards from column', href : '#' });
+	}
 };
 
 /*
@@ -211,7 +211,7 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 	var columnLi = "";
 	// edit-mode-only
 	if(TASKBOARD.editor){
-                var actionsColumn = $.tag("li", TASKBOARD.builder.actions.deleteColumn());
+		var actionsColumn = $.tag("li", TASKBOARD.builder.actions.deleteColumn());
 		actionsColumn += $.tag("li", TASKBOARD.builder.actions.cleanColumn());
 		columnLi = $.tag("ul", actionsColumn, { className : 'actions' });
 	}
@@ -252,29 +252,29 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 		// edit-mode-only
 		columnLi.find(".deleteColumn")
 			.bind("click", function(ev){
-                                ev.preventDefault();
-                                var closestColumn = $(this).closest('.column');
-                                if(closestColumn.find("ol.cards").children().length !== 0){
+				ev.preventDefault();
+				var closestColumn = $(this).closest('.column');
+				if(closestColumn.find("ol.cards").children().length !== 0){
 					$(this).warningTooltip("You cannot delete a column that is not empty!");
 				} else if ($("#taskboard .column").length == 1) {
 					$(this).warningTooltip("You cannot delete last column!");
 				}else {
-					TASKBOARD.remote.api.deleteColumn(closestColumn.data('data').id);
-					closestColumn.fadeOut(1000, function(){ $(this).remove(); } );
+				TASKBOARD.remote.api.deleteColumn(closestColumn.data('data').id);
+				closestColumn.fadeOut(1000, function(){ $(this).remove(); } );
 				}
 			});
 
 		columnLi.find(".cleanColumn")
 			.bind("click", function(ev){
 				ev.preventDefault();
-                                var closestColumn = $(this).closest('.column');
+				var closestColumn = $(this).closest('.column');
 				if(closestColumn.find("ol.cards").children().length == 0){
 					$(this).warningTooltip("Column have no cards!");
 				}else {
-                                        if(confirm("Are you sure to delete all cards?")){
-                                            TASKBOARD.remote.api.cleanColumn(closestColumn.data('data').id);
-                                            closestColumn.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
-                                        }
+					if(confirm("Are you sure to delete all cards?")){
+						TASKBOARD.remote.api.cleanColumn(closestColumn.data('data').id);
+						closestColumn.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
+					}
 				}
 			});
 	}
@@ -466,7 +466,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			TASKBOARD.api.updateCard({ card: card });
 			TASKBOARD.remote.api.removeTag(card.id, tag);
 			$(this).parent().remove();
-            ev.preventDefault();
+			ev.preventDefault();
 		};
 
 		bigCard.find(".changeColor").click(function(ev){
@@ -757,10 +757,10 @@ TASKBOARD.api = {
 		TASKBOARD.utils.expandTaskboard();
 	},
 
-        cleanColumn : function(column){
+	cleanColumn : function(column){
 		column = column.column;
-                var columnLi = $('#column_' + column.id);
-                columnLi.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
+		var columnLi = $('#column_' + column.id);
+		columnLi.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
 	},
 
 	deleteRow : function(row){
@@ -880,12 +880,12 @@ TASKBOARD.init = function(){
 	$("#filterTags a").live("click", function(){
 		$(this).parent().toggleClass("current");
 		TASKBOARD.tags.updateCardSelection();
-        if($(this).attr("href")=="#/?no_tags="){
-            TASKBOARD.url.updateNoTags($(this).parent().hasClass("current"));
-        }
-        else{
-            TASKBOARD.url.updateSelectedTags(TASKBOARD.tags.exportSelection());
-        }
+		if($(this).attr("href")=="#/?no_tags="){
+			TASKBOARD.url.updateNoTags($(this).parent().hasClass("current"));
+		}
+		else {
+			TASKBOARD.url.updateSelectedTags(TASKBOARD.tags.exportSelection());
+		}
 		return false;
 	});
 
@@ -953,7 +953,7 @@ TASKBOARD.loadFromJSON = function(taskboard){
 	TASKBOARD.utils.expandTaskboard();
 	TASKBOARD.form.updateColumnSelect();
 	TASKBOARD.tags.updateTagsList();
-    TASKBOARD.url.init();
+	TASKBOARD.url.init();
 };
 
 TASKBOARD.burndown = {};
@@ -1192,7 +1192,7 @@ TASKBOARD.remote = {
 		deleteColumn : function(columnId){
 			TASKBOARD.remote.callback('/taskboard/remove_column/', { id: columnId });
 		},
-                cleanColumn : function(columnId){
+		cleanColumn : function(columnId){
 			TASKBOARD.remote.callback('/taskboard/clean_column/', { id: columnId });
 		},
 		deleteRow : function(rowId){
