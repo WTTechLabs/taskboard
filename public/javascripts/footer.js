@@ -24,7 +24,7 @@ function updateMinHeight(){
       minHeight = $(window).height() - $("h1").outerHeight(true) -
                   $("#footer").outerHeight(true) -
                   parseInt(minHeightWrapper.css("margin-bottom"));
-  minHeightWrapper.css({minHeight: minHeight});
+  minHeightWrapper.css({minHeight: minHeight, overflow: "hidden"});
 }
 
 $(window).bind('resize', updateMinHeight);

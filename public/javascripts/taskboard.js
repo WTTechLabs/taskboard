@@ -192,7 +192,15 @@ TASKBOARD.builder.actions = {
 
 	deleteCardAction : function(){
 		return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete card", href : "#" });
-	}
+	},
+
+        deleteColumn :function(){
+                return $.tag("a", "Delete column", { className : 'deleteColumn', title : 'Delete column', href : '#' });
+        },
+
+        cleanColumn : function(){
+                return $.tag("a", "Delete all cards from column", { className : 'cleanColumn', title : 'Delete all cards from column', href : '#' });
+        }
 };
 
 /*
@@ -203,10 +211,9 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 	var columnLi = "";
 	// edit-mode-only
 	if(TASKBOARD.editor){
-		// TODO: css images and rollover
-		var deleteAction = $.tag("a", "<img src='/images/cross_off.png' alt='Delete column'/>",
-								 { className : 'deleteColumn', title : 'Delete column', href : '#' });
-		columnLi += deleteAction;
+                var actionsColumn = $.tag("li", TASKBOARD.builder.actions.deleteColumn());
+		actionsColumn += $.tag("li", TASKBOARD.builder.actions.cleanColumn());
+		columnLi = $.tag("ul", actionsColumn, { className : 'actions' });
 	}
 	columnLi += header;
 	columnLi = $.tag("li", columnLi, { id : 'column_' + column.id, className :'lane column' });
@@ -244,18 +251,32 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 			.attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
 		// edit-mode-only
 		columnLi.find(".deleteColumn")
-			.bind("click", function(ev){ 
-				ev.preventDefault();
-				if($(this).parent().find("ol.cards").children().length !== 0){
+			.bind("click", function(ev){
+                                ev.preventDefault();
+                                var closestColumn = $(this).closest('.column');
+                                if(closestColumn.find("ol.cards").children().length !== 0){
 					$(this).warningTooltip("You cannot delete a column that is not empty!");
 				} else if ($("#taskboard .column").length == 1) {
 					$(this).warningTooltip("You cannot delete last column!");
 				}else {
-					TASKBOARD.remote.api.deleteColumn($(this).parent().data('data').id);
-					$(this).parent().fadeOut(1000, function(){ $(this).remove(); } );
+					TASKBOARD.remote.api.deleteColumn(closestColumn.data('data').id);
+					closestColumn.fadeOut(1000, function(){ $(this).remove(); } );
 				}
-			})
-		.children().rollover();
+			});
+
+		columnLi.find(".cleanColumn")
+			.bind("click", function(ev){
+				ev.preventDefault();
+                                var closestColumn = $(this).closest('.column');
+				if(closestColumn.find("ol.cards").children().length == 0){
+					$(this).warningTooltip("Column have no cards!");
+				}else {
+                                        if(confirm("Are you sure to delete all cards?")){
+                                            TASKBOARD.remote.api.cleanColumn(closestColumn.data('data').id);
+                                            closestColumn.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
+                                        }
+				}
+			});
 	}
 	return columnLi;
 };
@@ -736,6 +757,12 @@ TASKBOARD.api = {
 		TASKBOARD.utils.expandTaskboard();
 	},
 
+        cleanColumn : function(column){
+		column = column.column;
+                var columnLi = $('#column_' + column.id);
+                columnLi.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
+	},
+
 	deleteRow : function(row){
 		row = row.row;
 		var row = $('.row_' + row.id);
@@ -1165,6 +1192,9 @@ TASKBOARD.remote = {
 		deleteColumn : function(columnId){
 			TASKBOARD.remote.callback('/taskboard/remove_column/', { id: columnId });
 		},
+                cleanColumn : function(columnId){
+			TASKBOARD.remote.callback('/taskboard/clean_column/', { id: columnId });
+		},
 		deleteRow : function(rowId){
 			TASKBOARD.remote.callback('/taskboard/remove_row/', { id: rowId });
 		},
@@ -1197,7 +1227,7 @@ window.sync = {
 };
 
 $.each(['renameTaskboard',
-		'addColumn', 'renameColumn', 'moveColumn', 'deleteColumn',
+		'addColumn', 'renameColumn', 'moveColumn', 'deleteColumn', 'cleanColumn',
 		'addRow', 'deleteRow',
 		'addCards','moveCard','updateCardHours','changeCardColor','deleteCard', 'renameCard', 'updateCard'],
 		function(){

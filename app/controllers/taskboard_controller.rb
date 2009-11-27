@@ -104,6 +104,15 @@ class TaskboardController < JuggernautSyncController
     Column.delete params[:id].to_i
     render :json => sync_delete_column(column)
   end
+
+  def clean_column
+    column = Column.find(params[:id].to_i)
+    column.cards.each {|card|
+      card.remove_from_list
+      Card.delete card.id
+    }
+    render :json => sync_clean_column(column)
+  end
   
   def add_row
     row = insert_row params[:taskboard_id].to_i
