@@ -317,7 +317,6 @@ TASKBOARD.builder.buildRowMeta = function(row){
 					$(this).warningTooltip("Row have no cards!", { position: "rightMiddle" });
 				} else if(confirm("Are you sure to delete all cards from row?")) {
 					TASKBOARD.remote.api.cleanRow(row.id);
-					$(".row_" + row.id).fadeOut(1000, function(){ $(this).remove(); } );
 					cards.fadeOut(1000, function(){ $(this).remove(); } );
 				}
 			});
@@ -775,21 +774,21 @@ TASKBOARD.api = {
 
 	cleanColumn : function(column){
 		column = column.column;
-		var columnLi = $('#column_' + column.id);
-		columnLi.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
+		var cards = $('#column_' + column.id).find("ol.cards").children();
+		cards.fadeOut(1000, function(){ $(this).remove(); } );
 	},
 
 	deleteRow : function(row){
 		row = row.row;
-		var row = $('.row_' + row.id);
+		var row = $('.column .row_' + row.id);
 		row.fadeOut(1000, function(){$(this).remove();} );
 		TASKBOARD.utils.expandTaskboard();
 	},
 
 	cleanRow : function(row){
 		row = row.row;
-		var row = $('.row_' + row.id);
-		row.children().fadeOut(1000, function(){$(this).remove();} );
+		var cards = $(".column .row_" + row.id).children();
+		cards.fadeOut(1000, function(){$(this).remove();} );
 	},
 
 	renameColumn : function(column){
