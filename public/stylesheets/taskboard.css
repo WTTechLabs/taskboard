@@ -450,22 +450,25 @@
         background-image: url(/images/cross_on.png);
     }
 
-    .actions li .deleteColumn {
+    .actions li .deleteColumn,
+	.actions li .deleteRow{
         background-image: url(/images/cross_off.png);
     }
 
-    .actions li .deleteColumn:hover {
+    .actions li .deleteColumn:hover,
+	.actions li .deleteRow:hover {
         background-image: url(/images/cross_on.png);
     }
 
-    .actions li .cleanColumn {
+    .actions li .cleanColumn,
+	.actions li .cleanRow {
         background-image: url(/images/remove_cards_off.png);
     }
 
-    .actions li .cleanColumn:hover {
+    .actions li .cleanColumn:hover,
+	.actions li .cleanRow:hover {
         background-image: url(/images/remove_cards_on.png);
     }
-
 
     .big.actions li .changeColor {
         background-image: url(/images/color_big_off.png);

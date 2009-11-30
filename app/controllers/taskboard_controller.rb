@@ -107,7 +107,7 @@ class TaskboardController < JuggernautSyncController
 
   def clean_column
     column = Column.find(params[:id].to_i)
-    column.cards.each {|card|
+    column.cards.each { |card|
       card.remove_from_list
       Card.delete card.id
     }
@@ -126,6 +126,15 @@ class TaskboardController < JuggernautSyncController
     row.remove_from_list
     Row.delete params[:id].to_i
     render :json => sync_delete_row(row)
+  end
+
+  def clean_row
+    row = Row.find(params[:id].to_i)
+    row.cards.each { |card|
+      card.remove_from_list
+      Card.delete card.id
+    }
+    render :json => sync_clean_row(row)
   end
 
   def add_card
