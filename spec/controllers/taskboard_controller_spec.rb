@@ -252,6 +252,16 @@ describe TaskboardController, "while showing single taskboard page" do
       response.body.decode_json["status"].should eql 'success'
     end
 
+    it "should allow clean row" do
+      row = rows(:demo_first_row)
+      row_id = row.id
+      controller.should_receive(:sync_clean_row).with(row).and_return("{ status: 'success' }")
+      post_as_editor 'clean_row', :id => row.id
+      response.should be_success
+      response.body.decode_json["status"].should eql 'success'
+      Row.find(row_id).cards.should eql []
+    end
+
   end
   
   context "while dealing with cards" do

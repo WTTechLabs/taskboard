@@ -95,6 +95,15 @@ describe JuggernautSyncController, "while dealing with row actions" do
     controller.sync_delete_row(row).should include("success")
   end
 
+  # cleanRow
+  it "should synchronize cleaning a row" do
+    row = Row.new
+    row.taskboard_id = 122
+    Juggernaut.should_receive(:send_to_channels).with(/sync\.cleanRow.*/, [122])
+
+    controller.sync_clean_row(row).should include("success")
+  end
+
 end
 
 describe JuggernautSyncController, "while dealing with cards actions" do

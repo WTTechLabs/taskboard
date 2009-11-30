@@ -194,12 +194,21 @@ TASKBOARD.builder.actions = {
 		return $.tag("a", "Delete card", { className : "deleteCard", title : "Delete card", href : "#" });
 	},
 
-	deleteColumn :function(){
+	deleteColumn : function(){
 		return $.tag("a", "Delete column", { className : 'deleteColumn', title : 'Delete column', href : '#' });
 	},
 
 	cleanColumn : function(){
 		return $.tag("a", "Delete all cards from column", { className : 'cleanColumn', title : 'Delete all cards from column', href : '#' });
+	},
+
+	deleteRow : function(){
+		return $.tag("a", "Delete row", { className : 'deleteRow', title : 'Delete row', href : '#' });
+	},
+
+
+	cleanRow : function(){
+		return $.tag("a", "Delete all cards from column", { className : 'cleanRow', title : 'Delete all cards from row', href : '#' });
 	}
 };
 
@@ -270,11 +279,9 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 				var closestColumn = $(this).closest('.column');
 				if(closestColumn.find("ol.cards").children().length == 0){
 					$(this).warningTooltip("Column have no cards!");
-				}else {
-					if(confirm("Are you sure to delete all cards?")){
-						TASKBOARD.remote.api.cleanColumn(closestColumn.data('data').id);
-						closestColumn.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
-					}
+				}else if(confirm("Are you sure to delete all cards from column?")){
+					TASKBOARD.remote.api.cleanColumn(closestColumn.data('data').id);
+					closestColumn.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
 				}
 			});
 	}
@@ -286,10 +293,9 @@ TASKBOARD.builder.buildRowMeta = function(row){
 	rowDiv = $(rowDiv);
 	rowDiv.data("data", row).addClass("row_" + row.id);
 	if(TASKBOARD.editor){
-		// TODO: css images and rollover
-		var deleteAction = $.tag("a", "<img src='/images/cross_off.png' alt='Delete row'/>",
-								 { className : 'deleteRow', title : 'Delete row', href : '#' });
-		rowDiv.append(deleteAction);
+		var actionsRow = $.tag("li", TASKBOARD.builder.actions.deleteRow());
+		actionsRow += $.tag("li", TASKBOARD.builder.actions.cleanRow());
+		rowDiv.append($.tag("ul", actionsRow, { className : 'actions' }));
 		rowDiv.find(".deleteRow")
 			.bind("click", function(ev){
 				ev.preventDefault();
@@ -302,8 +308,18 @@ TASKBOARD.builder.buildRowMeta = function(row){
 					TASKBOARD.remote.api.deleteRow(row.id);
 					$(".row_" + row.id).fadeOut(1000, function(){ $(this).remove(); } );
 				}
-			})
-		.children().rollover();
+			});
+		rowDiv.find(".cleanRow")
+			.bind("click", function(ev){
+				ev.preventDefault();
+				var cards = $(".column .row_" + row.id).children();
+				if(cards.length == 0){
+					$(this).warningTooltip("Row have no cards!", { position: "rightMiddle" });
+				} else if(confirm("Are you sure to delete all cards from row?")) {
+					TASKBOARD.remote.api.cleanRow(row.id);
+					cards.fadeOut(1000, function(){ $(this).remove(); } );
+				}
+			});
 	}
 	return rowDiv;
 };
@@ -759,15 +775,21 @@ TASKBOARD.api = {
 
 	cleanColumn : function(column){
 		column = column.column;
-		var columnLi = $('#column_' + column.id);
-		columnLi.find("ol.cards").children().fadeOut(1000, function(){ $(this).remove(); } );
+		var cards = $('#column_' + column.id).find("ol.cards").children();
+		cards.fadeOut(1000, function(){ $(this).remove(); } );
 	},
 
 	deleteRow : function(row){
 		row = row.row;
-		var row = $('.row_' + row.id);
+		var row = $('.column .row_' + row.id);
 		row.fadeOut(1000, function(){$(this).remove();} );
 		TASKBOARD.utils.expandTaskboard();
+	},
+
+	cleanRow : function(row){
+		row = row.row;
+		var cards = $(".column .row_" + row.id).children();
+		cards.fadeOut(1000, function(){$(this).remove();} );
 	},
 
 	renameColumn : function(column){
@@ -1198,6 +1220,9 @@ TASKBOARD.remote = {
 		deleteRow : function(rowId){
 			TASKBOARD.remote.callback('/taskboard/remove_row/', { id: rowId });
 		},
+		cleanRow : function(rowId){
+			TASKBOARD.remote.callback('/taskboard/clean_row/', { id: rowId });
+		},
 		updateCardHours : function(cardId, hours, updatedAt){
 			TASKBOARD.remote.callback('/card/update_hours/', { id: cardId, hours_left: hours, updated_at: updatedAt });
 		},
@@ -1228,7 +1253,7 @@ window.sync = {
 
 $.each(['renameTaskboard',
 		'addColumn', 'renameColumn', 'moveColumn', 'deleteColumn', 'cleanColumn',
-		'addRow', 'deleteRow',
+		'addRow', 'deleteRow', 'cleanRow',
 		'addCards','moveCard','updateCardHours','changeCardColor','deleteCard', 'renameCard', 'updateCard'],
 		function(){
 			var action = this;
