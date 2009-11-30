@@ -161,14 +161,14 @@ describe Card, "while serializing to json" do
   it "should include all tags" do
     @card.to_json.should include('tag_list')
     @card.tag_list.add('ala', 'ma', 'kota')
-    @card.to_json.should include('"tag_list": ["ala", "ma", "kota"]')
+    @card.to_json.should include('"tag_list":["ala","ma","kota"]')
   end
 
   it "should include last hours left" do
     @card.to_json.should include('hours_left')
 
     @card.update_hours(666)
-    @card.to_json.should include('"hours_left": 666')
+    @card.to_json.should include('"hours_left":666')
   end
 
   it "should include last hours left update date" do
@@ -176,12 +176,12 @@ describe Card, "while serializing to json" do
 
     @card.update_hours(666)
     today = Time.now.strftime("%Y-%m-%d")
-    @card.to_json.should include('"hours_left_updated": "' + today)
+    @card.to_json.should include('"hours_left_updated":"' + today)
   end
 
   it "should include cards with urls" do
-    @card.to_json.should include_text('"issue_no": "' + @card.issue_no+ '"')
-    @card.to_json.should include_text('"url": "' + @card.url + '"')
+    @card.to_json.should include_text('"issue_no":"' + @card.issue_no+ '"')
+    @card.to_json.should include_text('"url":"' + @card.url + '"')
   end
 
 end
