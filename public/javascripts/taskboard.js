@@ -282,7 +282,7 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 					$(this).warningTooltip("Column have no cards!");
 				}else if(confirm("Are you sure to delete all cards from column?")){
 					TASKBOARD.remote.api.cleanColumn(closestColumn.data('data').id);
-					closestColumn.find("ol.cards").children().fadeOut(500, function(){ $(this).remove(); } );
+					closestColumn.find("ol.cards").children().fadeOut(250, function(){ $(this).remove(); } );
 				}
 			});
 	}
@@ -318,7 +318,7 @@ TASKBOARD.builder.buildRowMeta = function(row){
 					$(this).warningTooltip("Row have no cards!", { position: "rightMiddle" });
 				} else if(confirm("Are you sure to delete all cards from row?")) {
 					TASKBOARD.remote.api.cleanRow(row.id);
-					cards.fadeOut(500, function(){ $(this).remove(); } );
+					cards.fadeOut(250, function(){ $(this).remove(); } );
 				}
 			});
 	}
@@ -777,7 +777,7 @@ TASKBOARD.api = {
 	cleanColumn : function(column){
 		column = column.column;
 		var cards = $('#column_' + column.id).find("ol.cards").children();
-		cards.fadeOut(5000, function(){ $(this).remove(); } );
+		cards.fadeOut(250, function(){ $(this).remove(); } );
 	},
 
 	deleteRow : function(row){
@@ -790,7 +790,7 @@ TASKBOARD.api = {
 	cleanRow : function(row){
 		row = row.row;
 		var cards = $(".column .row_" + row.id).children();
-		cards.fadeOut(500, function(){$(this).remove();} );
+		cards.fadeOut(250, function(){$(this).remove();} );
 	},
 
 	renameColumn : function(column){
