@@ -17,13 +17,14 @@
  * along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
  */
 
+var TASKBOARD = TASKBOARD || {};
+
 (function($) { // just to make sure $ is a jQuery
 
 /* 
  * A Taskboard object containing some global methods.
  */
-var TASKBOARD = {};
-window.TASKBOARD = TASKBOARD;
+var TASKBOARD = window.TASKBOARD;
 
 /*
  * Some taskboard utils
