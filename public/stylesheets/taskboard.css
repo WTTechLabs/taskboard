@@ -74,7 +74,7 @@
 #actions {
     font-size: 0.8em;
     padding: 0 10px;
-    float: right;
+    float: right; 
 }
 
     #actions li {
@@ -191,7 +191,8 @@
         border: none;
     }
 
-        #taskboard .column.ui-sortable-helper a.deleteColumn {
+        #taskboard .column.ui-sortable-helper a.deleteColumn,
+        #taskboard .column.ui-sortable-helper a.cleanColumn {
             display:none;
         }
 
@@ -207,13 +208,6 @@
         #taskboard .column h2:hover {
             background-color: #FFFFD3;
             cursor: text;
-        }
-        
-        #taskboard .column a.deleteColumn {
-            position: absolute;
-            top: -20px;
-            right: 0px;
-            margin: 3px;
         }
 
             #taskboard .column ol.cards > li {
@@ -421,6 +415,13 @@
     text-indent: -9999px;
 }
 
+.column > .actions {
+    position: absolute;
+    right: 0;
+    top: -15px;
+    margin: 3px;
+}
+
 .big.actions li {
     width: 16px;
     height: 16px;
@@ -447,6 +448,26 @@
 
     .actions li .deleteCard:hover {
         background-image: url(/images/cross_on.png);
+    }
+
+    .actions li .deleteColumn,
+	.actions li .deleteRow{
+        background-image: url(/images/cross_off.png);
+    }
+
+    .actions li .deleteColumn:hover,
+	.actions li .deleteRow:hover {
+        background-image: url(/images/cross_on.png);
+    }
+
+    .actions li .cleanColumn,
+	.actions li .cleanRow {
+        background-image: url(/images/remove_cards_off.png);
+    }
+
+    .actions li .cleanColumn:hover,
+	.actions li .cleanRow:hover {
+        background-image: url(/images/remove_cards_on.png);
     }
 
     .big.actions li .changeColor {
