@@ -422,6 +422,10 @@
     margin: 3px;
 }
 
+.column > .actions li {
+    float: right;
+}
+
 .big.actions li {
     width: 16px;
     height: 16px;
