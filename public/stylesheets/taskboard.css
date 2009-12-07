@@ -44,6 +44,7 @@
         font-size: 0.8em;
         text-decoration: none;
         color: #CCCCCC;
+        margin-right: 5px;
     }
 
         h1 a[rel='home']:hover {
