@@ -59,7 +59,7 @@ String.prototype.unescapeHTML = function() {
  * that are not letters, numbers, underscores or dashes are transformed into single underscore.
  */
 String.prototype.toClassName = function() {
-	return this.replace(/\s/g, '__').replace(/[^A-Za-z0-9_\-]/g,'_');
+	return this.replace(/[^A-Za-z0-9_\-]/g, function(str){ return "_" + str.charCodeAt(0) + "_" });
 };
 
 /*
