@@ -888,7 +888,9 @@ TASKBOARD.loadFromJSON = function(taskboard){
 			}, { event : "dblclick", data : function(){ return TASKBOARD.data.name; } })
 		.attr("title", TASKBOARD.builder.strings.columnHeaderTitle);
 	}
-	$("#header h1").append(" ").append(title);
+	$("#header h1")
+		.find("span.title").remove().end()
+		.append(title);
 
 	$("#taskboard").html("")
 
@@ -1028,6 +1030,10 @@ $(document).ready(function() {
 		ev.preventDefault();
 	});
 });
+
+TASKBOARD.refresh = function() {
+	TASKBOARD.remote.get.taskboardData(TASKBOARD.id, TASKBOARD.loadFromJSON);
+}
 
 TASKBOARD.tags = {
 	tagList : {},
@@ -1300,6 +1306,10 @@ $.each(["initialized", "connect", "connected", "errorConnecting", "disconnected"
 	$(document).bind("juggernaut:" + self, function(){
 		$.notify(msgs[self]);
 	});
+});
+
+$(document).bind("juggernaut:connected", function(){
+	TASKBOARD.refresh();
 });
 
 
