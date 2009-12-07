@@ -115,7 +115,7 @@ describe Column, "while serializing to json" do
     column.cards << card
     column.cards.should have(1).records
 
-    column.to_json.should include_text('"tag_list": ["ala", "ma", "kota"]')
+    column.to_json.should include_text('"tag_list":["ala","ma","kota"]')
   end
 
 end
