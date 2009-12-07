@@ -1089,8 +1089,13 @@ $(document).ready(function() {
 	});
 });
 
-TASKBOARD.refresh = function() {
-	TASKBOARD.remote.get.taskboardData(TASKBOARD.id, TASKBOARD.loadFromJSON);
+TASKBOARD.refresh = function(message) {
+	message = message || "Taskboard refreshed.";
+	var callback = function(data){
+		TASKBOARD.loadFromJSON(data);
+		if (message) $.notify(message);
+	}
+	TASKBOARD.remote.get.taskboardData(TASKBOARD.id, callback);
 }
 
 // TODO: refactor and make more generic plugin
@@ -1291,7 +1296,7 @@ $.notify = function(msg, options){
 };
 
 /* TODO: clean up */
-$.each(["initialized", "connect", "connected", "errorConnecting", "disconnected", "reconnect", "noFlash"], function(){
+$.each(["connect", "connected", "errorConnecting", "disconnected", "reconnect", "noFlash"], function(){
 	var self = this;
 	var msgs = {
 		"initialized" : "Synchronization service initialized.",
