@@ -49,8 +49,8 @@ module Juggernaut
       }
       send_data(fc)
     end
-    alias send_to_client_on_channel send_to_clients_on_channels
-    alias send_to_client_on_channel send_to_clients_on_channels
+    alias send_to_clients_on_channel send_to_clients_on_channels
+    alias send_to_client_on_channels send_to_clients_on_channels
     
     def remove_channels_from_clients(client_ids, channels)
       fc = {
@@ -101,8 +101,8 @@ module Juggernaut
     alias show_clients_for_channel show_clients_for_channels
 
     def send_data(hash, response = false)
-      hash[:channels]   = hash[:channels].to_a   if hash[:channels]
-      hash[:client_ids] = hash[:client_ids].to_a if hash[:client_ids]
+      hash[:channels]   = Array(hash[:channels])   if hash[:channels]
+      hash[:client_ids] = Array(hash[:client_ids]) if hash[:client_ids]
       
       res = []
       hosts.each do |address|
@@ -142,8 +142,12 @@ module Juggernaut
         def render_with_juggernaut(options = nil, extra_options = {}, &block)
           if options == :juggernaut or (options.is_a?(Hash) and options[:juggernaut])
             begin
-              @template.send(:_evaluate_assigns_and_ivars)
-
+              if @template.respond_to?(:_evaluate_assigns_and_ivars, true)
+                @template.send(:_evaluate_assigns_and_ivars)
+              else
+                @template.send(:evaluate_assigns)
+              end
+              
               generator = ActionView::Helpers::PrototypeHelper::JavaScriptGenerator.new(@template, &block)            
               render_for_juggernaut(generator.to_s, options.is_a?(Hash) ? options[:juggernaut] : nil)
             ensure
@@ -168,29 +172,29 @@ module Juggernaut
           case options[:type]
             when :send_to_all
               Juggernaut.send_to_all(data)
-            when :send_to_channels:
+            when :send_to_channels
               juggernaut_needs options, :channels
               Juggernaut.send_to_channels(data, options[:channels])
-            when :send_to_channel:
+            when :send_to_channel
               juggernaut_needs options, :channel
               Juggernaut.send_to_channel(data, options[:channel])
-            when :send_to_client:
+            when :send_to_client
               juggernaut_needs options, :client_id
               Juggernaut.send_to_client(data, options[:client_id])
-            when :send_to_clients:
+            when :send_to_clients
               juggernaut_needs options, :client_ids
               Juggernaut.send_to_clients(data, options[:client_ids])
-            when :send_to_client_on_channel:
-              juggernaut_needs options, :client_id, :channels
-              Juggernaut.send_to_clients_on_channel(data, options[:client_id], options[:channels])
-            when :send_to_clients_on_channel:
+            when :send_to_client_on_channel
+              juggernaut_needs options, :client_id, :channel
+              Juggernaut.send_to_clients_on_channel(data, options[:client_id], options[:channel])
+            when :send_to_clients_on_channel
               juggernaut_needs options, :client_ids, :channel
               Juggernaut.send_to_clients_on_channel(data, options[:client_ids], options[:channel])
-            when :send_to_client_on_channels:
-              juggernaut_needs options, :client_ids, :channel
+            when :send_to_client_on_channels
+              juggernaut_needs options, :client_ids, :channels
               Juggernaut.send_to_clients_on_channel(data, options[:client_id], options[:channels])
-            when :send_to_clients_on_channels:
-              juggernaut_needs options, :client_ids, :channel
+            when :send_to_clients_on_channels
+              juggernaut_needs options, :client_ids, :channels
               Juggernaut.send_to_clients_on_channel(data, options[:client_ids], options[:channels])
           end
         end

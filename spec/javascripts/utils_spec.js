@@ -94,16 +94,18 @@ Screw.Unit(function(){
           expect(String.prototype.toClassName).to(be_function);
         });
 
-        it("should turn all the spaces into double underscores", function(){
-          expect("this is a tag with spaces".toClassName()).to(equal, "this__is__a__tag__with__spaces");
-        });
-
-        it("should turn all strange characters into single underscores", function(){
-          expect("t4g w!th str@ng3 characters!".toClassName().escapeHTML()).to(equal, "t4g__w_th__str_ng3__characters_");
+        it("should turn all strange characters into their codes underscores", function(){
+          var space = "_" + " ".charCodeAt(0) + "_",
+              shout = "_" + "!".charCodeAt(0) + "_",
+              at    = "_" + "@".charCodeAt(0) + "_",
+              floor = "_" + "_".charCodeAt(0) + "_",
+              expected = "t4g" + space + "w" + shout + "th" + space +
+                         "str" + at + "ng3" + floor + "characters" + shout;
+          expect("t4g w!th str@ng3_characters!".toClassName().escapeHTML()).to(equal, expected);
         });
 
         it("shouldn't change strings that are OK to be a class name", function(){
-          expect("tag_that-is_OK".toClassName()).to(equal, "tag_that-is_OK");
+          expect("tag-that-is-OK".toClassName()).to(equal, "tag-that-is-OK");
         });
       });
 
