@@ -75,7 +75,7 @@ class JuggernautSyncController < ApplicationController
   end
 
   def sync_clean_column column, params = {}
-    options = { :message => "Clean a '#{column.name}' column" }.update params
+    options = { :message => "Cleaned a '#{column.name}' column" }.update params
     sync_column_action column, 'cleanColumn', options
   end
 
@@ -103,7 +103,7 @@ class JuggernautSyncController < ApplicationController
   end
 
   def sync_clean_row row, params = {}
-    options = { :message => "Clean a '#{row.name}' row" }.update params
+    options = { :message => "Cleaned a '#{row.name}' row" }.update params
     sync_column_action row, 'cleanRow', options
   end
 
