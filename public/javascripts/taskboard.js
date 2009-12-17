@@ -175,7 +175,7 @@ TASKBOARD.builder.options = {
 TASKBOARD.builder.strings = {
 	columnHeaderTitle : "Double-click to edit",
 
-	tagsTooltip: "You can use '<strong>,</strong>' to add multiple tags<br/>e.g.: <strong>exempli, gratia</strong>",
+	tagsTooltip: "You can use '<strong>,</strong>' to add multiple tags. '<strong>%</strong>' and '<strong>&</strong>' are not allowed,<br/>e.g.: <strong>exempli, gratia</strong>",
 
 	notesTooltip: "<p>You can use Markdown syntax:</p>" +
 				  "<p># This is an H1<br/> ### This is an H3, etc...</p>"+
@@ -495,6 +495,11 @@ TASKBOARD.builder.buildBigCard = function(card){
 		bigCard.find('#tagsForm').submit(function(ev){
 			var cardTags = $.map(card.tag_list, function(n){ return n.toUpperCase() });
 			var tags = $(this).find(':text').val();
+            // validate input
+			if(tags.length === 0 || tags.indexOf('%') >= 0 || tags.indexOf('&') >= 0){
+				$('#inputTags').effect("highlight", { color: "#FF0000" }).focus();
+                return false;
+			}
 			// remove empty and already added tags
 			tags = $.map(tags.split(','), function(n){ return (n.trim() && ($.inArray(n.trim().toUpperCase(),cardTags) < 0)) ? n.trim() : null; });
 			var uniqueTags = []
@@ -504,7 +509,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 					cardTags.push(v.toUpperCase());
 				}
 			});
-			$.merge(card.tag_list, uniqueTags);
+      		$.merge(card.tag_list, uniqueTags);
 			TASKBOARD.api.updateCard({ card: card });
 			if(uniqueTags.length > 0){
 				TASKBOARD.remote.api.addTags(card.id, uniqueTags.join(','));
