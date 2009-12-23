@@ -32,6 +32,9 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 	<%= javascript_tag "$.extend(TASKBOARD, { editor : #{session[:editor]}});" %>
 	<%= javascript_tag "$.extend(TASKBOARD, { authenticity_token : #{form_authenticity_token.inspect} });" if protect_against_forgery? %>
 	<%= juggernaut :channels => [@taskboard_id], :debug => false %>
+	<!--[if IE]>
+	<%= javascript_include_tag 'lib/excanvas.compiled' %>
+	<![endif]-->
 </head>
 <body>
 	<div id="header">
