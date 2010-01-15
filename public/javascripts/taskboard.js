@@ -17,13 +17,14 @@
  * along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
  */
 
+var TASKBOARD = TASKBOARD || {};
+
 (function($) { // just to make sure $ is a jQuery
 
 /* 
  * A Taskboard object containing some global methods.
  */
-var TASKBOARD = {};
-window.TASKBOARD = TASKBOARD;
+var TASKBOARD = window.TASKBOARD;
 
 /*
  * Some taskboard utils
@@ -174,7 +175,7 @@ TASKBOARD.builder.options = {
 TASKBOARD.builder.strings = {
 	columnHeaderTitle : "Double-click to edit",
 
-	tagsTooltip: "You can use '<strong>,</strong>' to add multiple tags<br/>e.g.: <strong>exempli, gratia</strong>",
+	tagsTooltip: "You can use '<strong>,</strong>' to add multiple tags. '<strong>%</strong>' and '<strong>&</strong>' are not allowed,<br/>e.g.: <strong>exempli, gratia</strong>",
 
 	notesTooltip: "<p>You can use Markdown syntax:</p>" +
 				  "<p># This is an H1<br/> ### This is an H3, etc...</p>"+
@@ -261,15 +262,15 @@ TASKBOARD.builder.buildColumnFromJSON = function(column){
 		// edit-mode-only
 		columnLi.find(".deleteColumn")
 			.bind("click", function(ev){
-                                ev.preventDefault();
-                                var closestColumn = $(this).closest('.column');
-                                if(closestColumn.find("ol.cards").children().length !== 0){
+				ev.preventDefault();
+				var closestColumn = $(this).closest('.column');
+				if(closestColumn.find("ol.cards").children().length !== 0){
 					$(this).warningTooltip("You cannot delete a column that is not empty!");
 				} else if ($("#taskboard .column").length == 1) {
 					$(this).warningTooltip("You cannot delete last column!");
 				}else {
-					TASKBOARD.remote.api.deleteColumn(closestColumn.data('data').id);
-					closestColumn.fadeOut(1000, function(){ $(this).remove(); } );
+				TASKBOARD.remote.api.deleteColumn(closestColumn.data('data').id);
+				closestColumn.fadeOut(1000, function(){ $(this).remove(); } );
 				}
 			});
 
@@ -448,7 +449,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 	$.each(card.tag_list, function(){
 		var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" });
 		if(TASKBOARD.editor){
-			tagLi += $.tag("a", "X", { className : "deleteTag", href : "#" });
+			tagLi += $.tag("a", "X", { className : "deleteTag" });
 		}
 		tagsUl += $.tag("li", tagLi);
 	});
@@ -474,7 +475,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 
 	// edit-mode-only
 	if(TASKBOARD.editor){
-		var deleteTagCallback = function(){
+		var deleteTagCallback = function(ev){
 			var tag = $(this).parent().find(".tag").text();
 			TASKBOARD.remote.api.removeTag(card.id, tag);
 			var index = card.tag_list.indexOf(tag);
@@ -482,6 +483,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			TASKBOARD.api.updateCard({ card: card });
 			TASKBOARD.remote.api.removeTag(card.id, tag);
 			$(this).parent().remove();
+			ev.preventDefault();
 		};
 
 		bigCard.find(".changeColor").click(function(ev){
@@ -493,6 +495,11 @@ TASKBOARD.builder.buildBigCard = function(card){
 		bigCard.find('#tagsForm').submit(function(ev){
 			var cardTags = $.map(card.tag_list, function(n){ return n.toUpperCase() });
 			var tags = $(this).find(':text').val();
+            // validate input
+			if(tags.length === 0 || tags.indexOf('%') >= 0 || tags.indexOf('&') >= 0){
+				$('#inputTags').effect("highlight", { color: "#FF0000" }).focus();
+                return false;
+			}
 			// remove empty and already added tags
 			tags = $.map(tags.split(','), function(n){ return (n.trim() && ($.inArray(n.trim().toUpperCase(),cardTags) < 0)) ? n.trim() : null; });
 			var uniqueTags = []
@@ -502,7 +509,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 					cardTags.push(v.toUpperCase());
 				}
 			});
-			$.merge(card.tag_list, uniqueTags);
+      		$.merge(card.tag_list, uniqueTags);
 			TASKBOARD.api.updateCard({ card: card });
 			if(uniqueTags.length > 0){
 				TASKBOARD.remote.api.addTags(card.id, uniqueTags.join(','));
@@ -511,7 +518,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 			$("#tags ul").html("");
 			$.each(card.tag_list, function(){
 				var tagLi = $.tag("span", this.escapeHTML(), { className : "tag" }) +
-							$.tag("a", "X", { className : "deleteTag", href : "#" });
+							$.tag("a", "X", { className : "deleteTag" });
 				$("#tags ul").append($.tag("li", tagLi));
 				$("#tags .deleteTag").bind('click', deleteTagCallback);
 			});
@@ -551,9 +558,10 @@ TASKBOARD.builder.buildBigCard = function(card){
 
 		bigCard.find('#progress').editable(function(val){
 			if(!isNaN(val) && val >= 0) {
-					TASKBOARD.remote.api.updateCardHours(card.id, val, $(this).find("select").val());
-					TASKBOARD.remote.get.cardBurndown(card.id, function(data){
-						TASKBOARD.burndown.render($('#cardBurndown'), data);
+					TASKBOARD.remote.api.updateCardHours(card.id, val, $(this).find("select").val(), function() {
+						TASKBOARD.remote.get.cardBurndown(card.id, function(data){
+							TASKBOARD.burndown.render($('#cardBurndown'), data);
+						});
 					});
 					card.hours_left = val;
 					TASKBOARD.api.updateCard({ card: card }); // redraw small card
@@ -811,7 +819,7 @@ TASKBOARD.api = {
 		card = card.card;
 		var newCard = TASKBOARD.builder.buildCardFromJSON(card);
 		$('#card_' + card.id).before(newCard).remove();
-		newCard.effect('highlight', {}, 1000);
+		//newCard.effect('highlight', {}, 1000);
 		TASKBOARD.tags.updateTagsList();
 		TASKBOARD.tags.updateCardSelection();
 	},
@@ -901,13 +909,19 @@ TASKBOARD.init = function(){
 	$("#filterTags a").live("click", function(){
 		$(this).parent().toggleClass("current");
 		TASKBOARD.tags.updateCardSelection();
+		if($(this).attr("href")=="#/?no_tags="){
+			TASKBOARD.url.updateNoTags($(this).parent().hasClass("current"));
+		}
+		else {
+			TASKBOARD.url.updateSelectedTags(TASKBOARD.tags.exportSelection());
+		}
 		return false;
 	});
 
 	$(".actionShowBurndown").bind("click", this.showBurndown);
 
 	$("#formActions img").rollover();
-	$("#formActions .actionHideForm").click(function(){ TASKBOARD.form.close(); $("#actions li").removeClass("current"); });
+	$("#formActions .actionHideForm").click(function(){ TASKBOARD.form.close(); $("#actions li").removeClass("current"); return false;});
 	$("#formActions").hide();
 	$("#formActions").submit(TASKBOARD.form.submit);
 };
@@ -970,6 +984,7 @@ TASKBOARD.loadFromJSON = function(taskboard){
 	TASKBOARD.utils.expandTaskboard();
 	TASKBOARD.form.updateColumnSelect();
 	TASKBOARD.tags.updateTagsList();
+	TASKBOARD.url.init();
 };
 
 TASKBOARD.burndown = {};
@@ -1089,76 +1104,11 @@ TASKBOARD.refresh = function(message) {
 	TASKBOARD.remote.get.taskboardData(TASKBOARD.id, callback);
 }
 
-TASKBOARD.tags = {
-	tagList : {},
-
-	add : function(tag){
-		var tagObject = this.tagList[tag];
-		if(tagObject) {
-			tagObject.count++;
-			return tagObject;
-		} else {
-			tagObject = { tag : tag, className : "tagged_as_" + tag.toClassName(), count : 1 };
-			this.tagList[tag] = tagObject;
-			return tagObject;
-		}
-	},
-	
-	rebuildTagList : function(){
-		this.tagList = {};
-		$("#taskboard .cards > li").each(function(){
-			$.each($(this).data("data").tag_list, function(i, tag){
-				TASKBOARD.tags.add(tag);
-			});
-		});
-	},
-	
-	updateTagsList : function(){
-		this.rebuildTagList();
-		
-		var tagsLinks = "";
-		var className = $("#filterTags a[href='#notags']").parent().hasClass("current") ? "current" : "";
-		tagsLinks += $.tag("li", $.tag("a", "No tags", { href : "#notags", title : "Highlight cards with no tags" }),
-							 { className : className } );
-		
-		$.each(this.tagList, function(){
-			className = $("#filterTags a[href='#" + this.className + "']").parent().hasClass("current") ? "current" : "";
-			tagsLinks += $.tag("li", $.tag("a", this.tag, { href : "#" + this.className, title: "Highlight cards tagged as '" + this.tag + "'" }),
-								 { className : className });
-		});
-		$("#filterTags").html(tagsLinks);
-	},
-	
-	updateCardSelection : function(){
-		var cardSelectors = [];
-		
-		$("#filterTags .current a").each(function(){
-		
-			var cardSelector = "";
-			if($(this).attr('href') === '#notags'){
-				cardSelector = ":not([class*='tagged_as_'])";
-			} else {
-				cardSelector = $(this).attr('href').replace("#", ".");
-			}
-			
-			cardSelectors.push(cardSelector);
-		});
-		
-		var filtered = $("#taskboard .cards > li").css("opacity", null);
-		$.each(cardSelectors, function(){
-			filtered = filtered.not("#taskboard .cards > li" + this);
-		});
-		if($("#filterTags .current a").length){
-			filtered.css("opacity", 0.2);
-		}
-	}
-};
-
 // TODO: refactor and make more generic plugin
 $.fn.openOverlay = function(css){
 	var self = this;
 	$('body').append('<div id="overlay"></div>');
-		$("#overlay").css({ 
+		$("#overlay").css({
 			height: '100%',
 			width : '100%',
 			position: 'fixed',
@@ -1204,17 +1154,21 @@ TASKBOARD.remote = {
 	},
 
 	callback : function(url, params, successCallback){
-			if(successCallback){
+			if(typeof successCallback === 'string'){
 				TASKBOARD.remote.loading.start();
 			}
 			$.getJSON(url, params,
 					function(json){
-						if(TASKBOARD.remote.checkStatus(json) === 'success'){
-							if(successCallback && !juggernaut.is_connected){
-								sync[successCallback](json, true);
-							}
+						if(typeof successCallback === 'function'){
+							successCallback();
 						} else {
-							$.notify(json.message, { cssClass : "error" });
+							if(TASKBOARD.remote.checkStatus(json) === 'success'){
+								if((typeof successCallback === 'string') && !juggernaut.is_connected){
+									sync[successCallback](json, true);
+								}
+							} else {
+								$.notify(json.message, { cssClass : "error" });
+							}
 						}
 					});
 	},
@@ -1291,8 +1245,8 @@ TASKBOARD.remote = {
 		cleanRow : function(rowId){
 			TASKBOARD.remote.callback('/taskboard/clean_row/', { id: rowId });
 		},
-		updateCardHours : function(cardId, hours, updatedAt){
-			TASKBOARD.remote.callback('/card/update_hours/', { id: cardId, hours_left: hours, updated_at: updatedAt });
+		updateCardHours : function(cardId, hours, updatedAt, callback){
+			TASKBOARD.remote.callback('/card/update_hours/', { id: cardId, hours_left: hours, updated_at: updatedAt }, callback);
 		},
 		deleteCard : function(cardId){
 			TASKBOARD.remote.callback('/taskboard/remove_card/', { id: cardId });

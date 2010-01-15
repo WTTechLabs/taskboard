@@ -10,6 +10,8 @@ coverage/
 log/*.log
 log/*/*.log
 
+.generators
+.idea
 nbproject/
 
 lib/tasks/cruise.rake

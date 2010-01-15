@@ -32,3 +32,37 @@ demo_second_row:
   position: 2
   taskboard: demo_taskboard
 
+# Demo Project > Kanban board
+##############################
+
+kanban_row:
+  name: 'Row'
+  position: 1
+  taskboard: kanban_taskboard
+
+# Demo Project > Scrum board
+#############################
+
+scrum_user_row:
+  name: 'User Story Row'
+  position: 1
+  taskboard: scrum_taskboard
+
+scrum_owner_row:
+  name: 'Owner Story Row'
+  position: 2
+  taskboard: scrum_taskboard
+
+# Demo Project > Demo board
+############################
+
+demo_first_row:
+  name: 'First row'
+  position: 1
+  taskboard: demo_taskboard
+
+demo_second_row:
+  name: 'Second row'
+  position: 2
+  taskboard: demo_taskboard
+
