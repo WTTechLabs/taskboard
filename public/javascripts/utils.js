@@ -53,6 +53,10 @@ String.prototype.unescapeHTML = function() {
 	return this.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&gt;/g,">").replace(/&lt;/g,"<");
 };
 
+String.prototype.escapeQuotes = function() {
+	return this.replace(/'/g, "\\\'").replace(/"/g, "\\\"");
+};
+
 /*
  * Returns the string transformed into one compatible with HTML class attribute.
  * All the whitespace characters are transformed into double underscores and all characters
@@ -260,8 +264,10 @@ $.tag = function(tagName, content, attrs){
 		content = "";
 	}
 	var tagArray = ['<', tagName];
+    var value = "";
 	for(var attr in attrs){
-		tagArray.push(" ", attr == "className" ? "class" : attr, "=\"", attrs[attr], "\"");
+        value = ("" + attrs[attr]).escapeQuotes();
+		tagArray.push(" ", attr == "className" ? "class" : attr, "=\"", value, "\"");
 	}
 	tagArray.push(">", content, "</", tagName, ">");
 	return tagArray.join("");
