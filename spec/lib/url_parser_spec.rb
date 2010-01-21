@@ -28,7 +28,7 @@ describe UrlParser, "while helping with url recognition" do
       'http://192.168.1.1/jira'].each do |url|
       UrlParser.is_url(url).should be_true
     end
-    
+
     UrlParser.is_url('My new card!').should be_false
   end
 
@@ -41,12 +41,18 @@ describe UrlParser do
   end
 
   it "should fetch a card for given url" do
-    url = 'https://jira.cognifide.com/jira/browse/TASKBOARD-2'
-    cards = UrlParser.fetch_cards(url)
-    cards.size.should eql(1)
-    cards.first.name.should eql(url)
-    cards.first.issue_no.should eql('TASKBOARD-2')
-    cards.first.url.should eql(url)
+    check_card_name('https://jira.cognifide.com/jira/browse/TASKBOARD-2', 'https://jira.cognifide.com/jira/browse/TASKBOARD-2', 'TASKBOARD-2');
+    check_card_name('https://jira.cognifide.com/jira/browse/TASKBOARD-3/', 'https://jira.cognifide.com/jira/browse/TASKBOARD-3','TASKBOARD-3');
   end
+
+  private
+
+    def check_card_name(based_url, url, name)
+      cards = UrlParser.fetch_cards(based_url)
+      cards.size.should eql(1)
+      cards.last.name.should eql(url)
+      cards.last.issue_no.should eql(name)
+      cards.last.url.should eql(url)
+    end
 
 end
