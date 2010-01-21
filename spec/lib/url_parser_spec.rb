@@ -23,7 +23,9 @@ describe UrlParser, "while helping with url recognition" do
   it "should recognize valid urls" do
     [ 'https://jira.cognifide.com/jira/browse/TASKBOARD-2',
       'https://localhost:3000/app', 'http://google.com',
-      'http://google.com'].each do |url|
+      'http://google.com/', 'http://192.168.1.1',
+      'http://127.0.0.1:6363', 'http://127.0.0.1:6363',
+      'http://192.168.1.1/jira'].each do |url|
       UrlParser.is_url(url).should be_true
     end
     
