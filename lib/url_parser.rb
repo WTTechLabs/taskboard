@@ -24,7 +24,8 @@ class UrlParser
   end
   
   def self.fetch_cards url
-    return Array.[](Card.new(:issue_no => url.gsub(/^.*\//,''), :url => url, :name => url))
+    url = url.gsub(/\/$/,'')
+    Array.[](Card.new(:issue_no => url.gsub(/^.*\//,''), :url => url, :name => url))
   end
   
 end
