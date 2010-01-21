@@ -16,8 +16,8 @@
 # along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 
 class UrlParser
-  
-  URL_REGEXP = /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix.freeze
+
+  URL_REGEXP = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.freeze
 
   def self.is_url url
     not (url =~ URL_REGEXP).nil?
