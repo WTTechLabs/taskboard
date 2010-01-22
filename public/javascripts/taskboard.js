@@ -1123,7 +1123,7 @@ TASKBOARD.tags = {
 		
 		$.each(this.tagList, function(){
 			className = $("#filterTags a[href='#" + this.className + "']").parent().hasClass("current") ? "current" : "";
-			tagsLinks += $.tag("li", $.tag("a", this.tag, { href : "#" + this.className, title: "Highlight cards tagged as '" + this.tag + "'" }),
+			tagsLinks += $.tag("li", $.tag("a", this.tag.escapeHTML(), { href : "#" + this.className, title: "Highlight cards tagged as '" + this.tag + "'" }),
 								 { className : className });
 		});
 		$("#filterTags").html(tagsLinks);

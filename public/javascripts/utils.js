@@ -54,7 +54,7 @@ String.prototype.unescapeHTML = function() {
 };
 
 String.prototype.escapeQuotes = function() {
-	return this.replace(/'/g, "\\\'").replace(/"/g, "\\\"");
+	return this.replace(/'/g, "\\\'").replace(/"/g, "\\\"").replace(/</g, "\\<");
 };
 
 /*
@@ -266,7 +266,7 @@ $.tag = function(tagName, content, attrs){
 	var tagArray = ['<', tagName];
     var value = "";
 	for(var attr in attrs){
-        value = ("" + attrs[attr]).escapeQuotes();
+        value = ("" + attrs[attr]).escapeHTML();
 		tagArray.push(" ", attr == "className" ? "class" : attr, "=\"", value, "\"");
 	}
 	tagArray.push(">", content, "</", tagName, ">");
