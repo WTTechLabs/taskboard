@@ -288,8 +288,8 @@ Screw.Unit(function(){
         expect($.tag("div", "div with class", { className : "class" })).to(equal, "<div class=\"class\">div with class</div>");
       });
 
-      it("should escape quotes in attribute values", function(){
-        expect($.tag("a", "example", { title : "That's a test" })).to(equal, "<a title=\"That\\\'s a test\">example</a>");
+      it("should escape HTML in attribute values", function(){
+        expect($.tag("a", "example", { title : "That's a <test>" })).to(equal, "<a title=\"That's a &lt;test&gt;\">example</a>");
       });
     });
 
