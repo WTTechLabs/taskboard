@@ -100,6 +100,12 @@ TASKBOARD.builder.options = {
 		//.TODO: just a workaround for opacity
 		sort : function(ev, ui){
 			ui.item.css({opacity : 0.4});
+			// unselect any text selected during drag
+			if (document.selection) {
+				document.selection.empty();
+			else {
+				window.getSelection().removeAllRanges();
+			}
 		},
 		change : function(ev, ui){
 			TASKBOARD.utils.expandTaskboard();
