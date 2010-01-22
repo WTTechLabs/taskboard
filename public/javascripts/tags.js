@@ -53,7 +53,7 @@ TASKBOARD.tags = {
 
 		$.each(this.tagList, function(){
 			className = $("#filterTags a." + this.className + "").parent().hasClass("current") ? "current" : "";
-			tagsLinks += $.tag("li", $.tag("a", this.tag, { href : "#/?selected_tags=" + this.tag, title: "Highlight cards tagged as '" + this.tag + "'", className: this.className }),
+			tagsLinks += $.tag("li", $.tag("a", this.tag.escapeHTML(), { href : "#/?selected_tags=" + this.tag, title: "Highlight cards tagged as '" + this.tag + "'", className: this.className }),
 								 { className : className });
 		});
 		$("#filterTags").html(tagsLinks);
