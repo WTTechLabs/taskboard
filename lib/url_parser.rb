@@ -22,11 +22,11 @@ class UrlParser
   def self.is_url url
     not (url =~ URL_REGEXP).nil?
   end
-  
+
   def self.fetch_cards url
     url = url.gsub(/\/$/,'')
     Array.[](Card.new(:issue_no => url.gsub(/^.*\//,''), :url => url, :name => url))
   end
-  
+
 end
 
