@@ -122,13 +122,15 @@ TASKBOARD.home = {
 
         submitForm: function(){
             var input = $(this).find(":text");
-            if(input.val().trim().length === 0 || input.data("changed") !== true){;
+            if(input.val().trim().length === 0 || input.data("changed") !== true){
                 input.effect("highlight", { color: "#FF0000" }).focus().select();
                 if(input.data("changed")){
                     input.warningTooltip("Name cannot be blank!");
                 }
                 return false;
-            }
+            }else{
+                $(this).find(":submit").attr('disabled', 'disabled');
+             }
         },
 
         toggleAction: function(event){
