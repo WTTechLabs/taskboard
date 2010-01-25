@@ -102,7 +102,7 @@ TASKBOARD.builder.options = {
 			// unselect any text selected during drag
 			if (document.selection) {
 				document.selection.empty();
-			else {
+			} else {
 				window.getSelection().removeAllRanges();
 			}
 		},
