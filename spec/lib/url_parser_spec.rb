@@ -25,7 +25,7 @@ describe UrlParser, "while helping with url recognition" do
     UrlParser.is_url('http://google.com').should be_true
     UrlParser.is_url('My new card!').should be_false
   end
-   
+
 end
 
 describe UrlParser do
@@ -33,7 +33,7 @@ describe UrlParser do
   it "should response to :fetch_cards method" do
     UrlParser.should respond_to(:fetch_cards)
   end
-  
+
   it "should fetch a card for given url" do
     url = 'https://jira.cognifide.com/jira/browse/TASKBOARD-2'
     cards = UrlParser.fetch_cards(url)
