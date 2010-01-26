@@ -96,14 +96,14 @@ TASKBOARD.builder.options = {
 			}
 			//TODO: get padding from CSS?
 			ui.helper.width($(ui.item).parent().width() - 25);
+			// fixing IE7 drag overlapping bug
+			if($.browser.msie){
+				ui.item.closest(".column").css("zIndex", "4");
+			}
 		},
 		//.TODO: just a workaround for opacity
 		sort : function(ev, ui){
 			ui.item.css({opacity : 0.4});
-			// fixing IE7 drag overlapping bug
-			if($.browser.msie){
-				ui.item.closest(".column").css("zIndex", "10");
-			}
 			// unselect any text selected during drag
 			if (document.selection) {
 				document.selection.empty();
@@ -115,6 +115,9 @@ TASKBOARD.builder.options = {
 			TASKBOARD.utils.expandTaskboard();
 		},
 		stop : function(ev, ui){
+			if($.browser.msie){
+				$("#taskboard .column").css("zIndex", "");
+			}
 			TASKBOARD.utils.expandColumnsHeight();
 			ui.item.width("auto");
 			// get current position of card counting from 1
