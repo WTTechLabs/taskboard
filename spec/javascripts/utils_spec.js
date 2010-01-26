@@ -89,6 +89,20 @@ Screw.Unit(function(){
         });
       });
 
+      describe("#escapeQuotes", function(){
+        it("should be defined", function(){
+          expect(String.prototype.escapeQuotes).to(be_function);
+        });
+
+        it("should escape HTML tags, quote and ampersand", function(){
+          expect("That\'s a \"test\"".escapeQuotes()).to(equal, "That\\\'s a \\\"test\\\"");
+        });
+
+        it("shouldn't change string that doesn't contain any HTML", function(){
+          expect("Test and test".escapeQuotes()).to(equal, "Test and test");
+        });
+      });
+
       describe("#toClassName", function(){
         it("should be defined", function(){
           expect(String.prototype.toClassName).to(be_function);
@@ -272,6 +286,10 @@ Screw.Unit(function(){
 
       it("should build tag with 'class' attribute if 'className' param is given", function(){
         expect($.tag("div", "div with class", { className : "class" })).to(equal, "<div class=\"class\">div with class</div>");
+      });
+
+      it("should escape HTML in attribute values", function(){
+        expect($.tag("a", "example", { title : "That's a <test>" })).to(equal, "<a title=\"That's a &lt;test&gt;\">example</a>");
       });
     });
 

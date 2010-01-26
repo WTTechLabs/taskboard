@@ -11,6 +11,8 @@ log/*.log
 log/*/*.log
 
 nbproject/
+.idea/
+.generators
 
 lib/tasks/cruise.rake
 lib/tasks/rspec.rake

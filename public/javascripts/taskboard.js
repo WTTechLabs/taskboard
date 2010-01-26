@@ -95,15 +95,28 @@ TASKBOARD.builder.options = {
 			}
 			//TODO: get padding from CSS?
 			ui.helper.width($(ui.item).parent().width() - 25);
+			// fixing IE7 drag overlapping bug
+			if($.browser.msie){
+				ui.item.closest(".column").css("zIndex", "4");
+			}
 		},
 		//.TODO: just a workaround for opacity
 		sort : function(ev, ui){
 			ui.item.css({opacity : 0.4});
+			// unselect any text selected during drag
+			if (document.selection) {
+				document.selection.empty();
+			} else {
+				window.getSelection().removeAllRanges();
+			}
 		},
 		change : function(ev, ui){
 			TASKBOARD.utils.expandTaskboard();
 		},
 		stop : function(ev, ui){
+			if($.browser.msie){
+				$("#taskboard .column").css("zIndex", "");
+			}
 			TASKBOARD.utils.expandColumnsHeight();
 			ui.item.width("auto");
 			// get current position of card counting from 1
@@ -541,7 +554,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 					return value ? (new Showdown.converter()).makeHtml(value.escapeHTML()) : "";
 				}, { height: '200px', width: '100%',
 					 type : 'textarea', submit : 'Save', cancel : 'Cancel', onblur : 'ignore',
-					 data : function(){ return $(this).closest('dl').data('data').notes; },
+					 data : function(){ return $(this).closest('dl').data('data').notes || ""; },
 					 readyCallback : function(){
 						$(this).removeClass("hovered").find("textarea").helpTooltip(TASKBOARD.builder.strings.notesTooltip);
 					}
@@ -551,9 +564,10 @@ TASKBOARD.builder.buildBigCard = function(card){
 
 		bigCard.find('#progress').editable(function(val){
 			if(!isNaN(val) && val >= 0) {
-					TASKBOARD.remote.api.updateCardHours(card.id, val, $(this).find("select").val());
-					TASKBOARD.remote.get.cardBurndown(card.id, function(data){
-						TASKBOARD.burndown.render($('#cardBurndown'), data);
+					TASKBOARD.remote.api.updateCardHours(card.id, val, $(this).find("select").val(), function() {
+						TASKBOARD.remote.get.cardBurndown(card.id, function(data){
+							TASKBOARD.burndown.render($('#cardBurndown'), data);
+						});
 					});
 					card.hours_left = val;
 					TASKBOARD.api.updateCard({ card: card }); // redraw small card
@@ -1123,7 +1137,7 @@ TASKBOARD.tags = {
 		
 		$.each(this.tagList, function(){
 			className = $("#filterTags a[href='#" + this.className + "']").parent().hasClass("current") ? "current" : "";
-			tagsLinks += $.tag("li", $.tag("a", this.tag, { href : "#" + this.className, title: "Highlight cards tagged as '" + this.tag + "'" }),
+			tagsLinks += $.tag("li", $.tag("a", this.tag.escapeHTML(), { href : "#" + this.className, title: "Highlight cards tagged as '" + this.tag + "'" }),
 								 { className : className });
 		});
 		$("#filterTags").html(tagsLinks);
@@ -1204,17 +1218,21 @@ TASKBOARD.remote = {
 	},
 
 	callback : function(url, params, successCallback){
-			if(successCallback){
+			if(typeof successCallback === 'string'){
 				TASKBOARD.remote.loading.start();
 			}
 			$.getJSON(url, params,
 					function(json){
-						if(TASKBOARD.remote.checkStatus(json) === 'success'){
-							if(successCallback && !juggernaut.is_connected){
-								sync[successCallback](json, true);
-							}
+						if(typeof successCallback === 'function'){
+							successCallback();
 						} else {
-							$.notify(json.message, { cssClass : "error" });
+							if(TASKBOARD.remote.checkStatus(json) === 'success'){
+								if((typeof successCallback === 'string') && !juggernaut.is_connected){
+									sync[successCallback](json, true);
+								}
+							} else {
+								$.notify(json.message, { cssClass : "error" });
+							}
 						}
 					});
 	},
@@ -1291,8 +1309,8 @@ TASKBOARD.remote = {
 		cleanRow : function(rowId){
 			TASKBOARD.remote.callback('/taskboard/clean_row/', { id: rowId });
 		},
-		updateCardHours : function(cardId, hours, updatedAt){
-			TASKBOARD.remote.callback('/card/update_hours/', { id: cardId, hours_left: hours, updated_at: updatedAt });
+		updateCardHours : function(cardId, hours, updatedAt, callback){
+			TASKBOARD.remote.callback('/card/update_hours/', { id: cardId, hours_left: hours, updated_at: updatedAt }, callback);
 		},
 		deleteCard : function(cardId){
 			TASKBOARD.remote.callback('/taskboard/remove_card/', { id: cardId });
