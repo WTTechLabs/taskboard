@@ -224,7 +224,7 @@ $.fn.tooltip = function(message, options){
                     .data('targetTitle', $(target).attr('title'))
                     .addClass(settings.className)
                     .html(message)
-                    .append("<span class='tick " + settings.position + "'>");
+                    .append($.tag("span", { className: 'tick ' + settings.position }));
                 $(target).attr('title', '');
                 $('#tooltip').css({visibility: "hidden", display: "block"});
                 $.extend(settings.styles, positions[settings.position](target));

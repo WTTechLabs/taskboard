@@ -95,15 +95,28 @@ TASKBOARD.builder.options = {
 			}
 			//TODO: get padding from CSS?
 			ui.helper.width($(ui.item).parent().width() - 25);
+			// fixing IE7 drag overlapping bug
+			if($.browser.msie){
+				ui.item.closest(".column").css("zIndex", "4");
+			}
 		},
 		//.TODO: just a workaround for opacity
 		sort : function(ev, ui){
 			ui.item.css({opacity : 0.4});
+			// unselect any text selected during drag
+			if (document.selection) {
+				document.selection.empty();
+			} else {
+				window.getSelection().removeAllRanges();
+			}
 		},
 		change : function(ev, ui){
 			TASKBOARD.utils.expandTaskboard();
 		},
 		stop : function(ev, ui){
+			if($.browser.msie){
+				$("#taskboard .column").css("zIndex", "");
+			}
 			TASKBOARD.utils.expandColumnsHeight();
 			ui.item.width("auto");
 			// get current position of card counting from 1
@@ -541,7 +554,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 					return value ? (new Showdown.converter()).makeHtml(value.escapeHTML()) : "";
 				}, { height: '200px', width: '100%',
 					 type : 'textarea', submit : 'Save', cancel : 'Cancel', onblur : 'ignore',
-					 data : function(){ return $(this).closest('dl').data('data').notes; },
+					 data : function(){ return $(this).closest('dl').data('data').notes || ""; },
 					 readyCallback : function(){
 						$(this).removeClass("hovered").find("textarea").helpTooltip(TASKBOARD.builder.strings.notesTooltip);
 					}
