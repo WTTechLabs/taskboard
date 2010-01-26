@@ -561,7 +561,7 @@ TASKBOARD.builder.buildBigCard = function(card){
 					return value ? (new Showdown.converter()).makeHtml(value.escapeHTML()) : "";
 				}, { height: '200px', width: '100%',
 					 type : 'textarea', submit : 'Save', cancel : 'Cancel', onblur : 'ignore',
-					 data : function(){ return $(this).closest('dl').data('data').notes; },
+					 data : function(){ return $(this).closest('dl').data('data').notes || ""; },
 					 readyCallback : function(){
 						$(this).removeClass("hovered").find("textarea").helpTooltip(TASKBOARD.builder.strings.notesTooltip);
 					}
