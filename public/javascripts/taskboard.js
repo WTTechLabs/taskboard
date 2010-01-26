@@ -99,6 +99,10 @@ TASKBOARD.builder.options = {
 		//.TODO: just a workaround for opacity
 		sort : function(ev, ui){
 			ui.item.css({opacity : 0.4});
+			// fixing IE7 drag overlapping bug
+			if($.browser.msie){
+				ui.item.closest(".column").css("zIndex", "10");
+			}
 			// unselect any text selected during drag
 			if (document.selection) {
 				document.selection.empty();
