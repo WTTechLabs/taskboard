@@ -130,7 +130,7 @@ TASKBOARD.home = {
                 return false;
             }else{
                 $(this).find(":submit").attr('disabled', 'disabled');
-	    }
+            }
         },
 
         toggleAction: function(event){
