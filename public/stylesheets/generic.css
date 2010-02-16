@@ -28,21 +28,6 @@ body {
     font-family: Trebuchet, Tahoma, Arial, sans-serif;
 }
 
-#taskboard_meta {
-    font-size:0.7em;
-    color:#777777;
-    text-align:right;
-    position:fixed;
-    bottom:0;
-    right:0;
-    padding: 5px;
-}
-
-#taskboard_meta .version {
-    font-size:1.2em;
-    color: #555;
-}
-
 #tooltip {
     font-size: 11px;
     position: absolute;
@@ -83,4 +68,65 @@ body {
     padding-left: 36px;
     background-image: url(/images/warning.png);
 }
+
+/* Footer */
+
+#footer {
+    bottom: 0; right: 0; left: 0;
+    font-size:0.8em;
+    color:#777777;
+    padding: 5px;
+    border-top: 1px solid #CCCCCC;
+    overflow: hidden;
+    clear: both;
+}
+
+#taskboard_meta {
+    float: right;
+}
+
+    #taskboard_meta a {
+        color: #6699BB;
+        text-decoration: none;
+        border-bottom: 1px solid #AAAAAA;
+    }
+
+    #taskboard_meta a:hover {
+        color: #333333;
+        border-color: #555555;
+        background-color: #DDEEFF;
+    }
+
+    #taskboard_meta .madeby {
+        font-size:1.1em;
+    }
+
+    #taskboard_meta .version {
+        font-size:0.9em;
+        line-height: 1.6em;
+    }
+
+        #taskboard_meta .version .number {
+            color: #555555;
+        }
+
+    #taskboard_meta li {
+        display: inline;
+    }
+
+    #taskboard_meta li::after { content: " |"; }
+    #taskboard_meta li:last-child::after { content: ""; }
+
+#cognifide_logo {
+    display: block;
+    width: 121px;
+    height: 50px;
+    text-indent: -9999px;
+    background: url(../images/cognifide_logo.png) no-repeat scroll 0 0;
+    float: right;
+    border: 0;
+    margin-right: 10px;
+}
+
+    #cognifide_logo:hover { background-position: -121px 0; }
 

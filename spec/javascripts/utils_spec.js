@@ -89,21 +89,37 @@ Screw.Unit(function(){
         });
       });
 
+      describe("#escapeQuotes", function(){
+        it("should be defined", function(){
+          expect(String.prototype.escapeQuotes).to(be_function);
+        });
+
+        it("should escape HTML tags, quote and ampersand", function(){
+          expect("That\'s a \"test\"".escapeQuotes()).to(equal, "That\\\'s a \\\"test\\\"");
+        });
+
+        it("shouldn't change string that doesn't contain any HTML", function(){
+          expect("Test and test".escapeQuotes()).to(equal, "Test and test");
+        });
+      });
+
       describe("#toClassName", function(){
         it("should be defined", function(){
           expect(String.prototype.toClassName).to(be_function);
         });
 
-        it("should turn all the spaces into double underscores", function(){
-          expect("this is a tag with spaces".toClassName()).to(equal, "this__is__a__tag__with__spaces");
-        });
-
-        it("should turn all strange characters into single underscores", function(){
-          expect("t4g w!th str@ng3 characters!".toClassName().escapeHTML()).to(equal, "t4g__w_th__str_ng3__characters_");
+        it("should turn all strange characters into their codes underscores", function(){
+          var space = "_" + " ".charCodeAt(0) + "_",
+              shout = "_" + "!".charCodeAt(0) + "_",
+              at    = "_" + "@".charCodeAt(0) + "_",
+              floor = "_" + "_".charCodeAt(0) + "_",
+              expected = "t4g" + space + "w" + shout + "th" + space +
+                         "str" + at + "ng3" + floor + "characters" + shout;
+          expect("t4g w!th str@ng3_characters!".toClassName().escapeHTML()).to(equal, expected);
         });
 
         it("shouldn't change strings that are OK to be a class name", function(){
-          expect("tag_that-is_OK".toClassName()).to(equal, "tag_that-is_OK");
+          expect("tag-that-is-OK".toClassName()).to(equal, "tag-that-is-OK");
         });
       });
 
@@ -270,6 +286,10 @@ Screw.Unit(function(){
 
       it("should build tag with 'class' attribute if 'className' param is given", function(){
         expect($.tag("div", "div with class", { className : "class" })).to(equal, "<div class=\"class\">div with class</div>");
+      });
+
+      it("should escape HTML in attribute values", function(){
+        expect($.tag("a", "example", { title : "That's a <test>" })).to(equal, "<a title=\"That's a &lt;test&gt;\">example</a>");
       });
     });
 

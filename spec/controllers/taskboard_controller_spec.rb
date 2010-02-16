@@ -40,7 +40,7 @@ describe TaskboardController, "while creating new taskboard" do
   it "should add taskboard with default name if name not given" do
     taskboard = Taskboard.new
     Taskboard.should_receive(:new).and_return(taskboard)
-    post_as_editor 'add_taskboard', :project_id => projects(:test_project).id
+    post_as_editor 'add_taskboard', :project_id => projects(:sample_project).id
     taskboard.name.should eql Taskboard::DEFAULT_NAME
   end
 
@@ -48,10 +48,10 @@ describe TaskboardController, "while creating new taskboard" do
     taskboard = Taskboard.new
     Taskboard.should_receive(:new).and_return(taskboard)
     taskboard.should_receive(:save!)
-    post_as_editor 'add_taskboard', :project_id => projects(:test_project).id, :name => 'new taskboard!'
+    post_as_editor 'add_taskboard', :project_id => projects(:sample_project).id, :name => 'new taskboard!'
     response.should redirect_to :controller => 'project', :action => 'index'
     taskboard.name.should eql 'new taskboard!'
-    taskboard.project.should eql projects(:test_project)
+    taskboard.project.should eql projects(:sample_project)
     taskboard.should have(1).column
     taskboard.should have(1).row
   end
@@ -183,7 +183,17 @@ describe TaskboardController, "while showing single taskboard page" do
       response.should be_success
       response.body.decode_json["status"].should eql 'success'
     end
-    
+
+    it "should allow clean column" do
+      column = columns(:demo_fun_with_cards_column)
+      column_id = column.id
+      controller.should_receive(:sync_clean_column).with(column).and_return("{ status: 'success' }")
+      post_as_editor 'clean_column', :id => column.id
+      response.should be_success
+      response.body.decode_json["status"].should eql 'success'
+      Column.find(column_id).cards.should eql []
+    end
+
     it "should allow column reordering" do
       column = Column.new(:taskboard_id => 43, :name => 'Column  to be moved', :position => 6)
       Column.should_receive(:find).with(13).and_return(column)
@@ -220,7 +230,7 @@ describe TaskboardController, "while showing single taskboard page" do
     fixtures :taskboards, :rows
 
     it "should allow adding new row" do
-      taskboard = taskboards(:big_taskboard)
+      taskboard = taskboards(:scrum_taskboard)
       new_row = Row.new(:name => 'New row', :taskboard_id => taskboard.id)
       Row.should_receive(:new).and_return(new_row)
       new_row.should_receive(:save!)
@@ -240,6 +250,16 @@ describe TaskboardController, "while showing single taskboard page" do
       post_as_editor 'remove_row', :id => '34'
       response.should be_success
       response.body.decode_json["status"].should eql 'success'
+    end
+
+    it "should allow clean row" do
+      row = rows(:demo_first_row)
+      row_id = row.id
+      controller.should_receive(:sync_clean_row).with(row).and_return("{ status: 'success' }")
+      post_as_editor 'clean_row', :id => row.id
+      response.should be_success
+      response.body.decode_json["status"].should eql 'success'
+      Row.find(row_id).cards.should eql []
     end
 
   end
@@ -297,7 +317,7 @@ describe TaskboardController, "while adding new card" do
     TaskboardConfig.reset
     TaskboardConfig.instance.should_receive(:jira_auth_data).any_number_of_times.and_return({'some.url.com' => ''})
 
-    @taskboard = taskboards(:big_taskboard)
+    @taskboard = taskboards(:scrum_taskboard)
     @taskboard_old_cards_size = @taskboard.cards.size
     
     @column = @taskboard.columns.first

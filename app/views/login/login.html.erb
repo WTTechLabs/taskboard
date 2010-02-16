@@ -23,9 +23,11 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Taskboard: login page</title>
 	<%= stylesheet_link_tag 'login' %>
+	<%= javascript_include_tag 'lib/jquery', 'lib/jquery-ui.min', 'utils', 'footer' %>
 </head>
 <body>
 	<h1>Taskboard</h1>
+	<div class="minHeightWrapper">
 	<% if flash[:notice] -%>
 	<div id="notice"><%= flash[:notice] %></div>
 	<% end -%>
@@ -40,6 +42,7 @@ along with Taskboard. If not, see <http://www.gnu.org/licenses/>.
 	<%= submit_tag "Login" %>
 	</fieldset>
 	<% end %>
-	<%= render :partial => 'taskboard/meta' %>
+	</div>
+	<%= render :partial => 'project/footer' %>
 </body>
 </html>

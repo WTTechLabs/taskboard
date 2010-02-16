@@ -21,11 +21,17 @@ require 'url_parser'
 describe UrlParser, "while helping with url recognition" do
 
   it "should recognize valid urls" do
-    UrlParser.is_url('https://jira.cognifide.com/jira/browse/TASKBOARD-2').should be_true
-    UrlParser.is_url('http://google.com').should be_true
+    [ 'https://jira.cognifide.com/jira/browse/TASKBOARD-2',
+      'https://localhost:3000/app', 'http://google.com',
+      'http://google.com/', 'http://192.168.1.1',
+      'http://127.0.0.1:6363', 'http://127.0.0.1:6363',
+      'http://192.168.1.1/jira'].each do |url|
+      UrlParser.is_url(url).should be_true
+    end
+
     UrlParser.is_url('My new card!').should be_false
   end
-   
+
 end
 
 describe UrlParser do
@@ -33,14 +39,20 @@ describe UrlParser do
   it "should response to :fetch_cards method" do
     UrlParser.should respond_to(:fetch_cards)
   end
-  
+
   it "should fetch a card for given url" do
-    url = 'https://jira.cognifide.com/jira/browse/TASKBOARD-2'
-    cards = UrlParser.fetch_cards(url)
-    cards.size.should eql(1)
-    cards.first.name.should eql(url)
-    cards.first.issue_no.should eql('TASKBOARD-2')
-    cards.first.url.should eql(url)
+    check_card_name('https://jira.cognifide.com/jira/browse/TASKBOARD-2', 'https://jira.cognifide.com/jira/browse/TASKBOARD-2', 'TASKBOARD-2');
+    check_card_name('https://jira.cognifide.com/jira/browse/TASKBOARD-3/', 'https://jira.cognifide.com/jira/browse/TASKBOARD-3','TASKBOARD-3');
   end
+
+  private
+
+    def check_card_name(based_url, url, name)
+      cards = UrlParser.fetch_cards(based_url)
+      cards.size.should eql(1)
+      cards.last.name.should eql(url)
+      cards.last.issue_no.should eql(name)
+      cards.last.url.should eql(url)
+    end
   
 end

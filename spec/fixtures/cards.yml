@@ -1,43 +1,357 @@
-first_card_in_big:
- name: 'First card on big taskboard'
- url: 'http://example.com'
- issue_no: 'ISSUE-1410'
- notes: '*First card* notes'
- color: '#12C2D9'
- taskboard: big_taskboard
- column: first_column_in_big
- row: first_row_in_big
- position: 1
-second_card_in_big:
- name: 'Second card on big taskboard'
- taskboard: big_taskboard
- column: first_column_in_big
- row: first_row_in_big
- position: 2
-third_card_in_big:
- name: 'Third card on big taskboard'
- taskboard: big_taskboard
- column: first_column_in_big
- row: first_row_in_big
- position: 3
- 
-fourth_card_in_big:
- name: '4th card on big taskboard'
- taskboard: big_taskboard
- column: first_column_in_big
- row: second_row_in_big
- position: 1
+# Sample Project > Demo board
+############################
 
-fifth_card_in_big:
- name: '5th card on big taskboard'
- taskboard: big_taskboard
- column: second_column_in_big
- row: first_row_in_big
- position: 1
-sixth_card_in_big:
- name: '6th card on big taskboard'
- taskboard: big_taskboard
- column: second_column_in_big
- row: first_row_in_big
- position: 2
+# 'Tips' column
 
+demo_tips_discover_card:
+  name: 'Discover some of the cool features of Taskboard'
+  taskboard: demo_taskboard
+  column: demo_tips_column
+  row: demo_first_row
+  position: 1
+
+# 'Adding cards' column
+
+demo_adding_simply_card:
+  name: 'Simply add cards for your tasks or user stories'
+  taskboard: demo_taskboard
+  column: demo_adding_cards_column
+  row: demo_first_row
+  position: 1
+
+demo_adding_url_card:
+  name: 'Connect card with external URL'
+  url: 'http://example.com'
+  issue_no: 'example.com'
+  taskboard: demo_taskboard
+  column: demo_adding_cards_column
+  row: demo_first_row
+  position: 2
+
+demo_adding_jira_card:
+  name: 'You can even import issues from your JIRA'
+  url: 'http://jira.example.com/jira/browse/ISSUE-42'
+  issue_no: 'ISSUE-42'
+  taskboard: demo_taskboard
+  column: demo_adding_cards_column
+  row: demo_first_row
+  position: 3
+
+# 'Fun with cards' column
+
+demo_fun_dragndrop_card:
+  name: 'Drag & drop cards to rearrange them'
+  taskboard: demo_taskboard
+  column: demo_fun_with_cards_column
+  row: demo_first_row
+  position: 1
+
+demo_fun_color_card:
+  name: 'Change a color of a card to mark priority, type of a card or whatever you want'
+  color: '#12C2D9'
+  taskboard: demo_taskboard
+  column: demo_fun_with_cards_column
+  row: demo_first_row
+  position: 2
+
+demo_fun_hours_card:
+  name: 'Easily edit hours to track progress of the task'
+  color: '#35B44B'
+  taskboard: demo_taskboard
+  column: demo_fun_with_cards_column
+  row: demo_first_row
+  position: 3
+
+demo_fun_open_card:
+  name: 'Double-click on a card to open a details pop-up'
+  notes: |
+           You can put some *notes* on a **card** using a [Markdown](http://daringfireball.net/projects/markdown/) syntax
+
+           ### Lists:
+
+           * unordered
+           * lists
+
+           1. ordered
+           2. lists
+
+           ### Code:
+
+           Short `code samples` or longer sections:
+
+               function dummy(){
+                   return;
+               }
+
+           ### Links:
+
+           * [Markdown basics](http://daringfireball.net/projects/markdown/basics)
+           * [Markdown syntax](http://daringfireball.net/projects/markdown/syntax)
+  taskboard: demo_taskboard
+  column: demo_fun_with_cards_column
+  row: demo_first_row
+  position: 4
+
+demo_fun_tags_card:
+  name: 'Use tags to mark cards or group them'
+  color: '#FAA919'
+  taskboard: demo_taskboard
+  column: demo_fun_with_cards_column
+  row: demo_first_row
+  position: 5
+
+demo_fun_rows_card:
+  name: 'Arrange cards in rows to group them into stories or topic themes'
+  color: '#FF5A00'
+  taskboard: demo_taskboard
+  column: demo_fun_with_cards_column
+  row: demo_second_row
+  position: 1
+
+
+
+# Sample Project > Kanban board
+##############################
+
+# 'Backlog' column
+
+kanban_backlog_awesome_card:
+  name: 'Make it even more awesome'
+  taskboard: kanban_taskboard
+  column: kanban_backlog_column
+  row: kanban_row
+  position: 1
+
+kanban_backlog_bug_card:
+  name: 'Fix a bug'
+  color: '#FF5A00'
+  taskboard: kanban_taskboard
+  column: kanban_backlog_column
+  row: kanban_row
+  position: 2
+
+kanban_backlog_amazing_card:
+  name: 'Add even more amazing feature'
+  taskboard: kanban_taskboard
+  column: kanban_backlog_column
+  row: kanban_row
+  position: 3
+
+# 'Selected' column
+
+kanban_selected_pretty_card:
+  name: 'Make it pretty'
+  taskboard: kanban_taskboard
+  column: kanban_selected_column
+  row: kanban_row
+  position: 1
+
+kanban_selected_bug_card:
+  name: 'Fix this annoying bug'
+  color: '#FF5A00'
+  taskboard: kanban_taskboard
+  column: kanban_selected_column
+  row: kanban_row
+  position: 2
+
+kanban_selected_awesome_card:
+  name: 'Make it awesome'
+  taskboard: kanban_taskboard
+  column: kanban_selected_column
+  row: kanban_row
+  position: 3
+
+kanban_selected_sandwich_card:
+  name: 'Make me a sandwich'
+  color: '#12C2D9'
+  taskboard: kanban_taskboard
+  column: kanban_selected_column
+  row: kanban_row
+  position: 4
+
+# 'Development' column
+
+kanban_development_documentation_card:
+  name: 'Update documentation'
+  color: '#12C2D9'
+  taskboard: kanban_taskboard
+  column: kanban_development_column
+  row: kanban_row
+  position: 1
+
+kanban_development_amazing_card:
+  name: 'Add another amazing feature'
+  taskboard: kanban_taskboard
+  column: kanban_development_column
+  row: kanban_row
+  position: 2
+
+kanban_development_bug_card:
+  name: 'Fix another bug'
+  color: '#FF5A00'
+  taskboard: kanban_taskboard
+  column: kanban_development_column
+  row: kanban_row
+  position: 3
+
+# 'Done' column
+
+kanban_done_bug_card:
+  name: 'Fix this bug'
+  color: '#FF5A00'
+  taskboard: kanban_taskboard
+  column: kanban_done_column
+  row: kanban_row
+  position: 1
+
+kanban_done_amazing_card:
+  name: 'Add new great feature'
+  taskboard: kanban_taskboard
+  column: kanban_done_column
+  row: kanban_row
+  position: 2
+
+# 'In production' column
+
+kanban_production_real_card:
+  name: 'Make it real'
+  taskboard: kanban_taskboard
+  column: kanban_production_column
+  row: kanban_row
+  position: 1
+
+kanban_production_documentation_card:
+  name: 'Create documentation'
+  color: '#12C2D9'
+  taskboard: kanban_taskboard
+  column: kanban_production_column
+  row: kanban_row
+  position: 2
+
+
+
+# Sample Project > Scrum board
+##############################
+
+# User story
+# -----------
+
+# 'Story' column
+
+scrum_story_user_card:
+  name: 'As a user I want it to be pretty and easy to use.'
+  issue_no: 'STORY-41'
+  url: 'http://example.com/STORY-41'
+  taskboard: scrum_taskboard
+  column: scrum_story_column
+  row: scrum_user_row
+  position: 1
+
+# 'ToDo' column
+
+scrum_todo_animations_card:
+  name: 'Add some animations'
+  color: '#35B44B'
+  taskboard: scrum_taskboard
+  column: scrum_todo_column
+  row: scrum_user_row
+  position: 1
+
+scrum_todo_help_card:
+  name: 'Add help hints'
+  color: '#35B44B'
+  taskboard: scrum_taskboard
+  column: scrum_todo_column
+  row: scrum_user_row
+  position: 2
+
+# 'Blocked' column
+
+scrum_blocked_icons_card:
+  name: 'Add colourful icons'
+  color: '#35B44B'
+  taskboard: scrum_taskboard
+  column: scrum_blocked_column
+  row: scrum_user_row
+  position: 1
+
+# 'In Development' column
+
+scrum_development_font_card:
+  name: 'Make a font bigger'
+  color: '#35B44B'
+  taskboard: scrum_taskboard
+  column: scrum_development_column
+  row: scrum_user_row
+  position: 1
+
+# 'Testing' column
+
+scrum_test_background_card:
+  name: 'Make a beautiful background'
+  color: '#35B44B'
+  taskboard: scrum_taskboard
+  column: scrum_test_column
+  row: scrum_user_row
+  position: 1
+
+# 'Done' column
+
+
+# Owner story
+# ------------
+
+# 'Story' column
+
+scrum_story_owner_card:
+  name: 'As a product owner I want it to be awesome!'
+  issue_no: 'STORY-42'
+  url: 'http://example.com/STORY-42'
+  taskboard: scrum_taskboard
+  column: scrum_story_column
+  row: scrum_owner_row
+  position: 1
+
+# 'ToDo' column
+
+
+# 'Blocked' column
+
+scrum_blocked_amazing_card:
+  name: 'Make it amazing'
+  notes: 'What does *amazing* really mean? :P'
+  color: '#12C2D9'
+  taskboard: scrum_taskboard
+  column: scrum_blocked_column
+  row: scrum_owner_row
+  position: 1
+
+# 'In Development' column
+
+scrum_development_fast_card:
+  name: 'Make it fast'
+  color: '#12C2D9'
+  taskboard: scrum_taskboard
+  column: scrum_development_column
+  row: scrum_owner_row
+  position: 1
+
+scrum_development_intuitive_card:
+  name: 'Make it intuitive'
+  color: '#12C2D9'
+  taskboard: scrum_taskboard
+  column: scrum_development_column
+  row: scrum_owner_row
+  position: 2
+
+# 'Testing' column
+
+# 'Done' column
+
+scrum_done_real_card:
+  name: 'Make it real'
+  color: '#12C2D9'
+  taskboard: scrum_taskboard
+  column: scrum_done_column
+  row: scrum_owner_row
+  position: 1

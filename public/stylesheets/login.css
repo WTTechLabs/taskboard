@@ -20,50 +20,50 @@
 @import url(generic.css);
 
 h1 {
-	width: 400px;
-	height: 100px;
-	margin: 20px auto 0;
-	text-indent: -9999px;
-	background: url(/images/logo.png) no-repeat scroll 0 0;
+    width: 400px;
+    height: 100px;
+    margin: 20px auto 0;
+    text-indent: -9999px;
+    background: url(/images/logo.png) no-repeat scroll 0 0;
 }
 
 fieldset {
-	margin: 0;
-	padding: 15px;
-	background-color: #F8E065;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	width: 400px;
-	margin: 20px auto;
+    margin: 0;
+    padding: 15px;
+    background-color: #F8E065;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    width: 400px;
+    margin: 20px auto;
 }
 
 fieldset dl dt {
-	width: 100px;
-	float: left;
-	clear: left;
-	margin-bottom: 10px;
+    width: 100px;
+    float: left;
+    clear: left;
+    margin-bottom: 10px;
 }
 
 fieldset dl dd {
-	width: 300px;
-	float: left;
-	margin-bottom: 10px;
+    width: 300px;
+    float: left;
+    margin-bottom: 10px;
 }
 
 fieldset dl dd input {
-	width: 100%;
+    width: 100%;
 }
 
 fieldset input[type=submit] {
-	float:right;
+    float:right;
 }
 
 #notice {
-	margin: 0;
-	padding: 15px;
-	background-color: #F8E065;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	width: 400px;
-	margin: 20px auto;
+    margin: 0;
+    padding: 15px;
+    background-color: #F8E065;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    width: 400px;
+    margin: 20px auto;
 }

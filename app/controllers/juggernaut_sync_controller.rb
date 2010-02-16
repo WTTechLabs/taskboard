@@ -71,8 +71,12 @@ class JuggernautSyncController < ApplicationController
 
   def sync_delete_column column, params = {}
     options = { :message => "Deleted a '#{column.name}' column" }.update params
-    
     sync_column_action column, 'deleteColumn', options
+  end
+
+  def sync_clean_column column, params = {}
+    options = { :message => "Cleaned a '#{column.name}' column" }.update params
+    sync_column_action column, 'cleanColumn', options
   end
 
   # Row actions
@@ -96,6 +100,11 @@ class JuggernautSyncController < ApplicationController
   def sync_delete_row row, params = {}
     options = { :message => "Deleted a row" }.update params
     sync_row_action row, 'deleteRow', options
+  end
+
+  def sync_clean_row row, params = {}
+    options = { :message => "Cleaned a '#{row.name}' row" }.update params
+    sync_column_action row, 'cleanRow', options
   end
 
   # Card actions

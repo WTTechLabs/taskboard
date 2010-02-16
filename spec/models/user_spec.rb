@@ -51,14 +51,14 @@ describe User do
   
   
   it "should authenticate user if correct password is given" do
-    user = users(:editor)
+    user = users(:test_editor)
     authenticated_user = User.authenticate(user.username, "editor_password")
     authenticated_user.should_not be_nil
     authenticated_user.should eql(user)
   end
 
   it "should authenticate user if wrong password is given" do
-    user = users(:editor)
+    user = users(:test_editor)
     authenticated_user = User.authenticate(user.username, "wrongpassword")
     authenticated_user.should be_nil
   end
