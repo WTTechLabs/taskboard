@@ -1,7 +1,7 @@
 function checkAndResetSmok() {
   if(!Smok.check()) {
     Smok.reset();
-    throw "Smok Expectation failed!"
+    throw Smok.check.failure
   }
   Smok.reset();
 }
