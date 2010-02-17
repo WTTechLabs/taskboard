@@ -48,13 +48,13 @@ TASKBOARD.tags = {
 
 		var tagsLinks = "";
 		var className = $("#filterTags a[href='#/?no_tags=']").parent().hasClass("current") ? "current" : "";
-		tagsLinks += $.tag("li", $.tag("a", "No tags", { href : "#/?no_tags=", title : "Highlight cards with no tags" }),
-							 { className : className } );
+		tagsLinks += $.tag("li", $.tag("a", "No tags", { 
+			href: "#/?no_tags=", title : "Highlight cards with no tags", className: className}));
 
 		$.each(this.tagList, function(){
-			className = $("#filterTags a[href='#/?selected_tags=" + this.tag + "']").parent().hasClass("current") ? "current" : "";
-			tagsLinks += $.tag("li", $.tag("a", this.tag.escapeHTML(), { href : "#/?selected_tags=" + this.tag, title: "Highlight cards tagged as '" + this.tag + "'" }),
-								 { className : className });
+			className = $("#filterTags a." + this.className).parent().hasClass("current") ? "current" : "";
+			tagsLinks += $.tag("li", $.tag("a", this.tag.escapeHTML(), {
+				href: "#/?selected_tags=" + this.tag, title: "Highlight cards tagged as '" + this.tag + "'", className: className }));
 		});
 		$("#filterTags").html(tagsLinks);
 	},
