@@ -508,10 +508,10 @@ TASKBOARD.builder.buildBigCard = function(card){
 		bigCard.find('#tagsForm').submit(function(ev){
 			var cardTags = $.map(card.tag_list, function(n){ return n.toUpperCase() });
 			var tags = $(this).find(':text').val();
-        		// validate input
+			// validate input
 			if(tags.length === 0 || tags.indexOf('%') >= 0 || tags.indexOf('&') >= 0){
 			    $('#inputTags').effect("highlight", { color: "#FF0000" }).focus();
-            		    return false;
+				return false;
 			}
 			// remove empty and already added tags
 			tags = $.map(tags.split(','), function(n){ return (n.trim() && ($.inArray(n.trim().toUpperCase(),cardTags) < 0)) ? n.trim() : null; });
