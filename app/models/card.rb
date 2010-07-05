@@ -57,6 +57,7 @@ class Card < ActiveRecord::Base
       # TODO check if new column is in same taskboard?
       remove_from_list
       self.column_id = target_column_id
+	  self.column.reload
       self.row_id = target_row_id
     end
     insert_at target_position
